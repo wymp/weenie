@@ -1,0 +1,8 @@
+config.example.json
+dist-test
+githooks
+src
+tests
+tsconfig.*
+webpack.*
+logs
