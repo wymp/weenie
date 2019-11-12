@@ -127,8 +127,8 @@ export interface Cronjob<Resources = FrameworkResources> {
 
 export type CronjobsCollection<Resources = FrameworkResources> = Array<Cronjob<Resources>>;
 
-export type Ander<BaseResources = {}> = BaseResources & {
-  and: <I extends {}>(next: (r?: BaseResources) => I) => Ander<BaseResources & I>;
+export type Agg<CurrentDeps = {}> = CurrentDeps & {
+  and: <NewDeps extends {}>(next: (r?: CurrentDeps) => NewDeps) => Agg<CurrentDeps & NewDeps>;
 }
 
 // Type utilities

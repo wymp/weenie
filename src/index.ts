@@ -1,14 +1,18 @@
-import { frameworkConfigValidator, FrameworkConfig, Ander } from "./Types";
+import { frameworkConfigValidator, FrameworkConfig, Agg } from "./Types";
 import * as rt from "runtypes";
 import * as fs from "fs";
 import { SimpleLoggerInterface, SimpleLogLevels } from "ts-simple-interfaces";
 
+const deepmerge = Object.assign;
+
+// Returns a function that inflates config from the given parameters
 export function config<Config>(
   defaultPath: string,
   overridePath: string,
   validator: rt.Runtype
 ) {
-  return function(r: any): { config: Config } {
+  // This function is what's given to `and` to attach config
+  return function(): { config: Config } {
     const def = fs.readFileSync(defaultPath, "utf8");
     const override = fs.existsSync(overridePath) ? fs.readFileSync(overridePath, "utf8") : "{}";
 
@@ -21,6 +25,7 @@ export function config<Config>(
   }
 }
 
+// Requires config and returns logger
 export function logger(r: { config: FrameworkConfig }): { logger: SimpleLoggerInterface } {
   let logger = <SimpleLoggerInterface><any>{};
   const log = function(lvl: keyof SimpleLogLevels, msg: string) {
@@ -41,27 +46,39 @@ export function logger(r: { config: FrameworkConfig }): { logger: SimpleLoggerIn
   logger.critical = getLog("critical");
   logger.emergency = getLog("emergency");
 
+  logger.debug(`Logger instantiated in env ${r.config.envName}`);
+
   return { logger };
 }
 
-const deepmerge = Object.assign;
-
-export function Weenie<BaseResources = {}>(resources?: BaseResources): Ander<BaseResources> {
-  const r = <BaseResources> (resources ? resources : {});
-  return <BaseResources & Ander<BaseResources>>deepmerge(
+// Framework function
+export function Weenie<CurrentDeps = {}>(resources?: CurrentDeps): Agg<CurrentDeps> {
+  const r = <CurrentDeps> (resources ? resources : {});
+  return <Agg<CurrentDeps>>deepmerge(
+    {},
     r,
     {
-      and: <I extends {}>(next: (r?: BaseResources) => I): Ander<BaseResources & I> => {
+      and: <NewDeps extends {}>(
+        next: (r?: CurrentDeps) => NewDeps
+      ): Agg<CurrentDeps & NewDeps> => {
         const newResources = deepmerge(r, next(r));
-        return Weenie<BaseResources & I>(newResources);
+        return Weenie<CurrentDeps & NewDeps>(newResources);
       }
     }
   );
 }
 
+// Example. This should not work because we KNOW that the `and` function returned by `Weenie()`
+// requires a function whose argument is either undefined or {}, but the `logger` function has an
+// argument of type { config: FrameworkConfig }.
+//
+// While the system does correctly aggregate the return of the logger function with the existing
+// object, it does not throw an error on seeing the incompatible input types.
+//
+// (P.s., if you switch the logger and config clauses, it will both compile and run correctly)
 const app = Weenie()
+  .and(logger)
   .and(config<FrameworkConfig>("./config.example.json", "./config.local.json", frameworkConfigValidator))
-  .and(logger);
 
 app.logger.debug("Yay!!");
 app.logger.notice(`Current environment: ${app.config.envType}`);
