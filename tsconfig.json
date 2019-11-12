@@ -14,11 +14,7 @@
     "strictNullChecks": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "types": [
-        "lodash",
-        "node",
-        "mysql"
-    ]
+    "types": [ "node" ]
   },
   "include": ["src/**/*" ]
 }
