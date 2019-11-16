@@ -1,4 +1,4 @@
-export { deepmerge } from "./Utils";
+import { deepmerge } from "./Utils";
 
 export type Extensible<Deps = {}> = Deps & {
   and: <NextDeps extends {}>(next: (deps: Deps) => NextDeps) => Extensible<Deps & NextDeps>;
@@ -14,3 +14,4 @@ export function Weenie<Deps = {}>(deps: Deps): Extensible<Deps> {
     }
   });
 }
+
