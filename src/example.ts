@@ -19,12 +19,32 @@ function dep1() {
   };
 }
 
-// Some other dependency that requires the first dependency in order to initialize
-function dep2(r: { a: string; b: string}) {
+// An internal dependency that won't be exposed at the end
+function internalDep(r: { a: string; b: string }) {
   return {
-    b: `three (previously ${r.b}`,
+    internal: r.a
+  }
+}
+
+// Some other dependency that requires the first dependency and the internal dependency in order
+// to initialize
+function dep2(r: { a: string; b: string; internal: string; }) {
+  return {
+    b: `three (previously ${r.b})`,
     c: "four",
+    result: `Internal dependency: ${r.internal}`,
   };
+}
+
+// Our finishing function, which removes the internal dependency
+function finish(r: { config: FrameworkConfig; a: string; b: string; c: string; result: string }) {
+  return {
+    config: r.config,
+    a: r.a,
+    b: r.b,
+    c: r.c,
+    result: r.result
+  }
 }
 
 // Now you can instantiate the app in a couple different ways and build it up
@@ -38,34 +58,24 @@ const standard = Weenie(
   )()
 )
 .and(dep1)
+.and(internalDep)
 .and(dep2)
+.done(finish);
 
 console.log(`Environment: ${standard.config.envName}`);
 console.log(`A: ${standard.a}`);
 console.log(`B: ${standard.b}`);
 console.log(`C: ${standard.c}`);
-
-// Won't work:
-// console.log(standard.d)
+console.log(`Result: ${standard.result}`);
+// console.log(`Internal: ${standard.internal}`); << Doesn't work because this was removed
+// console.log(standard.d) << also won't work because we didn't add this
 
 // This wouldn't work either, because the input to the dep1 function is insufficient
-//const doesntWork = Weenie({}).and(dep2);
-//console.log(`B: ${doesntWork.b}`);
+// const doesntWork = Weenie({}).and(dep2);
+// console.log(`B: ${doesntWork.b}`);
 //
 // NOTE: For unknown reasons, the above does _sometimes_ work, even though it shouldn't.
 // It always produces the correct errors on https://www.typescriptlang.org/play/index.html,
-// but when run locally _using the same version,_ it sometimes produces errors and sometimes
-// doesn't.
-
-
-// Minimal flow: Instantiate a bare app, which you can then add things to. In this case, you must
-// assign the output to a new variable every time because typescript captures the type of the
-// variable as whatever type it is _initially,_ which in this case is `{}`
-//
-// Casting is actually safe in this case, too, since the initial type is known and typescript will
-// complain if the cast is incompatible.
-const minimal1 = Weenie({});
-// ....
-const minimal2 = minimal1.and(dep1);
-console.log(`A: ${minimal2.a}`);
+// but when run locally _using the same version of typescript,_ it sometimes produces errors and
+// sometimes doesn't.
 

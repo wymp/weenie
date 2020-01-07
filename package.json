@@ -1,6 +1,6 @@
 {
   "name": "weenie-base",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "The base package for Weenie, an aggressively unopinionated Typescript microservices micro-framework",
   "main": "dist/index.js",
   "scripts": {

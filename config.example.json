@@ -3,7 +3,7 @@
   "envName": "dev",
   "serviceName": "my-service",
   "maxJobWait": 600000,
-  "initializationTimeout": 10000,
+  "initializationTimeoutMs": 10000,
   "amqp": {
     "protocol": "amqp",
     "hostname": "localhost",
@@ -13,7 +13,7 @@
     "locale": "en_US",
     "vhost": "dev",
     "heartbeat": 120,
-    "publishingDomains": []
+    "publishingDomains": ["example"]
   },
   "db": {
     "socketPath": "/var/run/mysql/mysql.sock",

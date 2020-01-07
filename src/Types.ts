@@ -85,43 +85,68 @@ export const loggerConfigValidator = rt.Record({
 export type LoggerConfig = rt.Static<typeof loggerConfigValidator>;
 
 /**
- * Brings all the config validators together into a cohesive collection
+ * Define a configuration that is aware of its environment
  */
-export const frameworkConfigValidator = rt.Record({
+const environmentAwareConfigValidator = rt.Record({
   /** Defines an environment type, e.g., 'dev', 'uat', 'qa', 'staging', 'prod' */
   envType: rt.String,
 
   /** Defines a specific environment name, e.g., 'dev', 'demo1', 'demo2', 'staging', 'prod' */
   envName: rt.String,
-
-  /** The service name */
-  serviceName: rt.String,
-  /**
-   * This is the intitial time in ms that we should wait before retrying a failed job.
-   *
-   * This is intended to be used by an exponential backoff system, where the system takes this
-   * parameter and doubles it on each failed attempt.
-   */
-  initialJobWaitMs: optional(rt.Number),
-
-  /** Maximum time to wait in ms before the application should stop retrying a failed job */
-  maxJobWaitMs: optional(rt.Number),
-
-  /** Maximum time to wait in ms for the application to start before we should throw an error */
-  initializationTimeoutMs: rt.Number,
-
-  /** Logger configuration */
-  logger: loggerConfigValidator,
-
-  /** mq configuration */
-  amqp: optional(overrideable(mqConnectionConfigValidator)),
-
-  /** db configuration */
-  db: optional(overrideable(databaseConfigValidator)),
-
-  /** webservice configuration */
-  webService: optional(overrideable(webServiceConfigValidator)),
 });
+
+/**
+ * A configuration that specifies parameters for a job manager
+ */
+const jobManagerConfigValidator = rt.Record({
+    /**
+     * This is the intitial time in ms that we should wait before retrying a failed job.
+     *
+     * This is intended to be used by an exponential backoff system, where the system takes this
+     * parameter and doubles it on each failed attempt.
+     */
+    initialJobWaitMs: optional(rt.Number),
+
+    /** Maximum time to wait in ms before the application should stop retrying a failed job */
+    maxJobWaitMs: optional(rt.Number),
+});
+
+/**
+ * Config for a module that manages a running service
+ */
+const serviceManagerConfigValidator = rt.Record({
+    /** Maximum time to wait in ms for the application to start before we should throw an error */
+    initializationTimeoutMs: rt.Number,
+});
+
+/**
+ * Brings all the config validators together into a cohesive collection
+ *
+ * The framework config is a combination of environment-aware config, job manager config and
+ * service manager config with the addition of specific subgroups for logging, amqp, db, and
+ * webservice config.
+ */
+export const frameworkConfigValidator = rt.Intersect(
+  environmentAwareConfigValidator,
+  jobManagerConfigValidator,
+  serviceManagerConfigValidator,
+  rt.Record({
+    /** The service name */
+    serviceName: rt.String,
+
+    /** Logger configuration */
+    logger: loggerConfigValidator,
+
+    /** mq configuration */
+    amqp: optional(overrideable(mqConnectionConfigValidator)),
+
+    /** db configuration */
+    db: optional(overrideable(databaseConfigValidator)),
+
+    /** webservice configuration */
+    webService: optional(overrideable(webServiceConfigValidator)),
+  })
+);
 export type FrameworkConfig = rt.Static<typeof frameworkConfigValidator>;
 
 
