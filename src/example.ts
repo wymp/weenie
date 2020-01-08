@@ -1,6 +1,6 @@
 import { FrameworkConfig, frameworkConfigValidator } from "./Types";
 import { Weenie } from "./Weenie";
-import { config } from "./Config";
+import { configFromFiles } from "./Config";
 
 /** 
  * Weenie works using functions that (optionally) take a certain set of dependencies as input and
@@ -51,7 +51,7 @@ function finish(r: { config: FrameworkConfig; a: string; b: string; c: string; r
 
 // Standard flow: Start with config and add dependencies all in one swoop.
 const standard = Weenie(
-  config<FrameworkConfig>(
+  configFromFiles<FrameworkConfig>(
     "./config.example.json",
     "./config.local.json",
     frameworkConfigValidator
