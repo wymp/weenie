@@ -1,4 +1,4 @@
-import { FrameworkConfig, frameworkConfigValidator } from "./Types";
+import { BaseConfig, baseConfigValidator } from "./Types";
 import { Weenie } from "./Weenie";
 import { configFromFiles } from "./Config";
 
@@ -37,7 +37,7 @@ function dep2(r: { a: string; b: string; internal: string; }) {
 }
 
 // Our finishing function, which removes the internal dependency
-function finish(r: { config: FrameworkConfig; a: string; b: string; c: string; result: string }) {
+function finish(r: { config: BaseConfig; a: string; b: string; c: string; result: string }) {
   return {
     config: r.config,
     a: r.a,
@@ -51,10 +51,10 @@ function finish(r: { config: FrameworkConfig; a: string; b: string; c: string; r
 
 // Standard flow: Start with config and add dependencies all in one swoop.
 const standard = Weenie(
-  configFromFiles<FrameworkConfig>(
+  configFromFiles<BaseConfig>(
     "./config.example.json",
     "./config.local.json",
-    frameworkConfigValidator
+    baseConfigValidator
   )()
 )
 .and(dep1)

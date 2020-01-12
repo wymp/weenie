@@ -126,7 +126,7 @@ const serviceManagerConfigValidator = rt.Record({
  * service manager config with the addition of specific subgroups for logging, amqp, db, and
  * webservice config.
  */
-export const frameworkConfigValidator = rt.Intersect(
+export const baseConfigValidator = rt.Intersect(
   environmentAwareConfigValidator,
   jobManagerConfigValidator,
   serviceManagerConfigValidator,
@@ -136,18 +136,9 @@ export const frameworkConfigValidator = rt.Intersect(
 
     /** Logger configuration */
     logger: loggerConfigValidator,
-
-    /** mq configuration */
-    amqp: optional(overrideable(mqConnectionConfigValidator)),
-
-    /** db configuration */
-    db: optional(overrideable(databaseConfigValidator)),
-
-    /** webservice configuration */
-    webService: optional(overrideable(webServiceConfigValidator)),
   })
 );
-export type FrameworkConfig = rt.Static<typeof frameworkConfigValidator>;
+export type BaseConfig = rt.Static<typeof baseConfigValidator>;
 
 
 /**
@@ -202,12 +193,12 @@ export type Cronjob<Resources> = IntervalCronjob<Resources> | ClockCronjob<Resou
  */
 
 // Make arguments optional
-function optional(t: rt.Runtype): rt.Runtype {
+function optional<T extends rt.Runtype>(t: T) {
   return rt.Union(t, rt.Undefined);
 }
 
 // Make the argument accept null as an override
-function overrideable(t: rt.Runtype): rt.Runtype {
+function overrideable<T extends rt.Runtype>(t: T) {
   return rt.Union(t, rt.Null);
 }
 
