@@ -16,25 +16,18 @@ import * as rt from "runtypes";
 const Port = rt.Number;
 const Host = rt.String;
 export const webServiceConfigValidator = rt.Record({
-  listeners: rt.Array(rt.Tuple(Port, optional(Host)))
+  listeners: rt.Array(rt.Tuple(Port, optional(Host))),
 });
 export type WebServiceConfig = rt.Static<typeof webServiceConfigValidator>;
 
 /**
- * In this model, there is assumed to be one primary API service through which all APIs are
- * accessed. This is not necessarily realistic for some services, and it may be more appropriate
- * for these services to define their own type of API Config.
- *
- * Under this scheme, however, it is expected that the framework make assumptions about what the
- * final base url is based on the environment (`envName`) and one or more hard-coded domains.
- *
- * The `overrideUrl` parameter is provided to offer programmers an easy way to point services
- * at an arbitrary URL during development.
+ * This config provides a very basic model for API access, where a given API requires an API key
+ * and secret and has a base URL that is configurable per-environment.
  */
 export const apiConfigValidator = rt.Record({
   key: rt.String,
   secret: rt.String,
-  overrideUrl: overrideable(rt.String),
+  baseUrl: rt.String,
 });
 export type ApiConfig = rt.Static<typeof apiConfigValidator>;
 
@@ -70,7 +63,8 @@ export type DatabaseConfig = rt.Static<typeof databaseConfigValidator>;
  * Defines a logfile path and a level at which to write logs
  */
 export const loggerConfigValidator = rt.Record({
-  logLevel: rt.Literal("debug")
+  logLevel: rt
+    .Literal("debug")
     .Or(rt.Literal("info"))
     .Or(rt.Literal("notice"))
     .Or(rt.Literal("warning"))
@@ -99,24 +93,24 @@ const environmentAwareConfigValidator = rt.Record({
  * A configuration that specifies parameters for a job manager
  */
 const jobManagerConfigValidator = rt.Record({
-    /**
-     * This is the intitial time in ms that we should wait before retrying a failed job.
-     *
-     * This is intended to be used by an exponential backoff system, where the system takes this
-     * parameter and doubles it on each failed attempt.
-     */
-    initialJobWaitMs: optional(rt.Number),
+  /**
+   * This is the intitial time in ms that we should wait before retrying a failed job.
+   *
+   * This is intended to be used by an exponential backoff system, where the system takes this
+   * parameter and doubles it on each failed attempt.
+   */
+  initialJobWaitMs: optional(rt.Number),
 
-    /** Maximum time to wait in ms before the application should stop retrying a failed job */
-    maxJobWaitMs: optional(rt.Number),
+  /** Maximum time to wait in ms before the application should stop retrying a failed job */
+  maxJobWaitMs: optional(rt.Number),
 });
 
 /**
  * Config for a module that manages a running service
  */
 const serviceManagerConfigValidator = rt.Record({
-    /** Maximum time to wait in ms for the application to start before we should throw an error */
-    initializationTimeoutMs: rt.Number,
+  /** Maximum time to wait in ms for the application to start before we should throw an error */
+  initializationTimeoutMs: rt.Number,
 });
 
 /**
@@ -140,7 +134,6 @@ export const baseConfigValidator = rt.Intersect(
 );
 export type BaseConfig = rt.Static<typeof baseConfigValidator>;
 
-
 /**
  * MESSAGES
  */
@@ -149,7 +142,6 @@ export interface MQEventHandler<Resources> {
   bindings: Array<string>;
   handler: (ev: unknown, resources: Resources) => Promise<boolean>;
 }
-
 
 /**
  * CRON
@@ -166,7 +158,7 @@ type Hour = string;
 type DayOfMonth = string;
 type Month = string;
 type DayOfWeek = string;
-export type Clockspec = [ Second, Minute, Hour, DayOfMonth, Month, DayOfWeek ];
+export type Clockspec = [Second, Minute, Hour, DayOfMonth, Month, DayOfWeek];
 
 /**
  * Defines an interval-based cronjob. This will run every time the given interval(s) are met.
@@ -185,7 +177,6 @@ export interface ClockCronjob<Resources> {
 }
 export type Cronjob<Resources> = IntervalCronjob<Resources> | ClockCronjob<Resources>;
 
-
 /**
  * MISCELLANEOUS
  *
@@ -196,9 +187,3 @@ export type Cronjob<Resources> = IntervalCronjob<Resources> | ClockCronjob<Resou
 function optional<T extends rt.Runtype>(t: T) {
   return rt.Union(t, rt.Undefined);
 }
-
-// Make the argument accept null as an override
-function overrideable<T extends rt.Runtype>(t: T) {
-  return rt.Union(t, rt.Null);
-}
-
