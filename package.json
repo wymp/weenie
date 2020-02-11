@@ -1,6 +1,6 @@
 {
   "name": "weenie-base",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The base package for Weenie, an aggressively unopinionated Typescript microservices micro-framework",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "@types/node": "^10.17.13",
     "fs": "^0.0.1-security",
     "runtypes": "^4.0.3",
-    "ts-simple-interfaces": "^0.2.0"
+    "ts-simple-interfaces": "^0.2.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
