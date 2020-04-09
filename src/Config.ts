@@ -29,7 +29,8 @@ export function configFromFiles<Config>(
 // Returns a function that inflates config from environment variables and validates it using the
 // given validator
 export function configFromEnv<Config>(
-  validator: rt.Runtype,
+  // This is expected to be a Runtypes validator, but could theoretically be anything
+  validator: { check: (config: any) => Config },
   ns: string = "APP",
   delimiter: string = "_",
 ): () => { config: Config } {

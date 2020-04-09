@@ -81,18 +81,19 @@ export type LoggerConfig = rt.Static<typeof loggerConfigValidator>;
 /**
  * Define a configuration that is aware of its environment
  */
-const environmentAwareConfigValidator = rt.Record({
+export const environmentAwareConfigValidator = rt.Record({
   /** Defines an environment type, e.g., 'dev', 'uat', 'qa', 'staging', 'prod' */
   envType: rt.String,
 
   /** Defines a specific environment name, e.g., 'dev', 'demo1', 'demo2', 'staging', 'prod' */
   envName: rt.String,
 });
+export type EnvironmentAwareConfig = rt.Static<typeof environmentAwareConfigValidator>;
 
 /**
  * A configuration that specifies parameters for a job manager
  */
-const jobManagerConfigValidator = rt.Record({
+export const jobManagerConfigValidator = rt.Record({
   /**
    * This is the intitial time in ms that we should wait before retrying a failed job.
    *
@@ -104,14 +105,16 @@ const jobManagerConfigValidator = rt.Record({
   /** Maximum time to wait in ms before the application should stop retrying a failed job */
   maxJobWaitMs: optional(rt.Number),
 });
+export type JobManagerConfig = rt.Static<typeof jobManagerConfigValidator>;
 
 /**
  * Config for a module that manages a running service
  */
-const serviceManagerConfigValidator = rt.Record({
+export const serviceManagerConfigValidator = rt.Record({
   /** Maximum time to wait in ms for the application to start before we should throw an error */
   initializationTimeoutMs: rt.Number,
 });
+export type ServiceManagerConfig = rt.Static<typeof serviceManagerConfigValidator>;
 
 /**
  * Brings all the config validators together into a cohesive collection
@@ -187,3 +190,8 @@ export type Cronjob<Resources> = IntervalCronjob<Resources> | ClockCronjob<Resou
 function optional<T extends rt.Runtype>(t: T) {
   return rt.Union(t, rt.Undefined);
 }
+
+// This allows us to make specific fields optional (see https://stackoverflow.com/a/54178819/2065427)
+// Usually used for incoming data with default values
+export type PartialSelect<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
