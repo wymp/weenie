@@ -1,3 +1,4 @@
+import { SimpleLoggerInterface } from "ts-simple-interfaces";
 import * as rt from "runtypes";
 
 /**
@@ -166,19 +167,19 @@ export type Clockspec = [Second, Minute, Hour, DayOfMonth, Month, DayOfWeek];
 /**
  * Defines an interval-based cronjob. This will run every time the given interval(s) are met.
  */
-export interface IntervalCronjob<Resources> {
+export interface IntervalCronjob {
   name: string;
   type: "interval";
   intervalMS: number | Array<number>;
-  handler: (r: Resources) => Promise<boolean>;
+  handler: (log: SimpleLoggerInterface) => Promise<boolean>;
 }
-export interface ClockCronjob<Resources> {
+export interface ClockCronjob {
   name: string;
   type: "clock";
   clockspec: Clockspec | Array<Clockspec>;
-  handler: (r: Resources) => Promise<boolean>;
+  handler: (log: SimpleLoggerInterface) => Promise<boolean>;
 }
-export type Cronjob<Resources> = IntervalCronjob<Resources> | ClockCronjob<Resources>;
+export type Cronjob = IntervalCronjob | ClockCronjob;
 
 /**
  * MISCELLANEOUS
@@ -194,4 +195,3 @@ function optional<T extends rt.Runtype>(t: T) {
 // This allows us to make specific fields optional (see https://stackoverflow.com/a/54178819/2065427)
 // Usually used for incoming data with default values
 export type PartialSelect<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
