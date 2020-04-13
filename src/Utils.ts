@@ -19,23 +19,21 @@ const _deepmerge = function(base: any, add: any): any {
   } else if (
     add === null ||
     typeof add === "function" ||
-    (
-      typeof add === "object" &&
+    (typeof add === "object" &&
       add.constructor.name !== "Object" &&
-      add.constructor.name !== "Array"
-    )
+      add.constructor.name !== "Array")
   ) {
     // If add is null or a function or a class instance, just return it as-is
     return add;
   } else if (typeof add === "object") {
-    // Otherwise, if add is a simple object and base is nullish or less important, override it
-    if (typeof base !== "object" || base === null || typeof base === "undefined") {
-      if (typeof add.length !== "undefined") {
+    // Otherwise, if add is a simple object and base is a primative or null, override it
+    if (typeof base !== "object" || base === null) {
+      if (Array.isArray(add)) {
         // Array case - generate new array
         return add.map((v: any) => v);
       } else {
         // Object case - generate new object
-        return Object.assign({}, add);
+        return _deepmerge({}, add);
       }
     } else {
       // If add is an array....
