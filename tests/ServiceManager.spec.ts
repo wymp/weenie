@@ -6,7 +6,7 @@ describe("ServiceManager", () => {
     test("should throw error if process takes too long", async () => {
       const result = await new Promise((res, rej) => {
         const r = Weenie({ config: { initializationTimeoutMs: 100 } }).and(serviceManagement);
-        r._initTimeout.catch((e) => {
+        r.svc.initTimeout.catch(e => {
           if (e.message.match(/^INITIALIZATION FAILED/)) {
             res("Correctly timed out");
           } else {
@@ -22,9 +22,12 @@ describe("ServiceManager", () => {
       const result = await new Promise((res, rej) => {
         const r = Weenie({ config: { initializationTimeoutMs: 100 } })
           .and(serviceManagement)
-          .done((d) => { d.initialized(); return { _initTimeout: d._initTimeout } });
+          .done(d => {
+            d.svc.initialized(true);
+            return { svc: d.svc };
+          });
 
-        r._initTimeout.catch((e) => {
+        r.svc.initTimeout.catch(e => {
           if (e.message.match(/^INITIALIZATION FAILED/)) {
             res("Should not have timed out, but did.");
           } else {
