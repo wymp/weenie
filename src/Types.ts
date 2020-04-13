@@ -167,19 +167,20 @@ export type Clockspec = [Second, Minute, Hour, DayOfMonth, Month, DayOfWeek];
 /**
  * Defines an interval-based cronjob. This will run every time the given interval(s) are met.
  */
-export interface IntervalCronjob {
+export interface Cronjob {
   name: string;
-  type: "interval";
-  intervalMS: number | Array<number>;
+  spec: Cronspec;
   handler: (log: SimpleLoggerInterface) => Promise<boolean>;
 }
-export interface ClockCronjob {
-  name: string;
-  type: "clock";
-  clockspec: Clockspec | Array<Clockspec>;
-  handler: (log: SimpleLoggerInterface) => Promise<boolean>;
+export interface ClockCronspec {
+  t: "clock";
+  clock: [string, string, string, string, string, string];
 }
-export type Cronjob = IntervalCronjob | ClockCronjob;
+export interface IntervalCronspec {
+  t: "interval";
+  ms: number;
+}
+export type Cronspec = ClockCronspec | IntervalCronspec;
 
 /**
  * MISCELLANEOUS
