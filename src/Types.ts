@@ -139,15 +139,6 @@ export const baseConfigValidator = rt.Intersect(
 export type BaseConfig = rt.Static<typeof baseConfigValidator>;
 
 /**
- * MESSAGES
- */
-export interface MQEventHandler<Resources> {
-  name: string;
-  bindings: Array<string>;
-  handler: (ev: unknown, resources: Resources) => Promise<boolean>;
-}
-
-/**
  * CRON
  */
 

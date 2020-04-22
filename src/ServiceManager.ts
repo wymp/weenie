@@ -12,16 +12,22 @@ export const serviceManagement = (r: { config: ServiceManagerConfig }) => {
 
     // Set the timeout
     t = setTimeout(() => {
-      rej(
-        new Error(
-          `INITIALIZATION FAILED: Service took longer than configured ${Math.round(
-            r.config.initializationTimeoutMs / 10
-          ) /
-            100} seconds to initialize and is therefore considered failed. Make sure you call the ` +
-            `\`initialized()\` function on the resulting dependency container to mark that the ` +
-            `process has successfully initialized.`
-        )
+      // prettier-ignore
+      const e = new Error(
+        `INITIALIZATION FAILED: Service took longer than configured ${
+          Math.round(r.config.initializationTimeoutMs / 10) / 100
+        } seconds to initialize and is therefore considered failed. Make sure you call the ` +
+        `\`initialized()\` function on the resulting dependency container to mark that the ` +
+        `process has successfully initialized.`
       );
+
+      // Reject, but....
+      rej(e);
+
+      // We actually need to process.exit here because (for now) Node doesn't die on uncaught promise
+      // exceptions
+      console.log(e);
+      process.exit(288);
     }, r.config.initializationTimeoutMs);
   });
 
