@@ -45,7 +45,7 @@ export const mqConnectionConfigValidator = rt.Record({
   vhost: rt.String,
   heartbeat: rt.Number,
 });
-export type MQConnectionConfig = rt.Static<typeof mqConnectionConfigValidator>;
+export type MqConnectionConfig = rt.Static<typeof mqConnectionConfigValidator>;
 
 /**
  * Mostly just a runtime validation of MySQL configs
