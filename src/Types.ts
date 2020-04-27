@@ -1,4 +1,3 @@
-import { SimpleLoggerInterface } from "ts-simple-interfaces";
 import * as rt from "runtypes";
 
 /**
@@ -137,41 +136,6 @@ export const baseConfigValidator = rt.Intersect(
   })
 );
 export type BaseConfig = rt.Static<typeof baseConfigValidator>;
-
-/**
- * CRON
- */
-
-/**
- * The following define a "Clockspec". This follows the format laid out in
- * http://man7.org/linux/man-pages/man5/crontab.5.html, with the addition of the 'seconds'
- * field at the beginning.
- */
-type Second = string;
-type Minute = string;
-type Hour = string;
-type DayOfMonth = string;
-type Month = string;
-type DayOfWeek = string;
-export type Clockspec = [Second, Minute, Hour, DayOfMonth, Month, DayOfWeek];
-
-/**
- * Defines an interval-based cronjob. This will run every time the given interval(s) are met.
- */
-export interface Cronjob {
-  name: string;
-  spec: Cronspec;
-  handler: (log: SimpleLoggerInterface) => Promise<boolean>;
-}
-export interface ClockCronspec {
-  t: "clock";
-  clock: [string, string, string, string, string, string];
-}
-export interface IntervalCronspec {
-  t: "interval";
-  ms: number;
-}
-export type Cronspec = ClockCronspec | IntervalCronspec;
 
 /**
  * MISCELLANEOUS
