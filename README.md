@@ -1,12 +1,12 @@
-Weenie Base
-===================================================================
+# Weenie Base
 
-*See https://github.com/kael-shipman/weenie-framework for a more full-bodied explanation of the
-weenie framework.*
+_See https://github.com/kael-shipman/weenie-framework for a more full-bodied explanation of the
+weenie framework._
 
 This is the base package for the Weenie framework. It provides a small function, `Weenie`, that
-allows programmers to build up a service from the ground without having to include dependencies
-that they don't want.
+allows programmers to build up a strongly-typed dependency container from the ground, declaratively
+including and exposing only the dependencies they want, rather than relying on a big and/or
+opinionated framework.
 
 It provides a number of convenience functions for instantiating components like loggers, databases,
 Pub/Sub clients, HTTP clients, etc., using lightweight "Simple" interfaces (see
@@ -23,7 +23,7 @@ package, [`weenie-framework`](https://github.com/kael-shipman/weenie-framework),
 that you can still extract a lot of value out of the Weenie philosophy without being goverened
 or overburdened by the personal opinions of the programmers who have built the core framework.
 
-This package is intended to be included by other packages that may want to provide a different
+This base package is intended to be included by other packages that may want to provide a different
 core set of operating assumptions for a framework. It can even be used as a _component_ of a bigger
 framework. The whole point is that it shouldn't limit your possibilities with its own opinions of
 how the world works.
@@ -42,14 +42,14 @@ Here's the simplest case: You like the way Weenie handles config and you want to
 build a little script that just does some one-off task.
 
 ```ts
-import { Weenie, config } from "weenie-base";
+import { Weenie, configFromFiles } from "weenie-base";
 import { MyConfig, myConfigValidator } from "./Types";
 
 const app = new Weenie(
-  config<MyConfig>("./config.json", "./config.local.json", myConfigValidator)()
+  configFromFiles<MyConfig>("./config.json", "./config.local.json", myConfigValidator)()
 );
 
-if (app.myVar === "123") {
+if (app.config.myVar === "123") {
   console.log("We're in 123 mode");
 } else {
   console.log("We're not in 123 mode");
@@ -59,68 +59,13 @@ console.log("Yay, we did it!");
 process.exit();
 ```
 
-Here's one that's a little more complex. It's an application that utilizes the Weenie standard
-config (see `src/Types.ts` for Weenie's approach to config), Weenie MQ system, Weenie web
-services system, and Weenie cron system to subscribe to system events, respond to HTTP requests,
-and do time-based tasks.
+This example is almost uselessly simple, but it does demonstrate the value that Weenie offers: that
+you can chain together abstractions that declaratively build up a dependency container, then use
+that dependency container with total type safety.
 
-```ts
-import {
-  Weenie,
-  config,
-  appConfigValidator,
-  AppConfig,
-  logger,
-  mq,
-  db,
-  cron,
-  webservice,
-  serviceManager,
-} from "weenie-base";
-import { myEmailer } from "./Types";
-import { getMyHandlers } from "./MessageHandlers";
-import * as WebHandlers from "./WebHandlers";
-import { cronjobs } from "./Cron";
+In other words, in the above example, Weenie added the `config` key to the dependency container,
+and we used the `myVar` property of the config object. If the config object had not defined
+`myVar`, Typescript would have thrown an error at compile time.
 
-const app = new Weenie(
-  config<AppConfig>("./config.json", "./config.local.json", appConfigValidator)()
-)
-.and(logger)
-.and(serviceManager)
-.and(db)
-.and(mq)
-.and(myEmailer)
-.and(cron)
-.and(webservice)
-
-// Now the dependencies are all set up, we can utilize them. Note how we're using the app as an
-// argument to the `getMyHandlers` function, which allows us to pass the dependencies down into
-// the handlers themselves.
-//
-// In this case, let's suppose that `myEmailer`, attached above, is required by some of the
-// message handlers. Here's how we can neatly make that possible.
-app.mq.registerHandlers(getMyHandlers(app));
-
-// Add Cron Jobs
-// Note that the function that adds the cron system actually requires a logger, so it would not
-// be possible to use this cron system without having previously attached a logger, thus we don't
-// need to do anything else for the cron system to work
-app.cron.registerCronjobs(cronjobs);
-
-// Now we'll register some endpoints (webservice is just a `SimpleHttpRequestRouterInterface`, so
-// we can just attach endpoints to it as needed). Weenie's particular implementation of a
-// webservice adds certain niceties, like a fall-through error handler and some content
-// negotiations.
-app.webservice
-  .get("/stats", WebHandlers.Stats(app))
-  .post("/bell-ring", WebHandlers.BellRing(app));
-
-// Notice that we added a service manager to the app. That attaches two components: a
-// `startupCheck` array that allows dependencies to add promises that should resolve to true in
-// order to signal that the app is fully ready to go; and a `run` function that simple awaits
-// the promises and either dies or blesses the app, depending on the outcome. Because of that
-// addition, we have to call `run` here or the app will die after the `initializationTimeout` is
-// reached.
-app.run();
-
-```
+Thus, the result of using Weenie is easy-to-read dependency management with strict typing
+throughout.
