@@ -25,9 +25,12 @@ export const serviceManagement = (r: { config: ServiceManagerConfig }) => {
       rej(e);
 
       // We actually need to process.exit here because (for now) Node doesn't die on uncaught promise
-      // exceptions
+      // exceptions. Note that the conditional gives us access to a hack that allows us to preserve
+      // the process if we're in test mode.
       console.log(e);
-      process.exit(288);
+      if (!(initTimeout as any).testMode) {
+        process.exit(288);
+      }
     }, r.config.initializationTimeoutMs);
   });
 

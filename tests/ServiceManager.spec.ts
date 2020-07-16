@@ -13,6 +13,7 @@ describe("ServiceManager", () => {
             rej(e);
           }
         });
+        (r.svc.initTimeout as any).testMode = true;
         setTimeout(() => res("Should have timed out, but didn't"), 500);
       });
       expect(result).toBe("Correctly timed out");

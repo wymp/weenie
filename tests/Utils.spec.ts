@@ -6,6 +6,17 @@ describe("Utils", () => {
       expect(U.deepmerge({ a: "one" }, null)).toBeNull();
     });
 
+    it("should remove keys set to undefined in the override", () => {
+      expect(
+        JSON.stringify(
+          U.deepmerge(
+            { obj: { one: 1, two: 2, subobj: { three: 3, four: 4 } }, otherObj: { a: "a" } },
+            { obj: { two: undefined, subobj: { four: undefined } }, otherObj: undefined }
+          )
+        )
+      ).toBe(JSON.stringify({ obj: { one: 1, subobj: { three: 3 } } }));
+    });
+
     it("should not change an object when passed an undefined second parameter", () => {
       expect(JSON.stringify(U.deepmerge({ a: "one" }))).toBe(JSON.stringify({ a: "one" }));
     });

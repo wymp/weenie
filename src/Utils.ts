@@ -48,7 +48,13 @@ const _deepmerge = function(base: any, add: any): any {
       } else {
         // Add and base must both be simple objects, so merge them
         for (let x in add) {
-          base[x] = _deepmerge(base[x], add[x]);
+          // Special case: We've explicitly defined this key as "undefined" in the override object.
+          // We should delete it from the base object.
+          if (add[x] === undefined) {
+            delete base[x];
+          } else {
+            base[x] = _deepmerge(base[x], add[x]);
+          }
         }
         return base;
       }
