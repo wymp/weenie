@@ -1,4 +1,3 @@
-import * as rt from "runtypes";
 import * as fs from "fs";
 import { deepmerge } from "./Utils";
 
@@ -7,7 +6,7 @@ import { deepmerge } from "./Utils";
 export function configFromFiles<Config>(
   defaultPath: string,
   overridePath: string,
-  validator: rt.Runtype
+  validator: { check: (o: any) => Config }
 ): () => { config: Config } {
   // This function is what's given to the `and` function to attach the "config" dependency
   return function(): { config: Config } {
@@ -23,7 +22,7 @@ export function configFromFiles<Config>(
         throw e;
       }
     }
-  }
+  };
 }
 
 // Returns a function that inflates config from environment variables and validates it using the
@@ -32,12 +31,12 @@ export function configFromEnv<Config>(
   // This is expected to be a Runtypes validator, but could theoretically be anything
   validator: { check: (config: any) => Config },
   ns: string = "APP",
-  delimiter: string = "_",
+  delimiter: string = "_"
 ): () => { config: Config } {
   // This function is what's given to the `and` function to attach the "config" dependency
   return function(): { config: Config } {
     const flat: { [k: string]: string } = {};
-    Object.keys(process.env).map((k) => {
+    Object.keys(process.env).map(k => {
       const regexp = new RegExp(`^${ns}${delimiter}`);
       if (k.match(regexp)) {
         flat[k.replace(regexp, "")] = <string>process.env[k];
@@ -54,7 +53,7 @@ export function configFromEnv<Config>(
         throw e;
       }
     }
-  }
+  };
 }
 
 function interpret<T extends { [k: string]: unknown }>(
@@ -65,7 +64,7 @@ function interpret<T extends { [k: string]: unknown }>(
   const obj: { [k: string]: unknown } = {};
 
   // For each of the keys in the flattened object...
-  Object.keys(flat).map((k) => {
+  Object.keys(flat).map(k => {
     // Explode the key into a path and alias our result object
     const path = k.split(delimiter);
     let current: any = obj;
@@ -77,17 +76,18 @@ function interpret<T extends { [k: string]: unknown }>(
 
       // If this is the last part, then set the value
       if (i === path.length - 1) {
-        current[part] = `${parseInt(flat[k])}` === flat[k]
-          ? parseInt(flat[k])
-          : flat[k] === "true"
-          ? true
-          : flat[k] === "false"
-          ? false
-          : flat[k] === "null"
-          ? null
-          : flat[k];
+        current[part] =
+          `${parseInt(flat[k])}` === flat[k]
+            ? parseInt(flat[k])
+            : flat[k] === "true"
+            ? true
+            : flat[k] === "false"
+            ? false
+            : flat[k] === "null"
+            ? null
+            : flat[k];
 
-      // Otherwise, if we don't already have an object at this path, create one and keep going
+        // Otherwise, if we don't already have an object at this path, create one and keep going
       } else if (!current.hasOwnProperty(part)) {
         if (typeof part === "number") {
           current[part] = [];
