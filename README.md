@@ -69,3 +69,18 @@ and we used the `myVar` property of the config object. If the config object had 
 
 Thus, the result of using Weenie is easy-to-read dependency management with strict typing
 throughout.
+
+## Testing
+
+**NOTE:** Because we're testing some process control stuff, you have to use the `-i` flag to
+successfully run the tests. Furthermore, for whatever reason, the tests only run correctly after
+an initial failing run.
+
+Thus, to successfully run the tests, do this:
+
+```
+npm t -- -i
+npm t -- -i
+```
+
+(yes, twice)
