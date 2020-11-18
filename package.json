@@ -7,7 +7,7 @@
     "build": "tsc",
     "tsc": "tsc",
     "test": "jest",
-    "prepublishOnly": "tsc"
+    "prepublishOnly": "rm -Rf dist; npx tsc"
   },
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "license": "ISC",
