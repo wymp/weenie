@@ -50,9 +50,9 @@ export type MqConnectionConfig = rt.Static<typeof mqConnectionConfigValidator>;
  * Mostly just a runtime validation of MySQL configs
  */
 export const databaseConfigValidator = rt.Record({
-  host: rt.Union(rt.String, rt.Undefined),
-  port: rt.Union(rt.Number, rt.Undefined),
-  socketPath: rt.Union(rt.String, rt.Undefined),
+  host: rt.Union(rt.String, rt.Undefined, rt.Null),
+  port: rt.Union(rt.Number, rt.Undefined, rt.Null),
+  socketPath: rt.Union(rt.String, rt.Undefined, rt.Null),
   user: rt.String,
   password: rt.String,
   database: rt.String,
