@@ -6,15 +6,16 @@ import * as fs from "fs";
 let ConfigFileContents: string = "{}";
 let ConfigOverrideContents: string = "{}";
 let ConfigOverrideExists = true;
-let ConfigFileNum: number = 1;
 (fs.existsSync as any) = (f: string) => ConfigOverrideExists;
 (fs.readFileSync as any) = (f: string) => {
-  if (ConfigFileNum === 1) {
-    ConfigFileNum++;
+  if (f === "config.json") {
     return ConfigFileContents;
-  } else {
-    ConfigFileNum--;
+  } else if (f === "config.local.json") {
     return ConfigOverrideContents;
+  } else {
+    throw new Error(
+      `config file name must be either 'config.json' or 'config.local.json'. You passed '${f}'.`
+    );
   }
 };
 
@@ -30,25 +31,30 @@ const testConfigValidator = rt.Record({
 declare type TestConfig = rt.Static<typeof testConfigValidator>;
 
 describe("Config functions", () => {
+  beforeEach(() => {
+    ConfigFileContents = JSON.stringify({
+      a: {
+        one: 1,
+        two: "Two",
+        three: true,
+      },
+      b: false,
+      c: "Exactly C",
+    });
+    ConfigOverrideContents = "{}";
+    ConfigOverrideExists = true;
+  });
+
   describe("configFromFile", () => {
     const par =
       "NOTE: YOU MUST USE THE -i FLAG TO TELL JEST NOT TO RUN IN PARALLEL FOR THESE TESTS";
-    beforeEach(() => {
-      ConfigFileContents = JSON.stringify({
-        a: {
-          one: 1,
-          two: "Two",
-          three: true,
-        },
-        b: false,
-        c: "Exactly C",
-      });
-      ConfigOverrideContents = "{}";
-      ConfigOverrideExists = true;
-    });
 
     test("Loads config from files", () => {
-      const r = configFromFiles<TestConfig>("test", "test", testConfigValidator)();
+      const r = configFromFiles<TestConfig>(
+        "config.json",
+        "config.local.json",
+        testConfigValidator
+      )();
       expect(r.config).toBeDefined();
       expect(r.config.a.one).toBe(1);
       expect(r.config.b).toBe(false);
@@ -57,7 +63,11 @@ describe("Config functions", () => {
 
     test("Can override default config", () => {
       ConfigOverrideContents = JSON.stringify({ a: { two: "Three" }, b: true });
-      const r = configFromFiles<TestConfig>("test", "test", testConfigValidator)();
+      const r = configFromFiles<TestConfig>(
+        "config.json",
+        "config.local.json",
+        testConfigValidator
+      )();
       expect(r.config).toBeDefined();
       expect(r.config.a.one).toBe(1);
       expect({ par, v: r.config.a.two }).toEqual({ par, v: "Three" });
@@ -67,7 +77,11 @@ describe("Config functions", () => {
     test("Skips override if file not exists", () => {
       ConfigOverrideContents = JSON.stringify({ a: { two: "Three" }, b: true });
       ConfigOverrideExists = false;
-      const r = configFromFiles<TestConfig>("test", "test", testConfigValidator)();
+      const r = configFromFiles<TestConfig>(
+        "config.json",
+        "config.local.json",
+        testConfigValidator
+      )();
       expect(r.config).toBeDefined();
       expect(r.config.a.one).toBe(1);
       expect({ par, v: r.config.a.two }).toEqual({ par, v: "Two" });
@@ -112,7 +126,7 @@ describe("Config functions", () => {
 
         // Try it
         try {
-          configFromEnv(testConfigValidator)();
+          configFromEnv(process.env, testConfigValidator)();
           throw new Error("Fail");
         } catch (e) {
           expect(e.message).not.toBe("Fail");
@@ -133,9 +147,7 @@ describe("Config functions", () => {
         } else {
           process.env[<string>testCase[0]] = testCase[1];
         }
-        const { config } = configFromEnv<rt.Static<typeof testConfigValidator>>(
-          testConfigValidator
-        )();
+        const { config } = configFromEnv<TestConfig>(process.env, testConfigValidator)();
         expect(config.a.one).toBe(1);
         expect(config.a.two).toBe("Two");
         expect(config.a.three).toBe(false);
@@ -149,6 +161,47 @@ describe("Config functions", () => {
         }
 
         expect(config.c).toBe("Exactly C");
+      });
+    });
+
+    test(`should use file for defaults when provided`, () => {
+      const { config } = configFromEnv<any>(
+        {
+          APP_a_one: "2",
+          APP_a_two: "one",
+        },
+        { check: (c: any) => c },
+        "config.json"
+      )();
+
+      expect(config).toMatchObject({
+        a: {
+          one: 2,
+          two: "one",
+          three: true,
+        },
+        b: false,
+        c: "Exactly C",
+      });
+    });
+
+    test(`should cast correctly`, () => {
+      const { config } = configFromEnv<any>(
+        {
+          APP_a_one: "<string>1",
+          APP_a_two: "<string>true",
+          APP_b: "<boolean>0",
+          APP_c: "<number>1e2",
+        },
+        { check: (c: any) => c }
+      )();
+      expect(config).toMatchObject({
+        a: {
+          one: "1",
+          two: "true",
+        },
+        b: false,
+        c: 100,
       });
     });
   });

@@ -1,6 +1,6 @@
 {
   "name": "weenie-base",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "The base package for Weenie, an aggressively unopinionated Typescript microservices micro-framework",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "ISC",
   "repository": "https://github.com/kael-shipman/weenie-base.git",
   "dependencies": {
-    "@types/node": "^10.17.39",
+    "@types/node": "^10.17.50",
     "fs": "^0.0.1-security",
     "runtypes": "^4.3.0",
     "ts-simple-interfaces": "^0.4.4"
