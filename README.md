@@ -1,9 +1,9 @@
 # Weenie Base
 
 **NOTE: As of version 0.4.0, weenie is now a project of [Wymp](https://github.com/wymp). Please use
-@wymp/weenie-base for future versions of this package.**
+@wymp/weenie-base for all future versions of this package.**
 
-_See https://github.com/kael-shipman/weenie-framework for a more full-bodied explanation of the
+_See https://github.com/wymp/weenie-framework for a more full-bodied explanation of the
 weenie framework._
 
 This is the base package for the Weenie framework. It provides a small function, `Weenie`, that
@@ -22,7 +22,7 @@ HOWEVER.
 The overwhelming goal of Weenie is to free the world of the tyranny of opinionated frameworks. To
 this end, you don't _have_ to use the opinionated implementations built into Weenie. In fact,
 the actual concrete implementations that actually utilize real dependencies are all in a different
-package, [`weenie-framework`](https://github.com/kael-shipman/weenie-framework), specifically so
+package, [`weenie-framework`](https://github.com/wymp/weenie-framework), specifically so
 that you can still extract a lot of value out of the Weenie philosophy without being goverened
 or overburdened by the personal opinions of the programmers who have built the core framework.
 
@@ -72,6 +72,8 @@ and we used the `myVar` property of the config object. If the config object had 
 
 Thus, the result of using Weenie is easy-to-read dependency management with strict typing
 throughout.
+
+See [Weenie Framework](https://github.com/wymp/weenie-framework) for more complex examples.
 
 ## Testing
 

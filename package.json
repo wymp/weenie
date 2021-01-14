@@ -1,8 +1,9 @@
 {
-  "name": "weenie-base",
-  "version": "0.3.5",
-  "description": "ABANDONED - USE @wymp/weenie-base instead. This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
+  "name": "@wymp/weenie-base",
+  "version": "0.4.0",
+  "description": "This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "tsc": "tsc",
@@ -11,7 +12,7 @@
   },
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "license": "ISC",
-  "repository": "https://github.com/kael-shipman/weenie-base.git",
+  "repository": "https://github.com/wymp/weenie-base.git",
   "dependencies": {
     "@types/node": "^10.17.50",
     "fs": "^0.0.1-security",
