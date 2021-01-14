@@ -1,5 +1,8 @@
 # Weenie Base
 
+**NOTE: As of version 0.4.0, weenie is now a project of [Wymp](https://github.com/wymp). Please use
+@wymp/weenie-base for future versions of this package.**
+
 _See https://github.com/kael-shipman/weenie-framework for a more full-bodied explanation of the
 weenie framework._
 

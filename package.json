@@ -1,7 +1,7 @@
 {
   "name": "weenie-base",
-  "version": "0.3.4",
-  "description": "The base package for Weenie, an aggressively unopinionated Typescript microservices micro-framework",
+  "version": "0.3.5",
+  "description": "ABANDONED - USE @wymp/weenie-base instead. This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
