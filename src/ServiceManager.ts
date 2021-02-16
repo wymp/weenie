@@ -1,6 +1,4 @@
-import { ServiceManagerConfig } from "./Types";
-
-export const serviceManagement = (r: { config: ServiceManagerConfig }) => {
+export const serviceManagement = (r: { config: { initializationTimeoutMs: number } }) => {
   // t is our timeout, extRes is an externalization of the "resolve" function for the timeout promise
   let t: any;
   let extRes: any;
