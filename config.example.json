@@ -1,41 +1,5 @@
 {
-  "envType": "dev",
   "envName": "dev",
-  "serviceName": "my-service",
-  "maxJobWait": 600000,
-  "initializationTimeoutMs": 10000,
-  "amqp": {
-    "protocol": "amqp",
-    "hostname": "localhost",
-    "port": 5672,
-    "username": "dev",
-    "password": "dev",
-    "locale": "en_US",
-    "vhost": "dev",
-    "heartbeat": 120,
-    "publishingDomains": ["example"]
-  },
-  "db": {
-    "socketPath": "/var/run/mysql/mysql.sock",
-    "user": "dev",
-    "password": "dev",
-    "database": "dev.exchange.cfxtrading.com"
-  },
-  "ofapi": {
-    "key": "907ebd22-1ab4-4d6d-86b3-4abade4fb095",
-    "secret": "3b8f6a74-3e8f-4514-9bdc-bf88863f5076",
-    "overrideUrl": null
-  },
-  "webService": {
-    "listeners": [
-      [ 3000, "localhost" ],
-      [ 3000, "10.0.0.1" ]
-    ]
-  },
-  "logger": {
-    "logLevel": "debug",
-    "logFilePath": "./logs/app.log"
-  },
-  "initShouldSucceed": true,
-  "initTestDelay": 5000
+  "valueOfC": "This is C",
+  "promiseWaitMs": 2000
 }
