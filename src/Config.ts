@@ -17,7 +17,10 @@ export const configFromFiles = <Config>(
       return { config: <Config>validator.check(deepmerge(JSON.parse(def), JSON.parse(override))) };
     } catch (e) {
       if (e.name && e.name === "ValidationError") {
-        throw new Error(`Invalid configuration: ${e.key}: ${e.message}`);
+        throw new Error(
+          `Invalid configuration: ${e.key ? `${e.key}: ` : ""}${e.message}` +
+            (e.details ? `\nDetails: ${JSON.stringify(e.details, null, 2)}` : "")
+        );
       } else {
         throw e;
       }
@@ -60,7 +63,10 @@ export const configFromEnv = <Config>(
       return { config: validator.check(config) };
     } catch (e) {
       if (e.name && e.name === "ValidationError") {
-        throw new Error(`Invalid configuration: ${e.key}: ${e.message}`);
+        throw new Error(
+          `Invalid configuration: ${e.key ? `${e.key}: ` : ""}${e.message}` +
+            (e.details ? `\nDetails: ${JSON.stringify(e.details, null, 2)}` : "")
+        );
       } else {
         throw e;
       }
