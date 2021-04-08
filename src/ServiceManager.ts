@@ -4,7 +4,7 @@ export const serviceManagement = (r: { config: { initializationTimeoutMs: number
   let extRes: any;
 
   // Promisify the job wait timeout
-  const initTimeout = new Promise((res, rej) => {
+  const initTimeout = new Promise<void>((res, rej) => {
     // Set the externalized resolver
     extRes = res;
 
@@ -25,7 +25,7 @@ export const serviceManagement = (r: { config: { initializationTimeoutMs: number
       // We actually need to process.exit here because (for now) Node doesn't die on uncaught promise
       // exceptions. Note that the conditional gives us access to a hack that allows us to preserve
       // the process if we're in test mode.
-      console.log(e);
+      console.error(e);
       if (!(initTimeout as any).testMode) {
         process.exit(288);
       }
@@ -35,8 +35,11 @@ export const serviceManagement = (r: { config: { initializationTimeoutMs: number
   // Now return the new dependency, 'svc'
   return {
     svc: {
-      // Allows dependents to await the initialization timeout
+      // DEPRECATED - use 'ready' instead
       initTimeout,
+
+      // Allows dependents to await the initialization timeout
+      ready: initTimeout,
 
       // If called with no arguments, returns the current initialization state. If called with
       // 'true', clears the init timeout and resolves the initialization timeout promise
