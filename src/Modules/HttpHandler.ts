@@ -210,6 +210,7 @@ export const StandardErrorHandler = (
 
       // If not JSON-RPC, pack the error response into a standard error object
       errorResponse = {
+        t: "error",
         error: {
           status: e.status,
           code: e.subcode! || e.code!,
