@@ -8,6 +8,8 @@ import {
 import { WebServiceConfig } from "../Types";
 import { SimpleHttpServerExpress, Parsers } from "@wymp/simple-http-server-express";
 
+export { Parsers };
+
 export function httpHandler(d: {
   config: { webservice: WebServiceConfig } | { http: WebServiceConfig };
   logger: SimpleLoggerInterface;
@@ -43,18 +45,22 @@ export function httpHandler(d: {
     http.use(Parsers.json({ type: opts.jsonMimeTypes }));
   }
 
-  // If it's a post or a patch and the body isn't set, make sure the user passed the right
+  // If it's supposed to have a body and the body isn't set, make sure the user passed the right
   // content-type header
   if (opts.errOnBlankPost) {
     http.use((req, res, next) => {
       if (
-        ["post", "patch"].includes(req.method.toLowerCase()) &&
-        Object.keys(req.body).length === 0
+        ["post", "patch", "put"].includes(req.method.toLowerCase()) &&
+        (!req.body || Object.keys(req.body).length === 0)
       ) {
+        const contentType = req.get("content-type");
         next(
           new E.BadRequest(
             "The body of your request is blank or does not appear to have been parsed correctly. " +
-              "Please be sure to pass a content-type header specifying the content type of your body."
+              "Please be sure to pass a content-type header specifying the content type of your body. " +
+              (contentType
+                ? `You passed 'Content-Type: ${contentType}'.`
+                : `You did not pass a content-type header.`)
           )
         );
       } else {
