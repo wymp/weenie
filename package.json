@@ -1,6 +1,6 @@
 {
   "name": "@wymp/weenie-base",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
