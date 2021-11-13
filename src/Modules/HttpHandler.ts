@@ -42,7 +42,18 @@ export function httpHandler(d: {
 
   // Parse incoming bodies (JSON only)
   if (opts.parseJson) {
-    http.use(Parsers.json({ type: opts.jsonMimeTypes }));
+    http.use((req, res, next) => {
+      const parse = Parsers.json({ type: opts.jsonMimeTypes });
+      const _next = (...args: Array<any>) => {
+        if (args.length === 0) {
+          next();
+        } else {
+          const e = args[0];
+          next(new E.BadRequest(`You've passed bad JSON input: ${e.message}`, `INPUT.BAD-JSON`));
+        }
+      };
+      parse(req, res, _next);
+    });
   }
 
   // If it's supposed to have a body and the body isn't set, make sure the user passed the right
