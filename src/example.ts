@@ -1,5 +1,4 @@
 import { Weenie } from "./Weenie";
-import { configFromFiles } from "./Config";
 
 /**
  * Weenie works using functions that (optionally) take a certain set of dependencies as input and
@@ -88,22 +87,13 @@ async function finish(r: {
 // (Need to wrap this in an async function because of the promiseDep)
 console.log(`Initializing....`);
 (async () => {
-  const standard = await Weenie(
-    configFromFiles<Config>("./config.example.json", "./config.local.json", {
-      check: (c: any): Config => {
-        // For this example, we're just doing manual checking, but this would normally be something
-        // like Runtypes of iots.
-        if (
-          typeof c.envName !== "string" ||
-          typeof c.promiseWaitMs !== "number" ||
-          typeof c.valueOfC !== "string"
-        ) {
-          throw new Error(`Config is invalid`);
-        }
-        return c;
-      },
-    })()
-  )
+  const standard = await Weenie({
+    config: {
+      envName: "example",
+      promiseWaitMs: 10000,
+      valueOfC: "This is C!",
+    },
+  })
     .and(dep1)
     .and(internalDep)
     .and(dep2)

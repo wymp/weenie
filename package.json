@@ -1,11 +1,12 @@
 {
   "name": "@wymp/weenie-base",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "docgen": "npx typedoc src/index.ts --sort source-order",
     "tsc": "tsc",
     "test": "jest",
     "prepublishOnly": "rm -Rf dist; npx tsc"
@@ -13,20 +14,18 @@
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "license": "ISC",
   "repository": "https://github.com/wymp/weenie-base.git",
-  "dependencies": {
-    "@types/node": "^10.17.50",
-    "@wymp/ts-simple-interfaces": "^0.5.1",
-    "fs": "^0.0.1-security"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "@types/node": "^10.17.50",
     "husky": "^1.3.1",
     "jest": "^24.9.0",
     "prettier": "^1.16.0",
     "pretty-quick": "^1.10.0",
     "runtypes": "^5.1.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^4.2.4"
+    "typedoc": "^0.22.10",
+    "typescript": "^4.5.2"
   },
   "prettier": {
     "printWidth": 100,
