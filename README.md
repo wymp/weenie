@@ -471,3 +471,18 @@ For now, this framework provides just about all the functionality that I want fr
 any immediate plans for additional development, although I'm certainly open to adding more and/or
 changing things. Feel free to submit an issue for any suggestions.
 
+
+## Testing
+
+**NOTE:** Because we're testing some process control stuff, you have to use the `-i` flag to
+successfully run the tests. Furthermore, for whatever reason, the tests only run correctly after
+an initial failing run.
+
+Thus, to successfully run the tests, do this:
+
+```
+npm t -- -i
+npm t -- -i
+```
+
+(yes, twice)
