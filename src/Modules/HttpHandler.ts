@@ -98,7 +98,7 @@ export function httpHandler(d: {
   }
 
   // If svc manager available, add auto-listening on initialization
-  let tcpListeners: Array<{ close(): unknown }> = [];
+  let httpServers: ReturnType<SimpleHttpServerExpress["listen"]> | null = null;
   if (d.svc && (opts.handleErrors || opts.handleFallthrough || opts.listenOnReady)) {
     const ready = getWithFallback<Promise<void>>(d.svc, "ready", "initTimeout");
     ready.then(() => {
@@ -139,7 +139,7 @@ export function httpHandler(d: {
 
       // Start listening, saving the returned listeners
       if (opts.listenOnReady) {
-        tcpListeners = http.listen();
+        httpServers = http.listen();
       }
     });
   }
@@ -147,7 +147,10 @@ export function httpHandler(d: {
   return {
     http,
     // 2021-04-07: This must be a function because if not, the variable reference gets lost somewhere
-    getTcpListeners: () => tcpListeners,
+    // @DEPRECATED 2022-02-03 The `getTcpListeners` function has been deprecated in favor of the new
+    // `getHttpServers` function, which is a more appropriate name
+    getTcpListeners: () => httpServers,
+    getHttpServers: () => httpServers,
   };
 }
 
