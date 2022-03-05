@@ -1,5 +1,7 @@
 import { Weenie } from "./Weenie";
 
+declare type process = any;
+
 /**
  * Weenie works using functions that (optionally) take a certain set of dependencies as input and
  * return a new dependency as output. In this way, you can build a "resource bag", where each

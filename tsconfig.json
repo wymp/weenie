@@ -13,11 +13,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "types": [
-      "node",
-      "jest"
-    ]
+    "baseUrl": "."
   },
-  "include": ["src/**/*" ]
+  "include": ["src/**/*"]
 }
