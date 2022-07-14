@@ -42,11 +42,6 @@ export const cron = (r: {
 
 export const mockCron = () => ({ cron: new MockCron() });
 
-/**
- * NOTE: Cronjobs use setTimeout instead of setInterval because we don't want
- * it to be possible for them to be defined in such a way that they run constantly
- * (e.g., a job that takes 10 seconds to run, defined on a 5-second interval).
- */
 export class Cron {
   /**
    * Tracks active cronjobs

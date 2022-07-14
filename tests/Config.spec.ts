@@ -1,23 +1,47 @@
-import { configFromFiles, configFromEnv } from "../src";
+import { configFromFiles, configFromEnv, config as configFunc } from "../src";
 import * as rt from "runtypes";
-import * as fs from "fs";
 
-// Stub out file reader
+// Mock the fs functions
 let ConfigFileContents: string = "{}";
 let ConfigOverrideContents: string = "{}";
+let DirList: { [dir: string]: Array<string> } = { "/secrets": ["APP_b"] };
+let OtherFileContents: { [file: string]: string } = { APP_b: "true" };
 let ConfigOverrideExists = true;
-(fs.existsSync as any) = (f: string) => ConfigOverrideExists;
-(fs.readFileSync as any) = (f: string) => {
-  if (f === "config.json") {
-    return ConfigFileContents;
-  } else if (f === "config.local.json") {
-    return ConfigOverrideContents;
-  } else {
-    throw new Error(
-      `config file name must be either 'config.json' or 'config.local.json'. You passed '${f}'.`
-    );
-  }
-};
+jest.mock("fs", () => {
+  const originalModule = jest.requireActual("fs");
+  return {
+    __esModule: true,
+    ...originalModule,
+    existsSync: (f: string) => f === "config.json" || ConfigOverrideExists,
+    readFileSync: (f: string) => {
+      if (f === "config.json") {
+        return ConfigFileContents;
+      } else if (f === "config.local.json") {
+        return ConfigOverrideContents;
+      } else {
+        if (!OtherFileContents[f]) {
+          throw new Error(
+            `TEST ERROR: You've requested the contents of file '${f}', but that file is not ` +
+              `defined in the OtherFileContents object. Please add a value to that object and ` +
+              `try again.`
+          );
+        } else {
+          return OtherFileContents[f];
+        }
+      }
+    },
+    readdirSync: (d: string) => {
+      if (!DirList[d]) {
+        throw new Error(
+          `TEST ERROR: You've attempted to get a directory listing for '${d}', but you haven't ` +
+            `loaded the 'DirList' variable with an array of file names for that directory. Please ` +
+            `set 'DirList["${d}"]' to an array of file names.`
+        );
+      }
+      return DirList[d];
+    },
+  };
+});
 
 const testConfigValidator = rt.Record({
   a: rt.Record({
@@ -43,7 +67,17 @@ describe("Config functions", () => {
     });
     ConfigOverrideContents = "{}";
     ConfigOverrideExists = true;
+    DirList = { "/secrets": ["APP_b"] };
+    OtherFileContents = { APP_b: "true" };
   });
+
+  function setEnv() {
+    process.env.APP_a_one = "1";
+    process.env.APP_a_two = "Two";
+    process.env.APP_a_three = "false";
+    process.env.APP_b = "true";
+    process.env.APP_c = "Exactly C";
+  }
 
   describe("configFromFile", () => {
     const par =
@@ -97,14 +131,6 @@ describe("Config functions", () => {
       delete process.env.APP_b;
       delete process.env.APP_c;
     });
-
-    function setEnv() {
-      process.env.APP_a_one = "1";
-      process.env.APP_a_two = "Two";
-      process.env.APP_a_three = "false";
-      process.env.APP_b = "true";
-      process.env.APP_c = "Exactly C";
-    }
 
     [
       ["APP_a_one", "3", `Details: \{[\\n\\r][ \\t]*"a": \{[\\r\\n][ \\t]*"one"`],
@@ -202,6 +228,63 @@ describe("Config functions", () => {
         },
         b: false,
         c: 100,
+      });
+    });
+  });
+
+  // For now we're not testing very deeply here because all of the legacy tests are fine. When we
+  // remove the legacy test, though, we need to transfer most of them over to here.
+  describe("config", () => {
+    test("assembles config in correct order", () => {
+      // Happy path
+      process.env.APP_a_three = "false";
+      ConfigOverrideContents = JSON.stringify({ a: { two: "Four" } });
+      OtherFileContents = { APP_b: "true" };
+      const { config } = configFunc(
+        "APP_",
+        {
+          env: process.env,
+          defaultsFile: "config.json",
+          localsFile: "config.local.json",
+          secretsDir: "/secrets",
+        },
+        testConfigValidator
+      );
+
+      expect(config).toMatchObject({
+        a: {
+          one: 1,
+          two: "Four",
+          three: false,
+        },
+        b: true,
+        c: "Exactly C",
+      });
+    });
+
+    [
+      ["env", { APP_a_one: "2", APP_a_two: "Four" }],
+      ["defaultsFile", "config.json"],
+      ["localsFile", "config.local.json"],
+      ["secretsDir", "/secrets"],
+    ].map(pair => {
+      test(`works with just ${pair[0]}`, () => {
+        // Setting all of these every time, even though only one will be used each time
+        ConfigFileContents = JSON.stringify({ a: { one: 2, two: "Four" } });
+        ConfigOverrideContents = JSON.stringify({ a: { one: 2, two: "Four" } });
+        ConfigOverrideExists = true;
+        DirList = { "/secrets": ["APP_a_one", "APP_a_two"] };
+        OtherFileContents = { APP_a_one: "2", APP_a_two: "Four" };
+
+        const { config } = configFunc(
+          "APP_",
+          { [pair[0] as any]: pair[1] },
+          { check: (c: any) => c }
+        );
+
+        expect(config.a).toBeDefined();
+        expect(config.a.one).toBe(2);
+        expect(config.a.two).toBe("Four");
       });
     });
   });
