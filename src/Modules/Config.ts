@@ -55,8 +55,10 @@ export const config = <Config>(
     src.localsFile && fs.existsSync(src.localsFile)
       ? JSON.parse(fs.readFileSync(src.localsFile, "utf8"))
       : {},
+    src.secretsDir && fs.existsSync(src.secretsDir)
+      ? _configFromEnv(inflateSecretsDir(src.secretsDir), ns, delimiter)
+      : {},
     src.env ? _configFromEnv(src.env, ns, delimiter) : {},
-    src.secretsDir ? _configFromEnv(inflateSecretsDir(src.secretsDir), ns, delimiter) : {},
   ];
 
   // Now combine them all together
