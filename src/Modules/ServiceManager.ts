@@ -1,7 +1,39 @@
-export const serviceManagement = (r: { config: { initializationTimeoutMs: number } }) => {
+import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
+
+/**
+ * Adds some service management functionality to the application. See return specification for
+ * documentation.
+ *
+ * **NOTE: THIS MODULE PRODUCES SIDE EFFECTS.** It adds a listener for `uncaughtException` on
+ * `process` and kills the process with code 238 on uncaught exceptions.
+ *
+ * @param d Resources for adding this dependency
+ * @returns A small collection of tools for managing the process, including a startup timeout and
+ * some basic signal handling.
+ */
+export const serviceManagement = (d: {
+  /** Config */
+  config: {
+    /** A number in milliseconds indicating how long to wait before killing the service */
+    initializationTimeoutMs?: number;
+  };
+
+  /** Logger */
+  logger?: SimpleLoggerInterface;
+}) => {
   // t is our timeout, extRes is an externalization of the "resolve" function for the timeout promise
   let t: any;
   let extRes: any;
+  const initTimeoutMs =
+    d.config.initializationTimeoutMs !== undefined ? d.config.initializationTimeoutMs : 5000;
+
+  // Make sure that uncaught errors kill the process
+  process.on("uncaughtException", (e: Error) => {
+    const log = d.logger || console;
+    log.error(`Uncaught exception: ${e.stack}`);
+    log.error(`Shutting down`);
+    process.exit(238);
+  });
 
   // Promisify the job wait timeout
   const initTimeout = new Promise<void>((res, rej) => {
@@ -13,23 +45,15 @@ export const serviceManagement = (r: { config: { initializationTimeoutMs: number
       // prettier-ignore
       const e = new Error(
         `INITIALIZATION FAILED: Service took longer than configured ${
-          Math.round(r.config.initializationTimeoutMs / 10) / 100
+          Math.round(initTimeoutMs / 10) / 100
         } seconds to initialize and is therefore considered failed. Make sure you call the ` +
         `\`initialized()\` function on the resulting dependency container to mark that the ` +
         `process has successfully initialized.`
       );
 
-      // Reject, but....
+      // Reject
       rej(e);
-
-      // We actually need to process.exit here because (for now) Node doesn't die on uncaught promise
-      // exceptions. Note that the conditional gives us access to a hack that allows us to preserve
-      // the process if we're in test mode.
-      console.error(e);
-      if (!(initTimeout as any).testMode) {
-        process.exit(288);
-      }
-    }, r.config.initializationTimeoutMs);
+    }, initTimeoutMs);
   });
 
   // Now return the new dependency, 'svc'

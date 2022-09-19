@@ -8,7 +8,7 @@
     "build": "npx tsc",
     "docgen": "npx typedoc src/index.ts --sort visibility --sort static-first --sort alphabetical",
     "tsc": "npx tsc",
-    "test": "jest",
+    "test": "jest --verbose",
     "prepublishOnly": "npm run docgen; rm -Rf dist; npx tsc",
     "prepare": "husky install"
   },

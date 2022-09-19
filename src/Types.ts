@@ -127,7 +127,7 @@ export type JobManagerConfig = rt.Static<typeof jobManagerConfigValidator>;
  */
 export const serviceManagerConfigValidator = rt.Record({
   /** Maximum time to wait in ms for the application to start before we should throw an error */
-  initializationTimeoutMs: rt.Number,
+  initializationTimeoutMs: rt.Optional(rt.Number),
 });
 export type ServiceManagerConfig = rt.Static<typeof serviceManagerConfigValidator>;
 
