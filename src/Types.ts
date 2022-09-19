@@ -90,9 +90,6 @@ export const loggerConfigValidator = rt.Record({
     .Or(rt.Literal("alert"))
     .Or(rt.Literal("critical"))
     .Or(rt.Literal("emergency")),
-
-  // If this is null, then logs are only written to stdout
-  logFilePath: rt.Optional(rt.String.Or(rt.Null)),
 });
 export type LoggerConfig = rt.Static<typeof loggerConfigValidator>;
 

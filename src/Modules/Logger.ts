@@ -1,14 +1,16 @@
 import { LoggerConfig } from "../Types";
 import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
-import { SimpleLoggerWinston } from "@wymp/simple-logger-winston";
-import * as winston from "winston";
+import { SimpleLoggerConsole, Console } from "@wymp/simple-logger-console";
 
 type PartialConfig = { logger: LoggerConfig };
 type FullConfig = { config: PartialConfig };
 
 type LoggerDep = { logger: SimpleLoggerInterface };
 
-export function logger(deps: FullConfig | PartialConfig | LoggerConfig): LoggerDep {
+export function logger(
+  deps: FullConfig | PartialConfig | LoggerConfig,
+  _console?: Console
+): LoggerDep {
   const d = <FullConfig>(
     (typeof (deps as FullConfig).config !== "undefined"
       ? deps
@@ -17,41 +19,22 @@ export function logger(deps: FullConfig | PartialConfig | LoggerConfig): LoggerD
       : { config: { logger: deps } })
   );
 
-  // (Length of 'warning', the longest log level as written by Winston)
-  const padLen = 7;
-
-  // Winston doesn't re-export the general interface `Transport` from `winston-transport`, and we
-  // don't want to depend on `winston-transport` just to define this type, so we're just going
-  // with `any` here.
-  const transports: Array<any> = [new winston.transports.Console({ handleExceptions: true })];
-  if (d.config.logger.logFilePath) {
-    transports.push(
-      new winston.transports.File({
-        filename: d.config.logger.logFilePath,
-        level: d.config.logger.logLevel,
-        handleExceptions: true,
-      })
-    );
-  }
+  // (Length of '[emergency]:', the longest log level as written by our logger)
+  const padLen = 12;
 
   return {
-    logger: new SimpleLoggerWinston({
-      level: d.config.logger.logLevel,
-      format: winston.format.combine(
-        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-        winston.format.align(),
-        winston.format.printf(info => {
-          const { timestamp, level, message, ...args } = info;
-
-          const ts = timestamp.slice(0, 19).replace("T", " ");
-          const levelStr = `[${level}]:`.padEnd(+padLen + 2, " ");
-          return `${ts} ${levelStr} ${message}${
-            Object.keys(args).length ? ` ${JSON.stringify(args, null, 2)}` : ""
+    logger: new SimpleLoggerConsole(
+      {
+        level: d.config.logger.logLevel,
+        formatter: (level, msg, ...args) => {
+          const ts = new Date().toISOString();
+          const levelStr = `[${level}]:`.padEnd(padLen, " ");
+          return `${ts} ${levelStr} ${msg}${
+            Object.keys(args).length ? ` ${JSON.stringify(args)}` : ""
           }`;
-        })
-      ),
-      transports,
-      exitOnError: false,
-    }),
+        },
+      },
+      _console
+    ),
   };
 }

@@ -1,20 +1,22 @@
 import * as M from "../src/Modules";
 import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
 import { MockSimpleLogger } from "@wymp/ts-simple-interfaces-testing";
-import * as fs from "fs";
 
 describe("Logger", () => {
-  const logFilePath = process.env.PWD + "/test.logger.log";
+  let mockConsole: any;
 
   beforeEach(() => {
-    if (fs.existsSync(logFilePath)) fs.unlinkSync(logFilePath);
-  });
-  afterEach(() => {
-    if (fs.existsSync(logFilePath)) fs.unlinkSync(logFilePath);
+    mockConsole = {
+      debug: jest.fn(),
+      info: jest.fn(),
+      log: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+    };
   });
 
-  it("should log to our file", async () => {
-    const { logger: log } = M.logger({ logLevel: "debug", logFilePath });
+  it("should log messages", async () => {
+    const { logger: log } = M.logger({ logLevel: "debug" }, mockConsole);
 
     log.debug("DEBUG");
     log.info("INFO");
@@ -25,24 +27,25 @@ describe("Logger", () => {
     log.critical("CRITICAL");
     log.emergency("EMERGENCY");
 
-    const dateRegexp = "20[0-9]{2}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}";
-
-    await new Promise<void>((res, rej) => setTimeout(() => res(), 500));
-
-    const contents = fs.readFileSync(logFilePath, "utf8").split("\n");
-    expect(contents.length).toBe(9);
-    expect(contents[0]).toMatch(new RegExp(`^${dateRegexp} \\[debug\\]:[ \t]+DEBUG`));
-    expect(contents[1]).toMatch(new RegExp(`^${dateRegexp} \\[info\\]:[ \t]+INFO`));
-    expect(contents[2]).toMatch(new RegExp(`^${dateRegexp} \\[notice\\]:[ \t]+NOTICE`));
-    expect(contents[3]).toMatch(new RegExp(`^${dateRegexp} \\[warning\\]:[ \t]+WARNING`));
-    expect(contents[4]).toMatch(new RegExp(`^${dateRegexp} \\[error\\]:[ \t]+ERROR`));
-    expect(contents[5]).toMatch(new RegExp(`^${dateRegexp} \\[alert\\]:[ \t]+ALERT`));
-    expect(contents[6]).toMatch(new RegExp(`^${dateRegexp} \\[crit\\]:[ \t]+CRITICAL`));
-    expect(contents[7]).toMatch(new RegExp(`^${dateRegexp} \\[emerg\\]:[ \t]+EMERGENCY`));
+    const ts = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+Z";
+    expect(mockConsole.debug.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[debug\\]:     DEBUG`));
+    expect(mockConsole.info.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[info\\]:      INFO`));
+    expect(mockConsole.log.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[notice\\]:    NOTICE`));
+    expect(mockConsole.warn.mock.calls[0][0]).toMatch(
+      new RegExp(`^${ts} \\[warning\\]:   WARNING`)
+    );
+    expect(mockConsole.error.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[error\\]:     ERROR`));
+    expect(mockConsole.error.mock.calls[1][0]).toMatch(new RegExp(`^${ts} \\[alert\\]:     ALERT`));
+    expect(mockConsole.error.mock.calls[2][0]).toMatch(
+      new RegExp(`^${ts} \\[critical\\]:  CRITICAL`)
+    );
+    expect(mockConsole.error.mock.calls[3][0]).toMatch(
+      new RegExp(`^${ts} \\[emergency\\]: EMERGENCY`)
+    );
   });
 
   it("should not log below the given log level", async () => {
-    const d = M.logger({ logLevel: "warning", logFilePath });
+    const d = M.logger({ logLevel: "warning" }, mockConsole);
     const log = d.logger;
 
     log.debug("DEBUG");
@@ -54,15 +57,11 @@ describe("Logger", () => {
     log.critical("CRITICAL");
     log.emergency("EMERGENCY");
 
-    await new Promise<void>((res, rej) => setTimeout(() => res(), 500));
-
-    const contents = fs.readFileSync(logFilePath, "utf8").split("\n");
-    expect(contents.length).toBe(6);
-    expect(contents[0]).toMatch(new RegExp(`WARNING`));
-    expect(contents[1]).toMatch(new RegExp(`ERROR`));
-    expect(contents[2]).toMatch(new RegExp(`ALERT`));
-    expect(contents[3]).toMatch(new RegExp(`CRITICAL`));
-    expect(contents[4]).toMatch(new RegExp(`EMERGENCY`));
+    expect(mockConsole.debug.mock.calls).toHaveLength(0);
+    expect(mockConsole.info.mock.calls).toHaveLength(0);
+    expect(mockConsole.log.mock.calls).toHaveLength(0);
+    expect(mockConsole.warn.mock.calls).toHaveLength(1);
+    expect(mockConsole.error.mock.calls).toHaveLength(4);
   });
 });
 
@@ -81,7 +80,7 @@ describe("Cron Module", () => {
       c.kill();
     });
 
-    [false, true].map(svc => {
+    [false, true].map((svc) => {
       test(`should successfully run clock cronjobs ${
         svc ? `with` : `without`
       } svc dependency`, async () => {
@@ -92,7 +91,7 @@ describe("Cron Module", () => {
         if (svc) {
           expected = 2;
           r.svc = {
-            initTimeout: new Promise<void>(r => setTimeout(() => r(), 1000)),
+            initTimeout: new Promise<void>((r) => setTimeout(() => r(), 1000)),
             initialized: (i?: true) => !!i,
           };
         }
@@ -110,7 +109,7 @@ describe("Cron Module", () => {
           },
         });
 
-        await new Promise<void>(res => setTimeout(() => res(), wait));
+        await new Promise<void>((res) => setTimeout(() => res(), wait));
         expect(actual).toBe(expected);
       });
     });
@@ -153,7 +152,7 @@ describe("Backoff", () => {
   describe("SimpleExponentialBackoff", () => {
     const log = new MockSimpleLogger({ outputMessages: false });
 
-    it("should execute with exponential backoff on fail", async function() {
+    it("should execute with exponential backoff on fail", async function () {
       const backoff = new M.SimpleExponentialBackoff({ initialJobWaitMs: 20 });
       let n = 0;
       const results: Array<[number, number]> = [];
