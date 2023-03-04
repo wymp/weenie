@@ -6,6 +6,8 @@ echo
 echo "Running prettier..."
 npx pretty-quick --staged
 
-echo
-echo "Running tsc..."
-npx tsc --noEmit
+if [ -z "$SKIP_TSC" ]; then
+  echo
+  echo "Running tsc..."
+  npx tsc --noEmit
+fi
