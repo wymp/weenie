@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+set -e
+
+echo
+echo "Running prettier..."
+npx pretty-quick --staged
+
+echo
+echo "Running tsc..."
+npx tsc --noEmit

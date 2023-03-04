@@ -7,10 +7,10 @@ import { deepmerge } from "./Utils";
  *
  * See `Weenie` for more documentation about use.
  */
-export type Extensible<Deps = {}> = Deps & {
-  and: <NextDeps extends {}>(next: (deps: Deps) => NextDeps) => Extensible<Deps & NextDeps>;
-  done: <FinalDeps extends {}>(fin: (deps: Deps) => FinalDeps) => FinalDeps;
-}
+export type Extensible<Deps = Obj> = Deps & {
+  and: <NextDeps extends Obj>(next: (deps: Deps) => NextDeps) => Extensible<Deps & NextDeps>;
+  done: <FinalDeps extends Obj | Promise<Obj>>(fin: (deps: Deps) => FinalDeps) => FinalDeps;
+};
 
 /**
  * Framework function
@@ -46,16 +46,17 @@ export type Extensible<Deps = {}> = Deps & {
  * to web handlers, message handlers, cronjobs, etc., to perform the work that the service needs
  * to do.
  */
-export function Weenie<Deps = {}>(deps: Deps): Extensible<Deps> {
+export function Weenie<Deps = Obj>(deps: Deps): Extensible<Deps> {
   return deepmerge({}, deps, {
-    and: <NextDeps extends {}>(
+    and: <NextDeps extends Obj>(
       next: (currentDeps: Deps) => NextDeps
     ): Extensible<Deps & NextDeps> => {
       return Weenie<Deps & NextDeps>(deepmerge({}, deps, next(deps)));
     },
-    done: <FinalDeps extends {}>(fin: (deps: Deps) => FinalDeps): FinalDeps => {
+    done: <FinalDeps extends Obj>(fin: (deps: Deps) => FinalDeps): FinalDeps => {
       return fin(deps);
-    }
+    },
   });
 }
 
+type Obj = Record<string | number | symbol, unknown>;

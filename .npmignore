@@ -1,6 +1,5 @@
 config.example.json
 dist-test
-docs
 githooks
 tests
 tsconfig.*
