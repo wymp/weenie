@@ -1,6 +1,6 @@
 {
   "name": "@wymp/weenie-base",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,6 +15,13 @@
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "license": "ISC",
   "repository": "https://github.com/wymp/weenie-base.git",
+  "keywords": [
+    "typescript",
+    "microservices",
+    "framework",
+    "dependency injection",
+    "dependency injector"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^29.4.0",
