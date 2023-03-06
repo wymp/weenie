@@ -78,7 +78,7 @@ export const databaseConfigValidator = rt.Union(
 export type DatabaseConfig = rt.Static<typeof databaseConfigValidator>;
 
 /**
- * Defines a logfile path and a level at which to write logs
+ * Defines a level at which to write logs
  */
 export const loggerConfigValidator = rt.Record({
   logLevel: rt

@@ -1,25 +1,45 @@
 Weenie Framework
 =================================================================================
 
-The Weenie Framework is a strongly typed dependency container builder for Typescript.
+> **NOTE: Wymp publishes its packages to github package repository. To set your project up to use
+> github package repository for the `@wymp/weenie-framework` package, follow instructions
+> [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry).**
+>
+> **TL;DR**
+>
+> 1. **Generate a github [personal auth token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)**
+> 2. **Create an `~/.npmrc` file if one doesn't already exist and add `//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN`
+>    to it, substituting the token you just created for `YOUR_AUTH_TOKEN`.**
+> 3. **Create an `.npmrc` file in your repo root if you don't already have one and add this to it:
+>    `@wymp:registry=https://npm.pkg.github.com/wymp`.**
 
-It was born out of a frustration with giganto-frameworks like Nest and a desire to keep things
+
+## Overview
+
+**The Weenie Framework is a simple Typescript microservices framework for NodeJS.**
+
+It was born out of a frustration with giganto-frameworks like NestJS and a desire to keep things
 small, light and composable, and with a special focus on empowering developers to build with it
 whatever and however they wish _without the framework getting in the way._ It is designed to be
 highly unopinionated and to allow developers to easily compose and encapsulate functionality in
 whatever way makes sense to them.
 
-To this end, Weenie was built like a cheap fake Christmas tree: It provides a central pole on which
-you can hang just about anything. The idea is that each "branch" that you hang on the central pole
-changes the definition of the pole for the branch that follows. It thus builds a dependency tree
-where later dependencies may depend on earlier dependencies, and all current dependencies are both
-known and strictly typed at each step.
+To this end, Weenie is nothing more than a strongly-typed dependency injection container. The idea
+behind it is that as you `and` things into the container, the shape of the container changes, and
+typescript keeps track of these changes. This allows you to build both very simple and very complex
+dependency containers, whose static type you can then depend on in your application and your tests.
 
-What you hang on that dependency tree and what you do with it is entirely up to you. The example
-in [`src/example.ts`](src/example.ts) is a decent look at what _I_ usually do with it and how.
-That is, it demonstrates the deliberate building of a "resource bag" (a dependency injection
-container), which I then use in event handlers and API request handlers to execute my core
-logic.
+Additionally, this final type allows you (at your option) to create a very robust set of mock
+dependencies to make testing at all levels easier and cleaner.
+
+The example in [`src/example.ts`](src/example.ts) is a decent look at what _I_ usually do with it
+and how. That is, it demonstrates the deliberate building of a dependency injection container with
+the dependencies and configuration that I like, which I then use in event handlers and API request
+handlers to execute my core logic.
+
+As you start to center around specific dependencies and groups of dependencies that you like, you
+can pull them into separate libraries and publish them, thus building up a collection that
+represents _your own_ framework, customized to your own personality and/or organization.
 
 And why go through all the trouble of doing it this way?
 
@@ -28,7 +48,8 @@ and easier to test. Using this structure, I can mock out the entire tree for my 
 I can easily encapsulate my application logic in functions that themselves have a very narrow set
 of dependencies. And that allows me to focus my development and treat every component as it should
 be treated - as a small, isolated unit that does one thing well and uses very few other things to
-do it.
+do it. This makes my code, neat, clean, easy to maintain and easy to evolve.
+
 
 ## Weenie Components
 
@@ -39,18 +60,24 @@ opinionated framework.
 
 Because of that, Weenie does express opinions of its own. However, it does so via components, which
 are the primary export of this library. The primary Weenie components include a config system (from
-`weenie-base`), a logger (`winston`), a sql database (`mysql2`), an pubsub abstraction (`amqp`), an
-HTTP Client (`request-promise-native`), an HTTP Server (`express`), and a cron system. (Most of
-these components are conformant with
+`@wymp/config-node`), a logger, a sql database (`mysql2`), a pubsub abstraction (`amqp`), an HTTP
+Client (`request-promise-native`), an HTTP Server (`express` with a lot of Weenie-specific overlays),
+and a cron system. (Most of these components are conformant with
 [Simple Interfaces](https://github.com/wymp/ts-simple-interfaces).)
 
 These core components form the central philosophy of Weenie - that is, they are implemented in a way
 that is narrowly scoped, but that does express an opinion about how Weenie likes to do things.
 
 You are free to use them as a complete set to quickly and easily build microservices in Typescript.
+([`src/example.ts`](./src/example.ts) should serve as a useful guide for doing that.)
 However, you are also free to use some of them, or none of them, instead building your own set of
 dependencies in a Weenie-compatible way. Doing so allows you to contribute to the library of
-functionality that other developers can easily pull into their own code.
+Weenie-compatible functionality that other developers can easily pull into their own code.
+
+(Note that if you prefer to build your own Weenie-compatible framework from the ground up, you can
+use the [`@wymp/weenie-base`](https://github.com/wymp/weenie-base) package instead of this one,
+which contains SOLELY the `Weenie` function.)
+
 
 ### How to Build a Weenie Component
 
@@ -64,7 +91,27 @@ type Component = <ExistingDeps, NewDeps>(d: ExistingDeps) => NewDeps;
 For very small components - a cache connection or similar - you can just in-line the definitions.
 For others, it will be more convenient to build the Weenie component together with whatever
 abstraction you're building. For example, if you're building a special API client for an HTTP
-service, you might export both the client class and the Weenie component from that module.
+service, you might export both the client class and the Weenie component from that module like so:
+
+```ts
+// Required config type
+export type ApiConfig = {
+  baseUrl: string;
+  key: string;
+  secret: string;
+};
+
+// Class
+export class MyHttpClient {
+  public constructor(protected readonly config: ApiConfig) {}
+}
+
+// Weenie function that adds an `httpClient` dependency
+export myHttpClient = (d: { config: { api: ApiConfig } }) => ({
+  httpClient: new MyHttpClient(d.config.api);
+});
+```
+
 
 ## Example
 
@@ -83,12 +130,14 @@ built in `src/example.ts`. Here it is, copied for convenience:
  * intended to be used.
  */
 
+// Config module
+import { config } from "@wymp/config-node";
+
 import {
   // Base framework function
   Weenie,
 
-  // Config component and runtime config validators
-  configFromFiles,
+  // Runtime config validators (you can make your own or use these "standard" config shapes)
   baseConfigValidator,
   databaseConfigValidator,
   webServiceConfigValidator,
@@ -146,6 +195,12 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
 
 // (We're going to wrap this in a top-level async function so we can make the syntax prettier)
 (async () => {
+  // Our `svcManagement` dependency allows us to signal when the app has been successfully
+  // initialized, a signal that some of our dependencies and modules may depend on. Because we don't
+  // want our app to have access to this, we're going to strip it out of the final dependencies and
+  // assign it to this function-local variable that we can call when we're all ready.
+  let initialized = (ready: true) => ready as boolean;
+
   /**
    * Build the application up as we see fit
    *
@@ -164,15 +219,19 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
    *
    * { config: ExampleConfig }
    */
-  const r = await Weenie(
+  const deps = await Weenie(
     // The configFromFiles method is for smaller scale projects that use on-disk config files rather
     // than environment variables for config. You can use the `configFromEnv` function if you'd like
     // to draw config from environment variables.
-    configFromFiles<ExampleConfig>(
-      "./config.example.json",
-      "./config.local.json",
+    config(
+      "APP_",
+      {
+        env: process.env,
+        defaultsFile: "./config.example.json",
+        localsFile: "./config.local.json",
+      },
       exampleConfigValidator
-    )()
+    )
   )
     /**
      * This is optional, but I always like to have a mechanism for alerting when my service has not
@@ -285,11 +344,10 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
     .done(async d => {
       // We know we've got some promises to wait for, so let's wait for them before wrapping everything
       // up
-
       const myPromise = await d.myPromise;
 
-      // This comes from the serviceManagement function up above
-      d.svc.initialized(true);
+      // Set our special `initialized` local variable
+      initialized = d.svc.initialized;
 
       // Now return our sewn up bag of dependencies
       return {
@@ -302,6 +360,8 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
       };
     });
 
+  // In a real app, we might wait until we've added handlers to do this, since this signals to our
+  // httpHandler dependency to register some special endcap handlers. Here, though,
   /**
    *
    *
@@ -322,17 +382,8 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
    *
    */
 
-  // First list available databases (just for fun)
-  r.log.notice(`App started in environment '${r.config.envName}'`);
-  const dbsQuery = await r.io.getAllDatabases();
-
-  r.log.notice(`Available databases:`);
-  for (let row of dbsQuery.rows) {
-    r.log.notice(`* ${row.Database}`);
-  }
-
   // Now, subscribe to all events on the 'data-events' channel
-  r.pubsub.subscribe(
+  deps.pubsub.subscribe(
     { "data-events": ["*.*.*"] },
     (msg, log) => {
       // The message content has already been converted to object format for us, but remains type
@@ -341,27 +392,27 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
       log.notice(`Got message with id ${msg.id}: ` + JSON.stringify(msg));
       return Promise.resolve(true);
     },
-    { queue: { name: r.config.serviceName } }
+    { queue: { name: deps.config.serviceName } }
   );
 
   // Set up our webservice to handle incoming requests, and add middleware to log request info
-  r.http.use((req, res, next) => {
-    r.log.info(`Received request: ${req.path}`);
+  deps.http.use((req, res, next) => {
+    deps.log.info(`Received request: ${req.path}`);
     next();
   });
-  r.http.get("/info", async (req, res, next) => {
+  deps.http.get("/info", async (req, res, next) => {
     try {
       // Pick a random to-do and get info about it.
       const todoId = Math.round(Math.random() * 100);
 
       // Get todo
-      r.log.info(`Getting todo id ${todoId} from API`);
-      const todo = await r.io.getTodo(todoId);
-      r.log.debug(`Got response from API: ${JSON.stringify(todo)}`);
+      deps.log.info(`Getting todo id ${todoId} from API`);
+      const todo = await deps.io.getTodo(todoId);
+      deps.log.debug(`Got response from API: ${JSON.stringify(todo)}`);
 
-      r.log.info(`Getting user id ${todo.userId} from API`);
-      const user = await r.io.getUser(todo.userId);
-      r.log.debug(`Got response from API: ${JSON.stringify(user)}`);
+      deps.log.info(`Getting user id ${todo.userId} from API`);
+      const user = await deps.io.getUser(todo.userId);
+      deps.log.debug(`Got response from API: ${JSON.stringify(user)}`);
 
       res.send({
         timestamp: Date.now(),
@@ -384,8 +435,22 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
     }
   });
 
-  // Start the app listening and we're done!
-  r.http.listen();
+  // When everything is all hooked up, we can call `initialized` to let the app know we're open for
+  // business
+  initialized(true);
+
+  //
+  // ...
+  //
+
+  // And here we're just doing a few random calls just do demonstrate the other dependencies
+  deps.log.notice(`App started in environment '${deps.config.envName}'`);
+  const dbsQuery = await deps.io.getAllDatabases();
+
+  deps.log.notice(`Available databases:`);
+  for (let row of dbsQuery.rows) {
+    deps.log.notice(`* ${row.Database}`);
+  }
 })() // End async "init" function
   .catch(e => {
     console.error(e);
@@ -465,24 +530,18 @@ and config manager are ones that come mind as areas where people like to do thin
 different ways) and other people can incorprate those into _their_ microservices by just `.and`ing
 them in.
 
+
 ## Future Development
 
 For now, this framework provides just about all the functionality that I want from it. I don't have
 any immediate plans for additional development, although I'm certainly open to adding more and/or
 changing things. Feel free to submit an issue for any suggestions.
 
+That said, one thing that I think would be interesting is a hot-reload function for changing config
+values at runtime. In the past, I have wanted the ability to change config values via an API
+endpoint (for example, turning on or off certain components or changing log levels). Currently,
+updating primitive config values would not necessarily propagate those values into components that
+are using them, since they may have been copied into components at bootup. To facilitate some sort
+of hot-reloading, it might be cool to implement an event emitter that allows components to
+re-initialize when one of the dependencies they care about changes.
 
-## Testing
-
-**NOTE:** Because we're testing some process control stuff, you have to use the `-i` flag to
-successfully run the tests. Furthermore, for whatever reason, the tests only run correctly after
-an initial failing run.
-
-Thus, to successfully run the tests, do this:
-
-```
-npm t -- -i
-npm t -- -i
-```
-
-(yes, twice)

@@ -9,12 +9,14 @@
  * intended to be used.
  */
 
+// Config module
+import { config } from "@wymp/config-node";
+
 import {
   // Base framework function
   Weenie,
 
-  // Config component and runtime config validators
-  configFromFiles,
+  // Runtime config validators (you can make your own or use these "standard" config shapes)
   baseConfigValidator,
   databaseConfigValidator,
   webServiceConfigValidator,
@@ -72,6 +74,12 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
 
 // (We're going to wrap this in a top-level async function so we can make the syntax prettier)
 (async () => {
+  // Our `svcManagement` dependency allows us to signal when the app has been successfully
+  // initialized, a signal that some of our dependencies and modules may depend on. Because we don't
+  // want our app to have access to this, we're going to strip it out of the final dependencies and
+  // assign it to this function-local variable that we can call when we're all ready.
+  let initialized = (ready: true) => ready as boolean;
+
   /**
    * Build the application up as we see fit
    *
@@ -90,15 +98,19 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
    *
    * { config: ExampleConfig }
    */
-  const r = await Weenie(
+  const deps = await Weenie(
     // The configFromFiles method is for smaller scale projects that use on-disk config files rather
     // than environment variables for config. You can use the `configFromEnv` function if you'd like
     // to draw config from environment variables.
-    configFromFiles<ExampleConfig>(
-      "./config.example.json",
-      "./config.local.json",
+    config(
+      "APP_",
+      {
+        env: process.env,
+        defaultsFile: "./config.example.json",
+        localsFile: "./config.local.json",
+      },
       exampleConfigValidator
-    )()
+    )
   )
     /**
      * This is optional, but I always like to have a mechanism for alerting when my service has not
@@ -208,14 +220,13 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
      * whatever you choose to return. This becomes the final type of the `r` variable way up above,
      * and what we use to enact our application down below.
      */
-    .done(async d => {
+    .done(async (d) => {
       // We know we've got some promises to wait for, so let's wait for them before wrapping everything
       // up
-
       const myPromise = await d.myPromise;
 
-      // This comes from the serviceManagement function up above
-      d.svc.initialized(true);
+      // Set our special `initialized` local variable
+      initialized = d.svc.initialized;
 
       // Now return our sewn up bag of dependencies
       return {
@@ -228,6 +239,8 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
       };
     });
 
+  // In a real app, we might wait until we've added handlers to do this, since this signals to our
+  // httpHandler dependency to register some special endcap handlers. Here, though,
   /**
    *
    *
@@ -248,17 +261,8 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
    *
    */
 
-  // First list available databases (just for fun)
-  r.log.notice(`App started in environment '${r.config.envName}'`);
-  const dbsQuery = await r.io.getAllDatabases();
-
-  r.log.notice(`Available databases:`);
-  for (let row of dbsQuery.rows) {
-    r.log.notice(`* ${row.Database}`);
-  }
-
   // Now, subscribe to all events on the 'data-events' channel
-  r.pubsub.subscribe(
+  deps.pubsub.subscribe(
     { "data-events": ["*.*.*"] },
     (msg, log) => {
       // The message content has already been converted to object format for us, but remains type
@@ -267,27 +271,27 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
       log.notice(`Got message with id ${msg.id}: ` + JSON.stringify(msg));
       return Promise.resolve(true);
     },
-    { queue: { name: r.config.serviceName } }
+    { queue: { name: deps.config.serviceName } }
   );
 
   // Set up our webservice to handle incoming requests, and add middleware to log request info
-  r.http.use((req, res, next) => {
-    r.log.info(`Received request: ${req.path}`);
+  deps.http.use((req, res, next) => {
+    deps.log.info(`Received request: ${req.path}`);
     next();
   });
-  r.http.get("/info", async (req, res, next) => {
+  deps.http.get("/info", async (req, res, next) => {
     try {
       // Pick a random to-do and get info about it.
       const todoId = Math.round(Math.random() * 100);
 
       // Get todo
-      r.log.info(`Getting todo id ${todoId} from API`);
-      const todo = await r.io.getTodo(todoId);
-      r.log.debug(`Got response from API: ${JSON.stringify(todo)}`);
+      deps.log.info(`Getting todo id ${todoId} from API`);
+      const todo = await deps.io.getTodo(todoId);
+      deps.log.debug(`Got response from API: ${JSON.stringify(todo)}`);
 
-      r.log.info(`Getting user id ${todo.userId} from API`);
-      const user = await r.io.getUser(todo.userId);
-      r.log.debug(`Got response from API: ${JSON.stringify(user)}`);
+      deps.log.info(`Getting user id ${todo.userId} from API`);
+      const user = await deps.io.getUser(todo.userId);
+      deps.log.debug(`Got response from API: ${JSON.stringify(user)}`);
 
       res.send({
         timestamp: Date.now(),
@@ -310,10 +314,24 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
     }
   });
 
-  // Start the app listening and we're done!
-  r.http.listen();
+  // When everything is all hooked up, we can call `initialized` to let the app know we're open for
+  // business
+  initialized(true);
+
+  //
+  // ...
+  //
+
+  // And here we're just doing a few random calls just do demonstrate the other dependencies
+  deps.log.notice(`App started in environment '${deps.config.envName}'`);
+  const dbsQuery = await deps.io.getAllDatabases();
+
+  deps.log.notice(`Available databases:`);
+  for (let row of dbsQuery.rows) {
+    deps.log.notice(`* ${row.Database}`);
+  }
 })() // End async "init" function
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   });

@@ -3,15 +3,15 @@
 
 set -e
 
-if [ -z "$SKIP_TESTS" ]; then
-    npm t
-else
-    echo "Skipping tests"
-fi
-
 if [ -z "$SKIP_LINTING" ]; then
     npx pretty-quick --staged
 else
     echo "Skipping linting"
+fi
+
+if [ -z "$SKIP_TESTS" ]; then
+    npm t
+else
+    echo "Skipping tests"
 fi
 
