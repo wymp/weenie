@@ -1,6 +1,21 @@
 Weenie Base
 ==================================================================================================
 
+> **NOTE: Wymp publishes its packages to github package repository. To set your project up to use
+> github package repository for the `@wymp/weenie-base` package, follow instructions
+> [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry).**
+>
+> **TL;DR**
+>
+> 1. **Generate a github [personal auth token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)**
+> 2. **Create an `~/.npmrc` file if one doesn't already exist and add `//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN`
+>    to it, substituting the token you just created for `YOUR_AUTH_TOKEN`.**
+> 3. **Create an `.npmrc` file in your repo root if you don't already have one and add this to it:
+>    `@wymp:registry=https://npm.pkg.github.com/wymp`.**
+
+
+## Overview
+
 _This is the base package for the Weenie framework. See https://github.com/wymp/weenie-framework
 for a more full-bodied explanation of the weenie framework itself._
 

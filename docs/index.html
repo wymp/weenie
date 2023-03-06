@@ -1,416 +1,128 @@
-<!DOCTYPE html>
-<html class="default" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>@wymp/weenie-base</title>
-    <meta name="description" content="Documentation for @wymp/weenie-base" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="assets/style.css" />
-    <link rel="stylesheet" href="assets/highlight.css" />
-    <script async src="assets/search.js" id="search-script"></script>
-  </head>
-  <body>
-    <script>
-      document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";
-    </script>
-    <header class="tsd-page-toolbar">
-      <div class="tsd-toolbar-contents container">
-        <div class="table-cell" id="tsd-search" data-base=".">
-          <div class="field">
-            <label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"
-              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z"
-                  fill="var(--color-text)"
-                ></path></svg></label
-            ><input type="text" id="tsd-search-field" aria-label="Search" />
-          </div>
-          <div class="field">
-            <div id="tsd-toolbar-links"></div>
-          </div>
-          <ul class="results">
-            <li class="state loading">Preparing search index...</li>
-            <li class="state failure">The search index is not available</li>
-          </ul>
-          <a href="index.html" class="title">@wymp/weenie-base</a>
-        </div>
-        <div class="table-cell" id="tsd-widgets">
-          <a
-            href="#"
-            class="tsd-widget tsd-toolbar-icon menu no-caption"
-            data-toggle="menu"
-            aria-label="Menu"
-            ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect>
-              <rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect>
-              <rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg
-          ></a>
-        </div>
-      </div>
-    </header>
-    <div class="container container-main">
-      <div class="col-8 col-content">
-        <div class="tsd-page-title">
-          <h2>@wymp/weenie-base</h2>
-        </div>
-        <div class="tsd-panel tsd-typography">
-          <a href="#weenie-base" id="weenie-base" style="color: inherit; text-decoration: none">
-            <h1>Weenie Base</h1>
-          </a>
-          <p>
-            <em
-              >This is the base package for the Weenie framework. See
-              <a href="https://github.com/wymp/weenie-framework"
-                >https://github.com/wymp/weenie-framework</a
-              >
-              for a more full-bodied explanation of the weenie framework itself.</em
-            >
-          </p>
-          <p><strong>Weenie is a Typescript microservices framework.</strong> (Sort of.)</p>
-          <p>
-            It attempts to provide a <em>much</em> simpler and easier solution to building
-            microservices than other frameworks such as NestJS. In reality, while Weenie is called a
-            microservices framework, it is nothing more than an easy and elegant way to create a
-            strongly-typed dependency injection container.
-          </p>
-          <p>
-            This package provides a very minimal set of tools geared toward building that container.
-            It is centered around a small function, <code>Weenie</code>, that allows you to build
-            the DI container from the ground up, declaratively including and exposing only the
-            dependencies you want, rather than relying on a big and/or opinionated framework for
-            everything.
-          </p>
-          <p>
-            (For the full Weenie Framework, see
-            <a href="https://github.com/wymp/weenie-framework"
-              >https://github.com/wymp/weenie-framework</a
-            >, which provides several pre-built dependencies such as mysql, rabbitMQ, and a
-            configurator to get you up and running quickly.)
-          </p>
-          <p>The function definition of Weenie is as follows:</p>
-          <pre><code class="language-ts"><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">function</span><span class="hl-1"> </span><span class="hl-2">Weenie</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> = </span><span class="hl-3">Obj</span><span class="hl-1">&gt;(</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">): </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1">&gt;;</span><br/><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1"> = </span><span class="hl-3">Record</span><span class="hl-1">&lt;</span><span class="hl-3">string</span><span class="hl-1"> | </span><span class="hl-3">number</span><span class="hl-1"> | </span><span class="hl-3">symbol</span><span class="hl-1">, </span><span class="hl-3">unknown</span><span class="hl-1">&gt;;</span><br/><br/><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> = </span><span class="hl-3">Obj</span><span class="hl-1">&gt; = </span><span class="hl-3">Deps</span><span class="hl-1"> &amp; {</span><br/><span class="hl-1">  </span><span class="hl-2">and</span><span class="hl-1">: &lt;</span><span class="hl-3">NextDeps</span><span class="hl-1"> </span><span class="hl-0">extends</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1">&gt;(</span><span class="hl-2">next</span><span class="hl-1">: (</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">NextDeps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> &amp; </span><span class="hl-3">NextDeps</span><span class="hl-1">&gt;;</span><br/><span class="hl-1">  </span><span class="hl-2">done</span><span class="hl-1">: &lt;</span><span class="hl-3">FinalDeps</span><span class="hl-1"> </span><span class="hl-0">extends</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1"> | </span><span class="hl-3">Promise</span><span class="hl-1">&lt;</span><span class="hl-3">Obj</span><span class="hl-1">&gt;&gt;(</span><span class="hl-2">fin</span><span class="hl-1">: (</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">FinalDeps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">FinalDeps</span><span class="hl-1">;</span><br/><span class="hl-1">};</span>
-</code></pre>
-          <p>In human language, all this says is:</p>
-          <p>
-            For any given object, the Weenie function returns the object with two additional
-            methods, <code>and</code> and <code>done</code>.
-          </p>
-          <p>
-            The <code>and</code> method takes a function, <code>next</code>, whose argument is the
-            given object (or a subset of it, or nothing) and which returns an arbitrary new object.
-            The <code>and</code> method returns a <em>combination</em> of the given object, the
-            object returned by <code>next</code>, and an updated set of <code>and</code> and
-            <code>done</code> methods.
-          </p>
-          <p>
-            The <code>done</code> method takes a function, <code>final</code>, whose argument is the
-            given object (or a subset of it, or nothing) and which returns an arbitrary new object
-            (optionally through a promise). The <code>done</code> method returns the value returned
-            by <code>final</code>.
-          </p>
-          <p>
-            Here&#39;s a very minimal example of what that looks like in practice (see
-            <a href="./src/example.ts"><code>src/example.ts</code></a> for a much more involved
-            example):
-          </p>
-          <pre><code class="language-ts"><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">A</span><span class="hl-1"> = { </span><span class="hl-4">a</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">B</span><span class="hl-1"> = { </span><span class="hl-4">b</span><span class="hl-1">: </span><span class="hl-3">boolean</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">C</span><span class="hl-1"> = { </span><span class="hl-4">c</span><span class="hl-1">: </span><span class="hl-3">number</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Answer</span><span class="hl-1"> = { </span><span class="hl-4">answer</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> };</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">a</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1">&gt; = </span><span class="hl-2">Weenie</span><span class="hl-1">({ </span><span class="hl-4">a:</span><span class="hl-1"> </span><span class="hl-6">&quot;a&quot;</span><span class="hl-1"> });</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">b</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1">&gt; = </span><span class="hl-4">a</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">b:</span><span class="hl-1"> </span><span class="hl-0">true</span><span class="hl-1"> }));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">c</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1">&gt; = </span><span class="hl-4">b</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">c:</span><span class="hl-1"> </span><span class="hl-7">3</span><span class="hl-1"> }));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">full</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Answer</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Answer</span><span class="hl-1">&gt; = </span><span class="hl-4">c</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">((</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">B</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({</span><br/><span class="hl-1">  </span><span class="hl-4">answer:</span><span class="hl-1"> </span><span class="hl-4">deps</span><span class="hl-1">.</span><span class="hl-4">b</span><span class="hl-1"> ? </span><span class="hl-6">&quot;D is the way&quot;</span><span class="hl-1"> : </span><span class="hl-6">&quot;D is not the way&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">}));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">final</span><span class="hl-1">: </span><span class="hl-3">Answer</span><span class="hl-1"> = </span><span class="hl-4">full</span><span class="hl-1">.</span><span class="hl-2">done</span><span class="hl-1">(</span><span class="hl-4">deps</span><span class="hl-1"> </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({</span><br/><span class="hl-1">  </span><span class="hl-4">answer:</span><br/><span class="hl-1">    </span><span class="hl-6">`If A is </span><span class="hl-0">${</span><span class="hl-4">a</span><span class="hl-0">}</span><span class="hl-6">, B is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">b</span><span class="hl-8"> </span><span class="hl-1">?</span><span class="hl-8"> </span><span class="hl-6">&quot;true&quot;</span><span class="hl-8"> </span><span class="hl-1">:</span><span class="hl-8"> </span><span class="hl-6">&quot;false&quot;</span><span class="hl-0">}</span><span class="hl-6"> and C is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">c</span><span class="hl-0">}</span><span class="hl-6">, then the answer `</span><span class="hl-1"> +</span><br/><span class="hl-1">    </span><span class="hl-6">`is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">answer</span><span class="hl-0">}</span><span class="hl-6">`</span><span class="hl-1">,</span><br/><span class="hl-1">}));</span>
-</code></pre>
-          <p>
-            Note that each line <em>adds</em> a little bit to the total dependency container. The
-            last call to the <code>done</code> method simply returns a type which is implied by
-            whatever is returned by the function that is its argument. This allows you to
-            encapsulate dependencies that should not be exposed publicly.
-          </p>
-          <p>
-            You can also build and run <code>example.ts</code> by cloning this repo and running
-            <code>npm i &amp;&amp; npx tsc &amp;&amp; nodejs ./dist/example.js</code>.
-          </p>
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@wymp/weenie-base</title><meta name="description" content="Documentation for @wymp/weenie-base"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@wymp/weenie-base</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>@wymp/weenie-base</h2></div>
+<div class="tsd-panel tsd-typography">
+<a href="#weenie-base" id="weenie-base" style="color: inherit; text-decoration: none;">
+  <h1>Weenie Base</h1>
+</a>
+<blockquote>
+<p><strong>NOTE: Wymp publishes its packages to github package repository. To set your project up to use
+github package repository for the <code>@wymp/weenie-base</code> package, follow instructions
+<a href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry">here</a>.</strong></p>
+<p><strong>TL;DR</strong></p>
+<ol>
+<li><strong>Generate a github <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">personal auth token</a></strong></li>
+<li><strong>Create an <code>~/.npmrc</code> file if one doesn&#39;t already exist and add <code>//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN</code>
+to it, substituting the token you just created for <code>YOUR_AUTH_TOKEN</code>.</strong></li>
+<li><strong>Create an <code>.npmrc</code> file in your repo root if you don&#39;t already have one and add this to it:
+<code>@wymp:registry=https://npm.pkg.github.com/wymp</code>.</strong></li>
+</ol>
+</blockquote>
 
-          <a
-            href="#additional-exports"
-            id="additional-exports"
-            style="color: inherit; text-decoration: none"
-          >
-            <h2>Additional Exports</h2>
-          </a>
-          <p>
-            In addition to the core <code>Weenie</code> function, this library also exports a
-            <code>deepmerge</code> function that it uses to perform object merging. This is simply
-            for convenience for downstream libraries, since it seems <code>deepmerge</code> is an
-            oft-wanted function. (It only implements a native <code>deepmerge</code> function to
-            avoid a dependency, since Weenie is proudly dependency-free.)
-          </p>
-
-          <a
-            href="#examples-for-uses"
-            id="examples-for-uses"
-            style="color: inherit; text-decoration: none"
-          >
-            <h2>Examples for Uses</h2>
-          </a>
-          <p>
-            Here&#39;s the simplest case: You like the way Weenie handles config and you want to use
-            that to build a little script that just does some one-off task.
-          </p>
-          <pre><code class="language-ts"><span class="hl-9">import</span><span class="hl-1"> { </span><span class="hl-4">Weenie</span><span class="hl-1"> } </span><span class="hl-9">from</span><span class="hl-1"> </span><span class="hl-6">&quot;weenie-base&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">app</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-2">Weenie</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">config:</span><span class="hl-1"> { </span><span class="hl-4">myVar:</span><span class="hl-1"> </span><span class="hl-6">&quot;abc&quot;</span><span class="hl-1"> }</span><br/><span class="hl-1">})</span><br/><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">((</span><span class="hl-4">d</span><span class="hl-1">: { </span><span class="hl-4">config</span><span class="hl-1">: { </span><span class="hl-4">myVar</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> } }) </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-9">return</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">output:</span><span class="hl-1"> </span><span class="hl-4">d</span><span class="hl-1">.</span><span class="hl-4">config</span><span class="hl-1">.</span><span class="hl-4">myVar</span><span class="hl-1"> === </span><span class="hl-6">&quot;123&quot;</span><span class="hl-1"> ? </span><span class="hl-6">&quot;We&#39;re in 123 mode&quot;</span><span class="hl-1"> : </span><span class="hl-6">&quot;We&#39;re not in 123 mode&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">`My var: &#39;</span><span class="hl-0">${</span><span class="hl-4">app</span><span class="hl-8">.</span><span class="hl-4">myVar</span><span class="hl-0">}</span><span class="hl-6">&#39;`</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">`Final output: </span><span class="hl-0">${</span><span class="hl-4">app</span><span class="hl-8">.</span><span class="hl-4">output</span><span class="hl-0">}</span><span class="hl-6">`</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">&quot;Yay, we did it!&quot;</span><span class="hl-1">);</span><br/><span class="hl-4">process</span><span class="hl-1">.</span><span class="hl-2">exit</span><span class="hl-1">();</span>
+<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
+  <h2>Overview</h2>
+</a>
+<p><em>This is the base package for the Weenie framework. See <a href="https://github.com/wymp/weenie-framework">https://github.com/wymp/weenie-framework</a>
+for a more full-bodied explanation of the weenie framework itself.</em></p>
+<p><strong>Weenie is a Typescript microservices framework.</strong> (Sort of.)</p>
+<p>It attempts to provide a <em>much</em> simpler and easier solution to building microservices than other
+frameworks such as NestJS. In reality, while Weenie is called a microservices framework, it is
+nothing more than an easy and elegant way to create a strongly-typed dependency injection container.</p>
+<p>This package provides a very minimal set of tools geared toward building that container. It is
+centered around a small function, <code>Weenie</code>, that allows you to build the DI container from the
+ground up, declaratively including and exposing only the dependencies you want, rather than relying
+on a big and/or opinionated framework for everything.</p>
+<p>(For the full Weenie Framework, see <a href="https://github.com/wymp/weenie-framework">https://github.com/wymp/weenie-framework</a>, which provides several
+pre-built dependencies such as mysql, rabbitMQ, and a configurator to get you up and running
+quickly.)</p>
+<p>The function definition of Weenie is as follows:</p>
+<pre><code class="language-ts"><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">function</span><span class="hl-1"> </span><span class="hl-2">Weenie</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> = </span><span class="hl-3">Obj</span><span class="hl-1">&gt;(</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">): </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1">&gt;;</span><br/><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1"> = </span><span class="hl-3">Record</span><span class="hl-1">&lt;</span><span class="hl-3">string</span><span class="hl-1"> | </span><span class="hl-3">number</span><span class="hl-1"> | </span><span class="hl-3">symbol</span><span class="hl-1">, </span><span class="hl-3">unknown</span><span class="hl-1">&gt;;</span><br/><br/><span class="hl-0">declare</span><span class="hl-1"> </span><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> = </span><span class="hl-3">Obj</span><span class="hl-1">&gt; = </span><span class="hl-3">Deps</span><span class="hl-1"> &amp; {</span><br/><span class="hl-1">  </span><span class="hl-2">and</span><span class="hl-1">: &lt;</span><span class="hl-3">NextDeps</span><span class="hl-1"> </span><span class="hl-0">extends</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1">&gt;(</span><span class="hl-2">next</span><span class="hl-1">: (</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">NextDeps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">Deps</span><span class="hl-1"> &amp; </span><span class="hl-3">NextDeps</span><span class="hl-1">&gt;;</span><br/><span class="hl-1">  </span><span class="hl-2">done</span><span class="hl-1">: &lt;</span><span class="hl-3">FinalDeps</span><span class="hl-1"> </span><span class="hl-0">extends</span><span class="hl-1"> </span><span class="hl-3">Obj</span><span class="hl-1"> | </span><span class="hl-3">Promise</span><span class="hl-1">&lt;</span><span class="hl-3">Obj</span><span class="hl-1">&gt;&gt;(</span><span class="hl-2">fin</span><span class="hl-1">: (</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">Deps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">FinalDeps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-3">FinalDeps</span><span class="hl-1">;</span><br/><span class="hl-1">};</span>
 </code></pre>
-          <p>
-            This example is almost uselessly simple, but it does demonstrate the value that Weenie
-            offers: that you can chain together abstractions that declaratively build up a
-            dependency container, then use that dependency container with total type safety.
-          </p>
-          <p>
-            In other words, in the above example, we created a Weenie with one initial property,
-            <code>config</code>. Then we used the <code>myVar</code> property of the config object
-            to add the <code>output</code> key to the container, and finally we used the finished
-            container to output the message. If the config object had not defined
-            <code>myVar</code>, Typescript would have thrown an error at compile time saying that
-            <code>myVar</code> doesn&#39;t exist on the given object; if we had not returned an
-            object with a string <code>output</code> value, Typescript would have thrown en error
-            about that. Everything that we return from an <code>and</code> function gets tacked onto
-            the dependency container, types included.
-          </p>
-          <p>
-            Thus, the result of using Weenie is easy-to-read dependency structuring with strict
-            typing throughout.
-          </p>
-          <p>
-            See <a href="https://github.com/wymp/weenie-framework">Weenie Framework</a> for more
-            complex examples.
-          </p>
-        </div>
-      </div>
-      <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-        <div class="tsd-navigation settings">
-          <details class="tsd-index-accordion">
-            <summary class="tsd-accordion-summary">
-              <h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z"
-                    fill="var(--color-text)"
-                  ></path>
-                </svg>
-                Settings
-              </h3>
-            </summary>
-            <div class="tsd-accordion-details">
-              <div class="tsd-filter-visibility">
-                <h4 class="uppercase">Member Visibility</h4>
-                <form>
-                  <ul id="tsd-filter-options">
-                    <li class="tsd-filter-item">
-                      <label class="tsd-filter-input"
-                        ><input type="checkbox" id="tsd-filter-protected" name="protected" /><svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            class="tsd-checkbox-background"
-                            width="30"
-                            height="30"
-                            x="1"
-                            y="1"
-                            rx="6"
-                            fill="none"
-                          ></rect>
-                          <path
-                            class="tsd-checkbox-checkmark"
-                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                            stroke="none"
-                            stroke-width="3.5"
-                            stroke-linejoin="round"
-                            fill="none"
-                          ></path></svg
-                        ><span>Protected</span></label
-                      >
-                    </li>
-                    <li class="tsd-filter-item">
-                      <label class="tsd-filter-input"
-                        ><input type="checkbox" id="tsd-filter-private" name="private" /><svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            class="tsd-checkbox-background"
-                            width="30"
-                            height="30"
-                            x="1"
-                            y="1"
-                            rx="6"
-                            fill="none"
-                          ></rect>
-                          <path
-                            class="tsd-checkbox-checkmark"
-                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                            stroke="none"
-                            stroke-width="3.5"
-                            stroke-linejoin="round"
-                            fill="none"
-                          ></path></svg
-                        ><span>Private</span></label
-                      >
-                    </li>
-                    <li class="tsd-filter-item">
-                      <label class="tsd-filter-input"
-                        ><input
-                          type="checkbox"
-                          id="tsd-filter-inherited"
-                          name="inherited"
-                          checked
-                        /><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-                          <rect
-                            class="tsd-checkbox-background"
-                            width="30"
-                            height="30"
-                            x="1"
-                            y="1"
-                            rx="6"
-                            fill="none"
-                          ></rect>
-                          <path
-                            class="tsd-checkbox-checkmark"
-                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                            stroke="none"
-                            stroke-width="3.5"
-                            stroke-linejoin="round"
-                            fill="none"
-                          ></path></svg
-                        ><span>Inherited</span></label
-                      >
-                    </li>
-                    <li class="tsd-filter-item">
-                      <label class="tsd-filter-input"
-                        ><input type="checkbox" id="tsd-filter-external" name="external" /><svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            class="tsd-checkbox-background"
-                            width="30"
-                            height="30"
-                            x="1"
-                            y="1"
-                            rx="6"
-                            fill="none"
-                          ></rect>
-                          <path
-                            class="tsd-checkbox-checkmark"
-                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                            stroke="none"
-                            stroke-width="3.5"
-                            stroke-linejoin="round"
-                            fill="none"
-                          ></path></svg
-                        ><span>External</span></label
-                      >
-                    </li>
-                  </ul>
-                </form>
-              </div>
-              <div class="tsd-theme-toggle">
-                <h4 class="uppercase">Theme</h4>
-                <select id="theme">
-                  <option value="os">OS</option>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </div>
-            </div>
-          </details>
-        </div>
-        <nav class="tsd-navigation primary">
-          <details class="tsd-index-accordion" open>
-            <summary class="tsd-accordion-summary">
-              <h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z"
-                    fill="var(--color-text)"
-                  ></path>
-                </svg>
-                Modules
-              </h3>
-            </summary>
-            <div class="tsd-accordion-details">
-              <ul>
-                <li class="current selected">
-                  <a href="modules.html">@wymp/weenie-<wbr />base</a>
-                  <ul></ul>
-                </li>
-              </ul>
-            </div>
-          </details>
-        </nav>
-        <nav class="tsd-navigation secondary menu-sticky">
-          <ul>
-            <li class="tsd-kind-function">
-              <a href="functions/deepmerge.html" class="tsd-index-link"
-                ><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24">
-                  <rect
-                    fill="var(--color-icon-background)"
-                    stroke="var(--color-ts-function)"
-                    stroke-width="1.5"
-                    x="1"
-                    y="1"
-                    width="22"
-                    height="22"
-                    rx="6"
-                    id="icon-64-path"
-                  ></rect>
-                  <path
-                    d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z"
-                    fill="var(--color-text)"
-                    id="icon-64-text"
-                  ></path></svg
-                >deepmerge</a
-              >
-            </li>
-            <li class="tsd-kind-type-alias">
-              <a href="types/Extensible.html" class="tsd-index-link"
-                ><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24">
-                  <rect
-                    fill="var(--color-icon-background)"
-                    stroke="var(--color-ts)"
-                    stroke-width="1.5"
-                    x="1"
-                    y="1"
-                    width="22"
-                    height="22"
-                    rx="6"
-                    id="icon-4194304-path"
-                  ></rect>
-                  <path
-                    d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z"
-                    fill="var(--color-text)"
-                    id="icon-4194304-text"
-                  ></path></svg
-                >Extensible</a
-              >
-            </li>
-            <li class="tsd-kind-function">
-              <a href="functions/Weenie.html" class="tsd-index-link"
-                ><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24">
-                  <use href="#icon-64-path"></use>
-                  <use href="#icon-64-text"></use></svg
-                >Weenie</a
-              >
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <div class="container tsd-generator">
-      <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-    </div>
-    <div class="overlay"></div>
-    <script src="assets/main.js"></script>
-  </body>
-</html>
+<p>In human language, all this says is:</p>
+<p>For any given object, the Weenie function returns the object with two additional methods, <code>and</code> and
+<code>done</code>.</p>
+<p>The <code>and</code> method takes a function, <code>next</code>, whose argument is the given object (or a subset of it, or
+nothing) and which returns an arbitrary new object. The <code>and</code> method returns a <em>combination</em> of the
+given object, the object returned by <code>next</code>, and an updated set of <code>and</code> and <code>done</code> methods.</p>
+<p>The <code>done</code> method takes a function, <code>final</code>, whose argument is the given object (or a subset of it,
+or nothing) and which returns an arbitrary new object (optionally through a promise). The <code>done</code>
+method returns the value returned by <code>final</code>.</p>
+<p>Here&#39;s a very minimal example of what that looks like in practice (see <a href="./src/example.ts"><code>src/example.ts</code></a>
+for a much more involved example):</p>
+<pre><code class="language-ts"><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">A</span><span class="hl-1"> = { </span><span class="hl-4">a</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">B</span><span class="hl-1"> = { </span><span class="hl-4">b</span><span class="hl-1">: </span><span class="hl-3">boolean</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">C</span><span class="hl-1"> = { </span><span class="hl-4">c</span><span class="hl-1">: </span><span class="hl-3">number</span><span class="hl-1"> };</span><br/><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-3">Answer</span><span class="hl-1"> = { </span><span class="hl-4">answer</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> };</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">a</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1">&gt; = </span><span class="hl-2">Weenie</span><span class="hl-1">({ </span><span class="hl-4">a:</span><span class="hl-1"> </span><span class="hl-6">&quot;a&quot;</span><span class="hl-1"> });</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">b</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1">&gt; = </span><span class="hl-4">a</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">b:</span><span class="hl-1"> </span><span class="hl-0">true</span><span class="hl-1"> }));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">c</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1">&gt; = </span><span class="hl-4">b</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">c:</span><span class="hl-1"> </span><span class="hl-7">3</span><span class="hl-1"> }));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">full</span><span class="hl-1">: </span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Answer</span><span class="hl-1"> &amp; </span><span class="hl-3">Extensible</span><span class="hl-1">&lt;</span><span class="hl-3">A</span><span class="hl-1"> &amp; </span><span class="hl-3">B</span><span class="hl-1"> &amp; </span><span class="hl-3">C</span><span class="hl-1"> &amp; </span><span class="hl-3">Answer</span><span class="hl-1">&gt; = </span><span class="hl-4">c</span><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">((</span><span class="hl-4">deps</span><span class="hl-1">: </span><span class="hl-3">B</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({</span><br/><span class="hl-1">  </span><span class="hl-4">answer:</span><span class="hl-1"> </span><span class="hl-4">deps</span><span class="hl-1">.</span><span class="hl-4">b</span><span class="hl-1"> ? </span><span class="hl-6">&quot;D is the way&quot;</span><span class="hl-1"> : </span><span class="hl-6">&quot;D is not the way&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">}));</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">final</span><span class="hl-1">: </span><span class="hl-3">Answer</span><span class="hl-1"> = </span><span class="hl-4">full</span><span class="hl-1">.</span><span class="hl-2">done</span><span class="hl-1">(</span><span class="hl-4">deps</span><span class="hl-1"> </span><span class="hl-0">=&gt;</span><span class="hl-1"> ({</span><br/><span class="hl-1">  </span><span class="hl-4">answer:</span><br/><span class="hl-1">    </span><span class="hl-6">`If A is </span><span class="hl-0">${</span><span class="hl-4">a</span><span class="hl-0">}</span><span class="hl-6">, B is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">b</span><span class="hl-8"> </span><span class="hl-1">?</span><span class="hl-8"> </span><span class="hl-6">&quot;true&quot;</span><span class="hl-8"> </span><span class="hl-1">:</span><span class="hl-8"> </span><span class="hl-6">&quot;false&quot;</span><span class="hl-0">}</span><span class="hl-6"> and C is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">c</span><span class="hl-0">}</span><span class="hl-6">, then the answer `</span><span class="hl-1"> +</span><br/><span class="hl-1">    </span><span class="hl-6">`is </span><span class="hl-0">${</span><span class="hl-4">deps</span><span class="hl-8">.</span><span class="hl-4">answer</span><span class="hl-0">}</span><span class="hl-6">`</span><span class="hl-1">,</span><br/><span class="hl-1">}));</span>
+</code></pre>
+<p>Note that each line <em>adds</em> a little bit to the total dependency container. The last call to the
+<code>done</code> method simply returns a type which is implied by whatever is returned by the function that is
+its argument. This allows you to encapsulate dependencies that should not be exposed publicly.</p>
+<p>You can also build and run <code>example.ts</code> by cloning this repo and running
+<code>npm i &amp;&amp; npx tsc &amp;&amp; nodejs ./dist/example.js</code>.</p>
+
+<a href="#additional-exports" id="additional-exports" style="color: inherit; text-decoration: none;">
+  <h2>Additional Exports</h2>
+</a>
+<p>In addition to the core <code>Weenie</code> function, this library also exports a <code>deepmerge</code> function that it
+uses to perform object merging. This is simply for convenience for downstream libraries, since it
+seems <code>deepmerge</code> is an oft-wanted function. (It only implements a native <code>deepmerge</code> function to
+avoid a dependency, since Weenie is proudly dependency-free.)</p>
+
+<a href="#examples-for-uses" id="examples-for-uses" style="color: inherit; text-decoration: none;">
+  <h2>Examples for Uses</h2>
+</a>
+<p>Here&#39;s the simplest case: You like the way Weenie handles config and you want to use that to
+build a little script that just does some one-off task.</p>
+<pre><code class="language-ts"><span class="hl-9">import</span><span class="hl-1"> { </span><span class="hl-4">Weenie</span><span class="hl-1"> } </span><span class="hl-9">from</span><span class="hl-1"> </span><span class="hl-6">&quot;weenie-base&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-5">app</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-2">Weenie</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">config:</span><span class="hl-1"> { </span><span class="hl-4">myVar:</span><span class="hl-1"> </span><span class="hl-6">&quot;abc&quot;</span><span class="hl-1"> }</span><br/><span class="hl-1">})</span><br/><span class="hl-1">.</span><span class="hl-2">and</span><span class="hl-1">((</span><span class="hl-4">d</span><span class="hl-1">: { </span><span class="hl-4">config</span><span class="hl-1">: { </span><span class="hl-4">myVar</span><span class="hl-1">: </span><span class="hl-3">string</span><span class="hl-1"> } }) </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-9">return</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">output:</span><span class="hl-1"> </span><span class="hl-4">d</span><span class="hl-1">.</span><span class="hl-4">config</span><span class="hl-1">.</span><span class="hl-4">myVar</span><span class="hl-1"> === </span><span class="hl-6">&quot;123&quot;</span><span class="hl-1"> ? </span><span class="hl-6">&quot;We&#39;re in 123 mode&quot;</span><span class="hl-1"> : </span><span class="hl-6">&quot;We&#39;re not in 123 mode&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">`My var: &#39;</span><span class="hl-0">${</span><span class="hl-4">app</span><span class="hl-8">.</span><span class="hl-4">myVar</span><span class="hl-0">}</span><span class="hl-6">&#39;`</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">`Final output: </span><span class="hl-0">${</span><span class="hl-4">app</span><span class="hl-8">.</span><span class="hl-4">output</span><span class="hl-0">}</span><span class="hl-6">`</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-6">&quot;Yay, we did it!&quot;</span><span class="hl-1">);</span><br/><span class="hl-4">process</span><span class="hl-1">.</span><span class="hl-2">exit</span><span class="hl-1">();</span>
+</code></pre>
+<p>This example is almost uselessly simple, but it does demonstrate the value that Weenie offers: that
+you can chain together abstractions that declaratively build up a dependency container, then use
+that dependency container with total type safety.</p>
+<p>In other words, in the above example, we created a Weenie with one initial property, <code>config</code>. Then
+we used the <code>myVar</code> property of the config object to add the <code>output</code> key to the container, and
+finally we used the finished container to output the message.  If the config object had not defined
+<code>myVar</code>, Typescript would have thrown an error at compile time saying that <code>myVar</code> doesn&#39;t exist on
+the given object; if we had not returned an object with a string <code>output</code> value, Typescript would
+have thrown en error about that. Everything that we return from an <code>and</code> function gets tacked onto
+the dependency container, types included.</p>
+<p>Thus, the result of using Weenie is easy-to-read dependency structuring with strict typing
+throughout.</p>
+<p>See <a href="https://github.com/wymp/weenie-framework">Weenie Framework</a> for more complex examples.</p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">@wymp/weenie-<wbr/>base</a>
+<ul></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky">
+<ul>
+<li class="tsd-kind-function"><a href="functions/deepmerge.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg>deepmerge</a></li>
+<li class="tsd-kind-type-alias"><a href="types/Extensible.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg>Extensible</a></li>
+<li class="tsd-kind-function"><a href="functions/Weenie.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>Weenie</a></li></ul></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
