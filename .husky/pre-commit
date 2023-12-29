@@ -2,12 +2,8 @@
 . "$(dirname -- "$0")/_/husky.sh"
 set -e
 
-echo
-echo "Running prettier..."
-npx pretty-quick --staged
-
-if [ -z "$SKIP_TSC" ]; then
+if [ -z "$SKIP_TEST" ]; then
   echo
-  echo "Running tsc..."
-  npx tsc --noEmit
+  echo "Running tests and formatting checks... (set SKIP_TEST to skip)"
+  pnpm t
 fi

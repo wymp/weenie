@@ -1,0 +1,21 @@
+name: CI
+
+on: [push, workflow_dispatch]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+
+      - uses: NeatCapitalOrg/devops/actions/neat-setup-node@main
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+
+      - run: pnpm t
+        name: Lint and Test

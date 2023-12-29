@@ -1,5 +1,8 @@
 import { deepmerge } from "./Utils";
 
+/** Convenience type defining a POJO */
+type Obj = Record<string | number | symbol, unknown>;
+
 /**
  * `Extensible` defines an interface that allows for the mutation of a "resource bag" and a final
  * presentation of that bag. This allows a programmer to build up a collection of resources and
@@ -48,9 +51,7 @@ export type Extensible<Deps = Obj> = Deps & {
  */
 export function Weenie<Deps = Obj>(deps: Deps): Extensible<Deps> {
   return deepmerge({}, deps, {
-    and: <NextDeps extends Obj>(
-      next: (currentDeps: Deps) => NextDeps
-    ): Extensible<Deps & NextDeps> => {
+    and: <NextDeps extends Obj>(next: (currentDeps: Deps) => NextDeps): Extensible<Deps & NextDeps> => {
       return Weenie<Deps & NextDeps>(deepmerge({}, deps, next(deps)));
     },
     done: <FinalDeps extends Obj>(fin: (deps: Deps) => FinalDeps): FinalDeps => {
@@ -58,5 +59,3 @@ export function Weenie<Deps = Obj>(deps: Deps): Extensible<Deps> {
     },
   });
 }
-
-type Obj = Record<string | number | symbol, unknown>;

@@ -1,8 +1,9 @@
+/* eslint-disable spaced-comment */
 import { Weenie } from "./Weenie";
 
 // Don't want to add unnecessary dependencies just for the example, so we're just ts-ignoring this
 // for now.
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const p: any = process || { exit: () => 1 };
 
 /**
