@@ -1,3 +1,7 @@
+.eslint*
+.github
+.prettierignore
+.vimrc
 config.example.json
 dist-test
 githooks
