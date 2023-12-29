@@ -2,8 +2,8 @@
 . "$(dirname -- "$0")/_/husky.sh"
 set -e
 
-if [ -z "$SKIP_TEST" ]; then
+if [ -z "$SKIP_TESTS" ]; then
   echo
-  echo "Running tests and formatting checks... (set SKIP_TEST to skip)"
+  echo "Running tests and formatting checks... (set SKIP_TESTS to skip)"
   pnpm t
 fi

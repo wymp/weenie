@@ -9,13 +9,22 @@ concurrency:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
 
-      - uses: NeatCapitalOrg/devops/actions/neat-setup-node@main
+      - uses: pnpm/action-setup@v2
         with:
-          npm-token: ${{ secrets.NPM_TOKEN }}
+          version: 8
 
-      - run: pnpm t
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - run: pnpm i && pnpm t
         name: Lint and Test
