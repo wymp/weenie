@@ -4,18 +4,24 @@
   "description": "This is the base package for Weenie, an unopinionated, fluent, traditional Typescript dependency injector.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
-    "docgen": "pnpx typedoc src/index.ts --sort source-order",
+    "clean": "rm -Rf dist || true",
+    "docs:gen": "typedoc src/index.ts --sort source-order",
+    "docs:view": "pnpx http-server -o docs",
     "format": "pnpm prettier:fix && pnpm lint:fix",
-    "tsc": "tsc --noEmit",
-    "test": "pnpm tsc && pnpm prettier && pnpm lint && jest",
-    "prettier": "prettier src tests *.cjs --check",
-    "prettier:fix": "pnpm prettier --write",
     "lint": "eslint src/**/* tests/**/*",
     "lint:fix": "pnpm lint --fix",
-    "prepublishOnly": "rm -Rf dist; npx tsc && npm run docgen",
-    "prepare": "husky install"
+    "prepack": "pnpm clean && pnpm build && pnpm docs:gen",
+    "prepare": "husky install",
+    "prettier": "prettier src tests *.cjs --check",
+    "prettier:fix": "pnpm prettier --write",
+    "test": "pnpm typecheck && pnpm prettier && pnpm lint && jest",
+    "typecheck": "tsc --noEmit"
   },
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "license": "ISC",
@@ -56,5 +62,8 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
