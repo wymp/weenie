@@ -40,7 +40,7 @@
     "@types/cron": "^2.4.0",
     "@types/node": "^20.11.0",
     "@types/uuid": "^9.0.7",
-    "@wymp/config-node": "^1.0.1",
+    "@wymp/config-node": "^1.1.0",
     "@wymp/http-errors": "^1.8.0 || ^2.0.0 || ^3.0.0",
     "@wymp/http-utils": "^3.0.0",
     "@wymp/simple-db-mysql": "^0.5.2 || ^0.6.0 || ^0.7.2",

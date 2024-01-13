@@ -15,8 +15,8 @@ dependencies:
     specifier: ^9.0.7
     version: 9.0.7
   '@wymp/config-node':
-    specifier: ^1.0.1
-    version: 1.0.1
+    specifier: ^1.1.0
+    version: 1.1.0
   '@wymp/http-errors':
     specifier: ^1.8.0 || ^2.0.0 || ^3.0.0
     version: 2.0.0
@@ -1136,11 +1136,10 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@wymp/config-node@1.0.1:
-    resolution: {integrity: sha512-WponIrd05f2DUsA/pU0znaTRCUGWggFXwsPjqwU79A3uyJ7L/Jl6fGh9tgFaeEwbR4JkxdluWWCw0vV2SzAVfw==, tarball: https://npm.pkg.github.com/download/@wymp/config-node/1.0.1/4b4a08b23708caae902478b65d2cd252232c45f2}
+  /@wymp/config-node@1.1.0:
+    resolution: {integrity: sha512-3bvQ9rPYP0DNhhxm4YcgHXsbQNDw/Fa2628Bfh1pxMakPZV/PJ3fhtyAe3rIUBRvhI8gWDp7clCI3o+GrToR4g==}
     dependencies:
-      '@types/node': 20.11.0
-      '@wymp/weenie-base': 1.0.2
+      '@wymp/weenie-base': 1.1.0
     dev: false
 
   /@wymp/http-errors@2.0.0:
@@ -1242,6 +1241,10 @@ packages:
 
   /@wymp/weenie-base@1.0.2:
     resolution: {integrity: sha512-vTeO7xGdEA6JDvWI2AxM3KmfadtXM1SXeI+cJR9ID0EBS/U91Ooz880uTUpc8LTNvW872fOl2utrBsJPFGADzg==, tarball: https://npm.pkg.github.com/download/@wymp/weenie-base/1.0.2/21e1389602d5a20753fe8ed1678a694f1df330ab}
+    dev: false
+
+  /@wymp/weenie-base@1.1.0:
+    resolution: {integrity: sha512-QAmp+p3E7lu04X2h5cz/Rf+JWyKN3oZyyseL7vyO8qtWzFmX5tlaY5MkMXzCaGDYMVBsNrT0thCBzt+0hlV3mg==}
     dev: false
 
   /accepts@1.3.8:
