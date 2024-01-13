@@ -5,45 +5,36 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@types/cron':
-    specifier: ^2.4.0
-    version: 2.4.0
-  '@types/node':
-    specifier: ^20.11.0
-    version: 20.11.0
-  '@types/uuid':
-    specifier: ^9.0.7
-    version: 9.0.7
   '@wymp/config-node':
     specifier: ^1.1.0
     version: 1.1.0
   '@wymp/http-errors':
     specifier: ^1.8.0 || ^2.0.0 || ^3.0.0
-    version: 2.0.0
+    version: 3.0.0
   '@wymp/http-utils':
     specifier: ^3.0.0
-    version: 3.3.3
+    version: 3.4.0
   '@wymp/simple-db-mysql':
     specifier: ^0.5.2 || ^0.6.0 || ^0.7.2
-    version: 0.6.1
+    version: 0.7.2
   '@wymp/simple-http-client-rpn':
     specifier: ^0.5.2 || ^0.6.0 || ^0.7.2
-    version: 0.6.0
+    version: 0.7.2
   '@wymp/simple-http-server-express':
     specifier: ^0.5.2 || ^0.6.0 || ^0.7.2
-    version: 0.6.0
+    version: 0.7.2
   '@wymp/simple-logger-console':
     specifier: ^0.5.1 || ^0.6.0 || ^0.7.2
-    version: 0.6.2
+    version: 0.7.2
   '@wymp/simple-pubsub-amqp':
     specifier: ^0.5.1 || ^0.6.0 || ^0.7.2
-    version: 0.5.4
+    version: 0.7.2
   '@wymp/ts-simple-interfaces':
     specifier: ^0.5.3 || ^0.6.0 || ^0.7.2
-    version: 0.6.0
+    version: 0.7.2
   '@wymp/weenie-base':
     specifier: ^0.5.4 || ^0.6.0 || ^1.0.0 || ^1.1.0
-    version: 1.0.2
+    version: 1.1.0
   cron:
     specifier: ^3.1.6
     version: 3.1.6
@@ -58,6 +49,12 @@ devDependencies:
   '@types/jest':
     specifier: ^29.5.11
     version: 29.5.11
+  '@types/node':
+    specifier: ^20.11.0
+    version: 20.11.0
+  '@types/uuid':
+    specifier: ^9.0.7
+    version: 9.0.7
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.18.1
     version: 6.18.1(@typescript-eslint/parser@6.18.1)(eslint@8.56.0)(typescript@5.3.3)
@@ -74,7 +71,7 @@ devDependencies:
     specifier: ^9.1.0
     version: 9.1.0(eslint@8.56.0)
   husky:
-    specifier: ^8.0.0
+    specifier: ^8.0.3
     version: 8.0.3
   jest:
     specifier: ^29.7.0
@@ -101,6 +98,17 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /@acuminous/bitsyntax@0.1.2:
+    resolution: {integrity: sha512-29lUK80d1muEQqiUsSo+3A0yP6CdspgC95EnKBMi22Xlwt79i/En4Vr67+cXhU+cZjbti3TgGGC5wy1stIywVQ==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      buffer-more-ints: 1.0.0
+      debug: 4.3.4
+      safe-buffer: 5.1.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@ampproject/remapping@2.2.1:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
@@ -462,7 +470,7 @@ packages:
       debug: 4.3.4
       espree: 9.6.1
       globals: 13.24.0
-      ignore: 5.2.4
+      ignore: 5.3.0
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       minimatch: 3.1.2
@@ -845,13 +853,6 @@ packages:
       '@types/node': 20.11.0
     dev: false
 
-  /@types/cron@2.4.0:
-    resolution: {integrity: sha512-5bBaAkqvSFBX8JMi/xCofNzG5E594TNsApMz68dLd/sQYz/HGQqgcxGHTRjOvD4G3Y+YF1Oo3S7QdCvKt1KAJQ==}
-    deprecated: This is a stub types definition. cron provides its own type definitions, so you do not need this installed.
-    dependencies:
-      cron: 3.1.6
-    dev: false
-
   /@types/express-serve-static-core@4.17.41:
     resolution: {integrity: sha512-OaJ7XLaelTgrvlZD8/aa0vvvxZdUmlCn6MtWeB7TkiKW70BQLc9XEPpDLPdbo52ZhXUCrznlWdCHWxJWtdyajA==}
     dependencies:
@@ -923,10 +924,6 @@ packages:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
     dev: true
 
-  /@types/node@10.17.60:
-    resolution: {integrity: sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==}
-    dev: false
-
   /@types/node@20.11.0:
     resolution: {integrity: sha512-o9bjXmDNcF7GbM4CNQpmi+TutCgap/K3w1JyKgxAjqx41zp9qlIAVFi0IhCNsJcXolEqLWhbFbEeL0PvYm4pcQ==}
     dependencies:
@@ -982,13 +979,8 @@ packages:
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
     dev: false
 
-  /@types/uuid@7.0.8:
-    resolution: {integrity: sha512-95N4tyM4B5u1sj2m8Tht09qWHju2ht413GBFz8CHtxp8aIiJUF6t51MsR7jC9OF4rRVf93AxE++WJe7+Puc1UA==}
-    dev: false
-
   /@types/uuid@9.0.7:
     resolution: {integrity: sha512-WUtIVRUZ9i5dYXefDEAI7sh9/O7jGvHg7Df/5O/gtH3Yabe5odI3UWopVR1qbPXQtvOxWu3mM4XxlYeZtMWF4g==}
-    dev: false
 
   /@types/yargs-parser@21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -1020,7 +1012,7 @@ packages:
       debug: 4.3.4
       eslint: 8.56.0
       graphemer: 1.4.0
-      ignore: 5.2.4
+      ignore: 5.3.0
       natural-compare: 1.4.0
       semver: 7.5.4
       ts-api-utils: 1.0.3(typescript@5.3.3)
@@ -1142,70 +1134,63 @@ packages:
       '@wymp/weenie-base': 1.1.0
     dev: false
 
-  /@wymp/http-errors@2.0.0:
-    resolution: {integrity: sha512-6ifG/412JukAA90id5OgalgF3EUG7F/vt1GEGW/xKbuFZWV664l5sbMIwPpZSJR853bGDiXBHIOrgQcRY7amCQ==, tarball: https://npm.pkg.github.com/download/@wymp/http-errors/2.0.0/64a878497e2c0cd99a65f19c637074f0ca418489}
-    dev: false
-
   /@wymp/http-errors@3.0.0:
     resolution: {integrity: sha512-2ceCxy1IHfROUYBvnT/Zb0koWi3KNsLpQPHJ9FzTLnJZT1r/wDYR4vO4jT54ItkeJpgn9X3vQTmixxvajN6XQw==}
     requiresBuild: true
-    dev: true
 
-  /@wymp/http-utils@3.3.3:
-    resolution: {integrity: sha512-PcYcDcQdKjnaga+3oWK2Ib5XZlk451Tc22b6/ksIQXPiUtzoqnTSNGTAcviYO0S2PLPTFruWoTbXMbFmO015gw==, tarball: https://npm.pkg.github.com/download/@wymp/http-utils/3.3.3/d2b301879b8c23047d430b1ec44520d2983f9236}
+  /@wymp/http-utils@3.4.0:
+    resolution: {integrity: sha512-RgoeKjOWriWVfyU3HQznN84GuNz8XtLau53rczB6nBPWIPvubOTEvArEPEJmY9jdF7zsWsWRxIWv16Fkgv5wOg==}
+    requiresBuild: true
     dependencies:
-      '@types/node': 20.11.0
-      '@wymp/http-errors': 2.0.0
-      '@wymp/ts-simple-interfaces': 0.6.0
-      '@wymp/types': 0.2.0-rc7
+      '@wymp/http-errors': 3.0.0
+      '@wymp/ts-simple-interfaces': 0.7.2
+      '@wymp/types': 0.2.0-rc8
     dev: false
 
-  /@wymp/simple-db-mysql@0.6.1:
-    resolution: {integrity: sha512-JGzh9B7puR7hAeBFfWk/YmRupPJvmFeFaw9778gDffggURxCwqfL6yYDhZMfUYwlvDNRcrYgnutgt4zi3qIoPA==, tarball: https://npm.pkg.github.com/download/@wymp/simple-db-mysql/0.6.1/1f0a128a0019f3719a69c7f459cabc013b06abbb}
+  /@wymp/simple-db-mysql@0.7.2:
+    resolution: {integrity: sha512-kwIhCgt4L8rOpmpGUW2c4vksFL9F8kBq8To0gh5qD0Asauh4giC3cV/fGefQtMasLTOZOtxeHir2F2bo/MbUsQ==}
     dependencies:
       '@types/mysql2': github.com/types/mysql2/89378b2cb3974ea8cdd1d633b8f056e54e5d2384
-      '@wymp/ts-simple-interfaces': 0.6.0
+      '@wymp/ts-simple-interfaces': 0.7.2
       mysql2: 2.3.3
     dev: false
 
-  /@wymp/simple-http-client-rpn@0.6.0:
-    resolution: {integrity: sha512-stn49xJOsdRl3Yvv2RDQN/Nlaot9Qi2fIkPWzDrOu6o6XT2GQljZKbiqlxFmegc7JA3ptpi+hqhFVU6twE72pg==, tarball: https://npm.pkg.github.com/download/@wymp/simple-http-client-rpn/0.6.0/2d9a48939f64dec126cce2715982d5dd0b24628c}
+  /@wymp/simple-http-client-rpn@0.7.2:
+    resolution: {integrity: sha512-iEfdo3XZ3veTWqXQDA6FuFl0xcNKq+GVNfKOnLjuNFBVW8EJLgVwkzPHwbGDRxIJDmcglOKzOoq6xUeTe6CUYw==}
     dependencies:
-      '@types/node': 10.17.60
+      '@types/request': 2.48.12
       '@types/request-promise-native': 1.0.21
-      '@wymp/ts-simple-interfaces': 0.6.0
+      '@wymp/ts-simple-interfaces': 0.7.2
       request: 2.88.2
       request-promise-native: 1.0.9(request@2.88.2)
     dev: false
 
-  /@wymp/simple-http-server-express@0.6.0:
-    resolution: {integrity: sha512-qBH+bLNdWPp9bGIbhaJtG/aT8nDiiP9f8lwiKRt8xc/Gh+PPkX0yID+5SLFbWDD5AUhLfCognBCmZ3XDCBQMRg==, tarball: https://npm.pkg.github.com/download/@wymp/simple-http-server-express/0.6.0/7b4a9c0e4b8c7c7c1e2a0bf339612ad681b21969}
+  /@wymp/simple-http-server-express@0.7.2:
+    resolution: {integrity: sha512-lMVaVVo5zaUSs4NYkkulAYKgc+aME9+uU8nLfwd0euYjpGg8IrE7aU1bugBlsG3JbSFIRGMnVcasHDt2DZTDQQ==}
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express': 4.17.21
-      '@types/node': 10.17.60
-      '@wymp/ts-simple-interfaces': 0.6.0
+      '@wymp/ts-simple-interfaces': 0.7.2
       body-parser: 1.20.2
       express: 4.18.2
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@wymp/simple-logger-console@0.6.2:
-    resolution: {integrity: sha512-Ej0ChwKc3miCej3egIsMuTHuaryebME+bmMgUwa3To9opL8HBj1PKSgpvY9AO9XeJXA8kCytvmFJIRo1HfrJOg==, tarball: https://npm.pkg.github.com/download/@wymp/simple-logger-console/0.6.2/13a4db482b5464db18fca4b24967b4000ffa6d61}
+  /@wymp/simple-logger-console@0.7.2:
+    resolution: {integrity: sha512-LXaPLZMecqE5V40sLvYr4AHhpOyTdkIv23kbMvuTDqR9RRQupatoa4OhNgTPW9sZcLGAZp20WMvfBI2yjVcCeA==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.6.0
+      '@wymp/ts-simple-interfaces': 0.7.2
     dev: false
 
-  /@wymp/simple-pubsub-amqp@0.5.4:
-    resolution: {integrity: sha512-KjdG0MQfMzP6etxXW1R3cPyZFg1LZTWjTe58tKlGMtmOkUdt4z+yhWopnovYWqZ9T1PLPWjiRDhgKt+JB+1qCw==, tarball: https://npm.pkg.github.com/download/@wymp/simple-pubsub-amqp/0.5.4/1e6466ca2636204ff8e062f7cee8ba6e973acb95}
+  /@wymp/simple-pubsub-amqp@0.7.2:
+    resolution: {integrity: sha512-rhTke42Tm0OaLpfNEtFqZWS68eFHBP8dyzT7UpxzM+DFUFfgrhUPn1YXp6ZjKw2vVURZZ28CcII2gq0gfmcb2Q==}
     dependencies:
       '@types/amqplib': 0.10.4
-      '@types/node': 10.17.60
-      '@types/uuid': 7.0.8
-      '@wymp/ts-simple-interfaces': 0.5.6
-      amqplib: 0.8.0
-      uuid: 7.0.3
+      '@types/uuid': 9.0.7
+      '@wymp/ts-simple-interfaces': 0.7.2
+      amqplib: 0.10.3
+      uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1217,30 +1202,13 @@ packages:
       ts-md5: 1.3.1
     dev: true
 
-  /@wymp/ts-simple-interfaces@0.5.6:
-    resolution: {integrity: sha512-8OJAZGX5FCqjI6pT0+9ec2PnHpAE3XcxK5n/IXHtxyvxLxXKM5Qi8C1ktwE7EMFCEHOmfHMRByH0u4gOi+36Bw==, tarball: https://npm.pkg.github.com/download/@wymp/ts-simple-interfaces/0.5.6/738b1ddf5e5a2c4056b56b8e03110c6b7242b605}
-    dependencies:
-      '@wymp/http-errors': 2.0.0
-    dev: false
-
-  /@wymp/ts-simple-interfaces@0.6.0:
-    resolution: {integrity: sha512-EhKry0BsB5x4fZnBRNvUq1chN/J+ehuV70NmzNrqKotrn/dDzA6YmoYlspaSkpq0LevAQ5ZyzaIa2Vo4ECFgAQ==, tarball: https://npm.pkg.github.com/download/@wymp/ts-simple-interfaces/0.6.0/bc652a6cc0635a8aca44053629dba325269274da}
-    dependencies:
-      '@wymp/http-errors': 2.0.0
-    dev: false
-
   /@wymp/ts-simple-interfaces@0.7.2:
     resolution: {integrity: sha512-Li6wmZt+oyR5GB8iS13Z6RFYXIwZ/RiynI2PTy1RKptLNLd8gy2JgmbsdyXZY2/UYN4HECWdgiT8bhDVfqz2MQ==}
     dependencies:
       '@wymp/http-errors': 3.0.0
-    dev: true
 
-  /@wymp/types@0.2.0-rc7:
-    resolution: {integrity: sha512-WjsB+ijLzSy2+p6YSnnoWoyQi9vfXuPmS/6ypeSF9Iqda+cZUFTEF9Pd4m6n4IJy0SusO5jeHogvoxdz77qMRA==, tarball: https://npm.pkg.github.com/download/@wymp/types/0.2.0-rc7/5f68a61c5331ece7a25c7f14e3e46b00ffc98eea}
-    dev: false
-
-  /@wymp/weenie-base@1.0.2:
-    resolution: {integrity: sha512-vTeO7xGdEA6JDvWI2AxM3KmfadtXM1SXeI+cJR9ID0EBS/U91Ooz880uTUpc8LTNvW872fOl2utrBsJPFGADzg==, tarball: https://npm.pkg.github.com/download/@wymp/weenie-base/1.0.2/21e1389602d5a20753fe8ed1678a694f1df330ab}
+  /@wymp/types@0.2.0-rc8:
+    resolution: {integrity: sha512-q0LSzVIzTrwEBSAHIMSYDuYb+zUXcNmbyxq8YhOn/H+tnAakf8jhAe2kC6zM8hHT/cPJRb3qSGl29GI9lI8yrg==}
     dev: false
 
   /@wymp/weenie-base@1.1.0:
@@ -1277,15 +1245,13 @@ packages:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  /amqplib@0.8.0:
-    resolution: {integrity: sha512-icU+a4kkq4Y1PS4NNi+YPDMwdlbFcZ1EZTQT2nigW3fvOb6AOgUQ9+Mk4ue0Zu5cBg/XpDzB40oH10ysrk2dmA==}
+  /amqplib@0.10.3:
+    resolution: {integrity: sha512-UHmuSa7n8vVW/a5HGh2nFPqAEr8+cD4dEZ6u9GjP91nHfr1a54RyAKyra7Sb5NH7NBKOUlyQSMXIp0qAixKexw==}
     engines: {node: '>=10'}
     dependencies:
-      bitsyntax: 0.1.0
-      bluebird: 3.7.2
+      '@acuminous/bitsyntax': 0.1.2
       buffer-more-ints: 1.0.0
       readable-stream: 1.1.14
-      safe-buffer: 5.2.1
       url-parse: 1.5.10
     transitivePeerDependencies:
       - supports-color
@@ -1466,21 +1432,6 @@ packages:
     resolution: {integrity: sha512-qeFIXtP4MSoi6NLqO12WfqARWWuCKi2Rn/9hJLEmtB5yTNr9DqFWkJRCf2qShWzPeAMRnOgCrq0sg/KLv5ES9w==}
     dependencies:
       tweetnacl: 0.14.5
-    dev: false
-
-  /bitsyntax@0.1.0:
-    resolution: {integrity: sha512-ikAdCnrloKmFOugAfxWws89/fPc+nw0OOG1IzIE72uSOg/A3cYptKCjSUhDTuj7fhsJtzkzlv7l3b8PzRHLN0Q==}
-    engines: {node: '>=0.8'}
-    dependencies:
-      buffer-more-ints: 1.0.0
-      debug: 2.6.9
-      safe-buffer: 5.1.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /bluebird@3.7.2:
-    resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
     dev: false
 
   /body-parser@1.20.1:
@@ -1796,7 +1747,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /dedent@1.5.1:
     resolution: {integrity: sha512-+LxW+KLWxu3HW3M2w2ympwtqPrqYRzU8fqi6Fhd18fBALe15blJPI/I4+UHveMVG6lJqB4JNd4UG0S5cnVHwIg==}
@@ -1986,7 +1936,7 @@ packages:
       glob-parent: 6.0.2
       globals: 13.24.0
       graphemer: 1.4.0
-      ignore: 5.2.4
+      ignore: 5.3.0
       imurmurhash: 0.1.4
       is-glob: 4.0.3
       is-path-inside: 3.0.3
@@ -2371,7 +2321,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.3.2
-      ignore: 5.2.4
+      ignore: 5.3.0
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
@@ -2490,8 +2440,8 @@ packages:
       safer-buffer: 2.1.2
     dev: false
 
-  /ignore@5.2.4:
-    resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
+  /ignore@5.3.0:
+    resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
     engines: {node: '>= 4'}
     dev: true
 
@@ -3325,7 +3275,6 @@ packages:
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
-    dev: true
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3570,7 +3519,7 @@ packages:
       chalk: 3.0.0
       execa: 4.1.0
       find-up: 4.1.0
-      ignore: 5.2.4
+      ignore: 5.3.0
       mri: 1.2.0
       multimatch: 4.0.0
       prettier: 3.2.1
@@ -3603,14 +3552,9 @@ packages:
       once: 1.4.0
     dev: true
 
-  /punycode@2.3.0:
-    resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
-    engines: {node: '>=6'}
-
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
-    dev: false
 
   /pure-rand@6.0.4:
     resolution: {integrity: sha512-LA0Y9kxMYv47GIPJy6MI84fqTd2HmYZI83W/kM/SkKfDlajnZYfmXFTxkbY+xSBPkLJxltMa9hIkmdc29eguMA==}
@@ -4199,7 +4143,7 @@ packages:
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
-      punycode: 2.3.0
+      punycode: 2.3.1
 
   /url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
@@ -4216,11 +4160,6 @@ packages:
   /uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-    hasBin: true
-    dev: false
-
-  /uuid@7.0.3:
-    resolution: {integrity: sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==}
     hasBin: true
     dev: false
 
