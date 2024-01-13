@@ -80,6 +80,9 @@ describe("Cron Module", () => {
       c.kill();
     });
 
+    // NOTE: The "without svc dependency" version of this test can be flakey because the cronjob fires _on the second,_
+    // meaning that occasionally it will fire more than the expected number of times because of the extra space we have
+    // to build into the test.
     [false, true].map((svc) => {
       test(`should successfully run clock cronjobs ${
         svc ? `with` : `without`
@@ -97,7 +100,7 @@ describe("Cron Module", () => {
         }
 
         // Get a cron manager
-        const { cron } = await M.cron(r);
+        const { cron } = M.cron(r);
         c = cron;
 
         c.register({
@@ -166,7 +169,7 @@ describe("Backoff", () => {
       }, log);
 
       expect(results.length).toBe(6);
-      let radius = 15;
+      const radius = 15;
       for (let i = 0; i < results.length; i++) {
         const [val, targ] = results[i];
         const msg = `Failed at round ${i + 1}. Actual is ${val}, target is ${targ}, +/-${radius}`;

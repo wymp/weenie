@@ -58,11 +58,14 @@ export class Cron {
    */
   protected ready: boolean;
 
-  public constructor(protected log: SimpleLoggerInterface, protected initWait: Promise<unknown>) {
+  public constructor(
+    protected log: SimpleLoggerInterface,
+    protected initWait: Promise<unknown>
+  ) {
     // On initialization, initialize any currently uninitialized cronjobs
     initWait.then(() => {
       this.ready = true;
-      for (let name in this.crontab) {
+      for (const name in this.crontab) {
         if (this.crontab[name].provider === null) {
           this.initJob(this.crontab[name].job);
         }
@@ -77,7 +80,7 @@ export class Cron {
     const jobs = Array.isArray(jobOrJobs) ? jobOrJobs : [jobOrJobs];
 
     // Add jobs to crontab
-    for (let job of jobs) {
+    for (const job of jobs) {
       this.crontab[job.name] = {
         job,
         provider: null,
@@ -97,14 +100,14 @@ export class Cron {
         log.debug(`Running`);
         job
           .handler(log)
-          .then(result => {
+          .then((result) => {
             if (!result) {
               log.error(`Cronjob failed.`);
             } else {
               log.notice(`Completed successfully`);
             }
           })
-          .catch(e => {
+          .catch((e) => {
             log.error(`Cronjob failed: ${e.message}`);
             log.debug(e.stack);
           });
@@ -127,7 +130,7 @@ export class Cron {
         }
       }
     } else {
-      for (let n in this.crontab) {
+      for (const n in this.crontab) {
         const p = this.crontab[n].provider;
         if (p !== null) {
           p.stop();
@@ -148,10 +151,10 @@ export class MockCron implements CronInterface {
     if (!Array.isArray(jobOrJobs)) {
       this._jobs.push({ ...jobOrJobs, killed: false });
     } else {
-      this._jobs = this._jobs.concat(jobOrJobs.map(j => ({ ...j, killed: false })));
+      this._jobs = this._jobs.concat(jobOrJobs.map((j) => ({ ...j, killed: false })));
     }
   }
   public kill(name?: string): void {
-    (name ? this._jobs.filter(j => j.name === name) : this._jobs).map(j => (j.killed = true));
+    (name ? this._jobs.filter((j) => j.name === name) : this._jobs).map((j) => (j.killed = true));
   }
 }

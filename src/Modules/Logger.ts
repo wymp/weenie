@@ -15,8 +15,8 @@ export function logger(
     (typeof (deps as FullConfig).config !== "undefined"
       ? deps
       : typeof (deps as PartialConfig).logger !== "undefined"
-      ? { config: deps }
-      : { config: { logger: deps } })
+        ? { config: deps }
+        : { config: { logger: deps } })
   );
 
   // (Length of '[emergency]:', the longest log level as written by our logger)

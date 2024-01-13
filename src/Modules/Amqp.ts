@@ -22,9 +22,10 @@ export const amqp = (r: {
  * Need to create an adapter class to change the signature of subscribe and publish for our specific
  * philosophy.
  */
-export class WeeniePubSubAmqp extends AbstractPubSubAmqp
-  implements
-    SimplePubSubInterface<WeenieAmqpMessage, unknown, SubscriptionOptions, PublishOptions> {
+export class WeeniePubSubAmqp
+  extends AbstractPubSubAmqp
+  implements SimplePubSubInterface<WeenieAmqpMessage, unknown, SubscriptionOptions, PublishOptions>
+{
   public subscribe(
     routes: { [exchange: string]: Array<string> },
     handler: (msg: WeenieAmqpMessage, log: SimpleLoggerInterface) => Promise<boolean>,
@@ -33,7 +34,7 @@ export class WeeniePubSubAmqp extends AbstractPubSubAmqp
     return this.driver.subscribe(
       routes,
       async (_msg: SimpleAmqpMessage, log: SimpleLoggerInterface) => {
-        let msg: any;
+        let msg: unknown;
         try {
           msg = JSON.parse(_msg.content.toString("utf8"));
           if (msg === null || typeof msg !== "object") {

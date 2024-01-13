@@ -42,7 +42,7 @@ export class ApiClient implements SimpleHttpClientInterface {
       `Basic ` + Buffer.from(`${this.config.key}:${this.config.secret}`).toString("base64");
   }
 
-  public request<D extends any>(
+  public request<D>(
     req: SimpleRpnRequestConfig,
     _log?: SimpleLoggerInterface
   ): Promise<SimpleHttpClientResponseInterface<D>> {
@@ -57,7 +57,7 @@ export class ApiClient implements SimpleHttpClientInterface {
     }
 
     function has(header: string) {
-      return Object.keys(req.headers!).find(k => k.toLowerCase() === header) !== undefined;
+      return Object.keys(req.headers!).find((k) => k.toLowerCase() === header) !== undefined;
     }
 
     if (!req.headers) {

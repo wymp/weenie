@@ -22,8 +22,8 @@ export const serviceManagement = (d: {
   logger?: SimpleLoggerInterface;
 }) => {
   // t is our timeout, extRes is an externalization of the "resolve" function for the timeout promise
-  let t: any;
-  let extRes: any;
+  let t: NodeJS.Timeout | null = null;
+  let extRes: () => void;
   const initTimeoutMs =
     d.config.initializationTimeoutMs !== undefined ? d.config.initializationTimeoutMs : 5000;
 

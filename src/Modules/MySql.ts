@@ -12,8 +12,8 @@ export function mysql(deps: FullConfig | PartialConfig | DatabaseConfig): SqlDep
     (typeof (deps as FullConfig).config !== "undefined"
       ? deps
       : typeof (deps as PartialConfig).db !== "undefined"
-      ? { config: deps }
-      : { config: { db: deps } })
+        ? { config: deps }
+        : { config: { db: deps } })
   );
 
   return {

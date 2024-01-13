@@ -14,9 +14,14 @@ import * as uuid from "uuid";
  *
  */
 
-export const backoff = (type: "exponential") => {
+export const backoff = (type: "exponential" = "exponential") => {
   return (r: { config: JobManagerConfig }): { backoff: Backoff } => {
-    return { backoff: new SimpleExponentialBackoff(r.config) };
+    switch (type) {
+      case "exponential":
+        return { backoff: new SimpleExponentialBackoff(r.config) };
+      default:
+        throw new Error(`Unknown backoff type ${type}`);
+    }
   };
 };
 
@@ -48,7 +53,7 @@ export abstract class BaseBackoff {
     _jobId?: string
   ): Promise<boolean> {
     const jobId = _jobId || uuid.v4();
-    return new Promise((res, rej) => {
+    return new Promise((res) => {
       log.info(`Beginning run sequence for job ${jobId}`);
       const runWithBackoff = () => {
         const maxJobWaitMs =
@@ -82,7 +87,7 @@ export abstract class BaseBackoff {
       // Encapsulate running logic so we can rerun it
       const run = () => {
         job()
-          .then(result => {
+          .then((result) => {
             if (result === true) {
               log.info(`Job ${jobId} successful. Returning true.`);
               if (this.jobs[jobId]) {
@@ -94,7 +99,7 @@ export abstract class BaseBackoff {
               runWithBackoff();
             }
           })
-          .catch(e => {
+          .catch((e) => {
             log.error(`Error executing job ${jobId}: ${e}`);
             log.error(e.stack);
             runWithBackoff();

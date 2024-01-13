@@ -70,7 +70,7 @@ const exampleConfigValidator = rt.Intersect(
     amqp: mqConnectionConfigValidator,
   })
 );
-declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
+// declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
 
 // (We're going to wrap this in a top-level async function so we can make the syntax prettier)
 (async () => {
@@ -124,7 +124,7 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
      */
     .and(() => {
       return {
-        myPromise: new Promise<string>((res, rej) => setTimeout(() => res("resolved!"), 2000)),
+        myPromise: new Promise<string>((res) => setTimeout(() => res("resolved!"), 2000)),
       };
     })
 
@@ -279,7 +279,7 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
     deps.log.info(`Received request: ${req.path}`);
     next();
   });
-  deps.http.get("/info", async (req, res, next) => {
+  deps.http.get("/info", async (req, res) => {
     try {
       // Pick a random to-do and get info about it.
       const todoId = Math.round(Math.random() * 100);
@@ -327,7 +327,7 @@ declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
   const dbsQuery = await deps.io.getAllDatabases();
 
   deps.log.notice(`Available databases:`);
-  for (let row of dbsQuery.rows) {
+  for (const row of dbsQuery.rows) {
     deps.log.notice(`* ${row.Database}`);
   }
 })() // End async "init" function

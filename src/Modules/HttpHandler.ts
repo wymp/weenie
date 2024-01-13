@@ -44,11 +44,10 @@ export function httpHandler(d: {
   if (opts.parseJson) {
     http.use((req, res, next) => {
       const parse = Parsers.json({ type: opts.jsonMimeTypes });
-      const _next = (...args: Array<any>) => {
-        if (args.length === 0) {
+      const _next = (e?: Error) => {
+        if (!e) {
           next();
         } else {
-          const e = args[0];
           next(new E.BadRequest(`You've passed bad JSON input: ${e.message}`, `INPUT.BAD-JSON`));
         }
       };
@@ -154,12 +153,14 @@ export function httpHandler(d: {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getWithFallback = <T>(d: any, k1: string, k2: string): T => d[k1] || d[k2];
 
 export const StandardErrorHandler = (
   _log: SimpleLoggerInterface,
   opts: { mask500Errors: boolean | string }
 ): SimpleHttpServerErrorHandler => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (e, req, res, next) => {
     const log = logger(_log, req, res);
 
@@ -189,6 +190,7 @@ export const StandardErrorHandler = (
     log[level]("Stack trace: " + e.stack);
 
     // Prepare error envelope
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let errorResponse: any = {};
     const accept = res.locals.accept || req.get("accept") || null;
     if (accept && accept.match(/application\/json-rpc/)) {
@@ -213,7 +215,7 @@ export const StandardErrorHandler = (
 
         // Otherwise, create a new error response
         errorResponse = JSON.stringify({
-          jsonrpc: "2.0" as "2.0",
+          jsonrpc: "2.0" as const,
           id: res.locals.jsonrpcRequestId || null,
           error: {
             code: e.status ? e.status : e.code && typeof e.code === "number" ? e.code! : 500,
