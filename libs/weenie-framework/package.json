@@ -1,0 +1,87 @@
+{
+  "name": "@wymp/weenie-framework",
+  "version": "0.7.5",
+  "description": "This is the main package for Weenie, an unopinionated Typescript microservice framework.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "config.example.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "pnpm typecheck && pnpm prettier && pnpm lint && pnpm test",
+    "clean": "rm -Rf dist",
+    "docs:gen": "typedoc src/index.ts --sort visibility --sort static-first --sort alphabetical",
+    "docs:view": "pnpx http-server -o ./docs",
+    "format": "pnpm prettier:fix && pnpm lint:fix",
+    "lint": "eslint ./src/** ./tests/**",
+    "lint:fix": "pnpm lint --fix",
+    "preinstall": "npx only-allow pnpm",
+    "prepack": "pnpm clean && pnpm build",
+    "prepare": "husky install",
+    "prettier": "prettier ./src/** ./tests/** --check",
+    "prettier:fix": "pnpm prettier --write",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Kael Shipman<kael.shipman@gmail.com>",
+  "license": "ISC",
+  "repository": "https://github.com/wymp/weenie-framework.git",
+  "keywords": [
+    "typescript",
+    "microservice",
+    "framework",
+    "dependency injection",
+    "dependency injector"
+  ],
+  "dependencies": {
+    "@wymp/config-node": "^1.1.0",
+    "@wymp/http-errors": "^1.8.0 || ^2.0.0 || ^3.0.0",
+    "@wymp/http-utils": "^3.0.0",
+    "@wymp/simple-db-mysql": "^0.5.2 || ^0.6.0 || ^0.7.2",
+    "@wymp/simple-http-client-rpn": "^0.5.2 || ^0.6.0 || ^0.7.2",
+    "@wymp/simple-http-server-express": "^0.5.2 || ^0.6.0 || ^0.7.2",
+    "@wymp/simple-logger-console": "^0.5.1 || ^0.6.0 || ^0.7.2",
+    "@wymp/simple-pubsub-amqp": "^0.5.1 || ^0.6.0 || ^0.7.2",
+    "@wymp/ts-simple-interfaces": "^0.5.3 || ^0.6.0 || ^0.7.2",
+    "@wymp/weenie-base": "^0.5.4 || ^0.6.0 || ^1.0.0 || ^1.1.0",
+    "cron": "^3.1.6",
+    "runtypes": "^6.7.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/uuid": "^9.0.7",
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "@wymp/ts-simple-interfaces-testing": "^0.7.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.1",
+    "pretty-quick": "^3.1.3",
+    "ts-jest": "^29.1.1",
+    "typedoc": "^0.25.7",
+    "typescript": "^5.3.3"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "trailingComma": "es5"
+  },
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/tests"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
