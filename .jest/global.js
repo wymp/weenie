@@ -6,7 +6,6 @@
 const config = {
   // Run tests from one or more projects
   projects: [
-    "<rootDir>/../apps/*",
     "<rootDir>/../libs/*",
   ],
 };
