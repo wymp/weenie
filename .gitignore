@@ -1,0 +1,9 @@
+.sw[op]
+.DS_Store
+**/*.tmp
+**/*.local
+**/*.local.yml
+**/.env/local
+node_modules
+dist
+.docker-compose-env

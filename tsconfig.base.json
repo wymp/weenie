@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "composite": true,
+
+    "target": "es2022",
+    "lib": ["es2023"],
+    "module": "nodenext",
+
+    "strict": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": false,
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": false,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "esModuleInterop": false,
+
+    "paths": {}
+  },
+  "files": [],
+  "include": []
+}
