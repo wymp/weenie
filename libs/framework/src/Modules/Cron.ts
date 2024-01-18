@@ -56,7 +56,7 @@ export class Cron {
   /**
    * Captures the initialization timeout
    */
-  protected ready: boolean;
+  protected ready: boolean = false;
 
   public constructor(
     protected log: SimpleLoggerInterface,

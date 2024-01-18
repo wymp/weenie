@@ -45,7 +45,7 @@ export abstract class BaseBackoff {
   protected jobs: {
     [id: string]: number;
   } = {};
-  protected config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null };
+  protected abstract config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null };
 
   public async run(
     job: () => Promise<boolean>,
@@ -120,6 +120,7 @@ export abstract class BaseBackoff {
 }
 
 export class SimpleExponentialBackoff extends BaseBackoff {
+  protected config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null };
   public constructor(config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null }) {
     super();
     this.config = config;
