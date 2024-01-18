@@ -1,195 +1,33 @@
 name: CI
 
 on:
-  # We use a `vX.Y` branch naming convention for our "main" branches, so we'll target pushes against those (including
-  # merged PRs)
   push:
     branches:
-      - v*
-      - ci-test*
-  # Additionally, we'll target PR updates so that CI runs against open PRs
+      - current
+      - v*.x
+      - ci-test/*
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
-  # Finally, we'll allow the workflow to be triggered manually
   workflow_dispatch:
 
-# Only one run at a time per ref
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-
-  ##
-  ## PREPARE
-  ##
-
-  get-deploy-env:
-    runs-on: ubuntu-latest
-    # Necessary for nrwl/nx-set-shas
-    permissions:
-      contents: 'read'
-      actions: 'read'
-    outputs:
-      affected-shas-base: ${{ steps.get-affected-sha-spread.outputs.base }}
-      affected-shas-head: ${{ steps.get-affected-sha-spread.outputs.head }}
-      pnpmFilter: ${{ steps.get-pnpm-params.outputs.pnpmFilter }}
-      pnpmIgnorePattern: ${{ steps.get-pnpm-params.outputs.pnpmIgnorePattern }}
-      allAppsJson: ${{ steps.get-all-pkgs.outputs.allAppsJson }}
-      allLibsJson: ${{ steps.get-all-pkgs.outputs.allLibsJson }}
-      affectedAppsJson: ${{ steps.get-affected-pkgs.outputs.affectedAppsJson }}
-      affectedLibsJson: ${{ steps.get-affected-pkgs.outputs.affectedLibsJson }}
-      deployable: ${{ steps.is-deployable.outputs.deployable }}
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # Output some initial variables that we'll need later
-      - name: Initial Vars
-        id: initial-vars
-        run: |
-          # Replace this with 'v1.x' or another branch to simulate a CI run on that branch
-          REFNAME=$GITHUB_REF_NAME
-          #REFNAME=v1.x
-          echo "REFNAME=$REFNAME"
-          echo "REFNAME=$REFNAME" >> $GITHUB_ENV
-
-          # TODO: Implement more complex handling of default branch
-          BASEBRANCH="$(echo "$REFNAME" | grep -q '^v[0-9]+]\.' && echo $REFNAME || echo v1.x)"
-          echo "BASEBRANCH=$BASEBRANCH"
-          echo "BASEBRANCH=$BASEBRANCH" >> $GITHUB_ENV
-
-          PNPM_VERSION="$(jq -r .engines.pnpm package.json)"
-          echo "PNPM_VERSION=$PNPM_VERSION"
-          echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
-
-      # Output some info for debugging purposes
-      - name: Output Versions for Debugging
-        run: |
-          echo effective branch: $REFNAME
-          echo "git: $(git --version)"
-          echo "jq: $(jq --version)"
-          echo "docker: $(docker --version 2>/dev/null)"
-
-      # Install pnpm (we don't need the whole node setup and all the deps, so we're just doing a simple pnpm install here)
-      - name: Install pnpm
-        run: npm i -g pnpm@${{ steps.initial-vars.outputs.PNPM_VERSION }}
-
-      # This is what allows us not to have to run our linting and testing against all of our code
-      - name: Determine the spread of affected commits
-        id: get-affected-sha-spread
-        uses: nrwl/nx-set-shas@v4
-        with:
-          main-branch-name: ${{ env.BASEBRANCH }}
-
-      # Use our current info to get a pnpm filter and ignore pattern to use in future commands, as well as a list of
-      # affected apps and libs
-      - name: Get pnpm params
-        id: get-pnpm-params
-        run: ./.github/workflows/get-pnpm-params.sh
-      - name: Get list of all packages from the repo
-        id: get-all-pkgs
-        run: ./.github/workflows/get-all-pkgs.sh
-      - name: Get lists of affected libs and apps
-        id: get-affected-pkgs
-        run: ./.github/workflows/get-affected-pkgs.sh
-        env:
-          hasTopLevelChanges: ${{ steps.get-pnpm-params.outputs.hasTopLevelChanges }}
-          pnpmFilter: ${{ steps.get-pnpm-params.outputs.pnpmFilter }}
-          pnpmIgnorePattern: ${{ steps.get-pnpm-params.outputs.pnpmIgnorePattern }}
-          allAppsJson: ${{ steps.get-all-pkgs.outputs.allAppsJson }}
-          allLibsJson: ${{ steps.get-all-pkgs.outputs.allLibsJson }}
-
-      # Finally, determine whether the current branch is deployable
-      - name: Determine whether the current branch is deployable
-        id: is-deployable
-        run: |
-          deployable="$(echo "$REFNAME" | grep -Eq '^v[0-9]+\..+$' && [ '${{ steps.get-affected-pkgs.outputs.affectedAppsJson }}' != '[]' ] && echo "true" || echo "false")"
-          echo "deployable=$deployable"
-          echo "deployable=$deployable" >> $GITHUB_OUTPUT
-
-  ##
-  ## Run linting/typechecks/tests
-  ##
-
-  check:
-    needs: [get-deploy-env]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: wymp/devops/actions/setup-node-pnpm@v1
-
-      - name: ESLint Cache
-        uses: actions/cache@v3
-        with:
-          key: eslint-cache-${{ hashFiles('libs/**/*', 'apps/**/*', 'pnpm-lock.yaml') }}
-          restore-keys: |
-            eslint-cache-
-          path: |
-            ./apps/*/node_modules/.cache/eslint-cache
-            ./libs/*/node_modules/.cache/eslint-cache
-
-      - name: Jest Cache
-        uses: actions/cache@v3
-        with:
-          key: jest-cache-${{ env.BRANCH }}
-          restore-keys: |
-            jest-cache-
-          path: |
-            /tmp/jest_*
-
-      - name: Lint, Typecheck and Test
-        run: |
-          pnpm \
-            --parallel \
-            --filter="${{ needs.get-deploy-env.outputs.pnpmFilter }}" \
-            --changed-files-ignore-pattern="${{ needs.get-deploy-env.outputs.pnpmIgnorePattern }}" \
-            check
-
-  ##
-  ## Pre-Seed Docker Cache
-  ##
-
-  # TODO: Figure out how to set up efficient docker layer caching so we can run 
-
-  ##
-  ## Build and deploy services
-  ##
-
-  build-and-deploy:
-    name: Build and Deploy ${{ matrix.service }}
-    needs: [get-deploy-env, check]
-    if: "!cancelled() && !failure() && needs.get-deploy-env.outputs.deployable == 'true'"
+  lint-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: ${{ fromJson(needs.get-deploy-env.outputs.affectedAppsJson) }}
+        node-version: [16.x, 18.x, 20.x]
     steps:
       - uses: actions/checkout@v4
+        name: Checkout
+
       - uses: wymp/devops/actions/setup-node-pnpm@v1
 
-      # TODO: Figure out how to set up pnpm cache for building docker containers
-      # - name: PNPM Cache for Docker
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: .pnpm-store
-      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('./pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pnpm-store-
-
-      # - name: Inject pnpm cache into Docker
-      #   uses: reproducible-containers/buildkit-cache-dance@v2.1.2
-      #   with:
-      #     cache-source: .pnpm-store
-      #     cache-target: /monorepo/.pnpm-store
-
-      - name: Build Container for ${{ matrix.service }}
-        run: pnpm --sequence --filter "${{ matrix.service }}" docker:build
-
-      # TODO: Deployment is highly dependent on your actual setup. Deferring on this for now.
-      # - name: Deploy
+      - run: pnpm i && pnpm check
+        name: Lint and Test
