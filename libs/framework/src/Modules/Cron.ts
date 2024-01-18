@@ -1,5 +1,5 @@
-import { SimpleLoggerInterface, TaggedLogger } from "@wymp/ts-simple-interfaces";
-import { CronJob as CronProvider } from "cron";
+import { SimpleLoggerInterface, TaggedLogger } from '@wymp/ts-simple-interfaces';
+import { CronJob as CronProvider } from 'cron';
 
 /**
  * Types
@@ -60,7 +60,7 @@ export class Cron {
 
   public constructor(
     protected log: SimpleLoggerInterface,
-    protected initWait: Promise<unknown>
+    protected initWait: Promise<unknown>,
   ) {
     // On initialization, initialize any currently uninitialized cronjobs
     initWait.then(() => {
@@ -123,7 +123,7 @@ export class Cron {
    */
   public kill(name?: string): void {
     if (name) {
-      if (typeof this.crontab[name] !== "undefined") {
+      if (typeof this.crontab[name] !== 'undefined') {
         const p = this.crontab[name].provider;
         if (p !== null) {
           p.stop();

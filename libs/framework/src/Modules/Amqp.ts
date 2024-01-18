@@ -1,4 +1,4 @@
-import { SimpleLoggerInterface, SimplePubSubInterface } from "@wymp/ts-simple-interfaces";
+import { SimpleLoggerInterface, SimplePubSubInterface } from '@wymp/ts-simple-interfaces';
 import {
   SimpleAmqpConfig,
   AbstractPubSubAmqp,
@@ -6,14 +6,12 @@ import {
   SubscriptionOptions,
   PublishOptions,
   SimpleAmqpMessage,
-} from "@wymp/simple-pubsub-amqp";
+} from '@wymp/simple-pubsub-amqp';
 
-export const amqp = (r: {
-  config: { amqp: SimpleAmqpConfig };
-  logger: SimpleLoggerInterface;
-  backoff?: Backoff;
-}) => {
-  const pubsub = new WeeniePubSubAmqp(r.config.amqp, r.logger, { backoff: r.backoff });
+export const amqp = (r: { config: { amqp: SimpleAmqpConfig }; logger: SimpleLoggerInterface; backoff?: Backoff }) => {
+  const pubsub = new WeeniePubSubAmqp(r.config.amqp, r.logger, {
+    backoff: r.backoff,
+  });
   pubsub.connect();
   return { pubsub };
 };
@@ -29,25 +27,22 @@ export class WeeniePubSubAmqp
   public subscribe(
     routes: { [exchange: string]: Array<string> },
     handler: (msg: WeenieAmqpMessage, log: SimpleLoggerInterface) => Promise<boolean>,
-    options: SubscriptionOptions
+    options: SubscriptionOptions,
   ): Promise<void> {
     return this.driver.subscribe(
       routes,
       async (_msg: SimpleAmqpMessage, log: SimpleLoggerInterface) => {
         let msg: unknown;
         try {
-          msg = JSON.parse(_msg.content.toString("utf8"));
-          if (msg === null || typeof msg !== "object") {
+          msg = JSON.parse(_msg.content.toString('utf8'));
+          if (msg === null || typeof msg !== 'object') {
             throw new Error(
-              `Message must be a non-null JSON object. Your message is ${
-                msg === null ? "null" : `a(n) ${typeof msg}`
-              }`
+              `Message must be a non-null JSON object. Your message is ${msg === null ? 'null' : `a(n) ${typeof msg}`}`,
             );
           }
         } catch (e) {
           log.error(
-            `Message body is not valid JSON: Message body: ${_msg.content.toString("utf8")}; ` +
-              `Error: ${e.stack}`
+            `Message body is not valid JSON: Message body: ${_msg.content.toString('utf8')}; ` + `Error: ${e.stack}`,
           );
           // Have to return true here since this message will never parse correctly
           return true;
@@ -65,7 +60,7 @@ export class WeeniePubSubAmqp
           return false;
         }
       },
-      options
+      options,
     );
   }
 

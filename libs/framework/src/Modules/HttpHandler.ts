@@ -1,12 +1,8 @@
-import * as E from "@wymp/http-errors";
-import { logger } from "@wymp/http-utils";
-import {
-  SimpleLoggerInterface,
-  SimpleHttpServerErrorHandler,
-  SimpleLogLevels,
-} from "@wymp/ts-simple-interfaces";
-import { WebServiceConfig } from "../Types";
-import { SimpleHttpServerExpress, Parsers } from "@wymp/simple-http-server-express";
+import * as E from '@wymp/http-errors';
+import { logger } from '@wymp/http-utils';
+import { SimpleLoggerInterface, SimpleHttpServerErrorHandler, SimpleLogLevels } from '@wymp/ts-simple-interfaces';
+import { WebServiceConfig } from '../Types';
+import { SimpleHttpServerExpress, Parsers } from '@wymp/simple-http-server-express';
 
 export { Parsers };
 
@@ -16,14 +12,14 @@ export function httpHandler(d: {
   // Maybe a service manager
   svc?: { ready: Promise<void> } | { initTimeout: Promise<void> };
 }) {
-  const config = getWithFallback<WebServiceConfig>(d.config, "http", "webservice");
+  const config = getWithFallback<WebServiceConfig>(d.config, 'http', 'webservice');
   const http = new SimpleHttpServerExpress({ listeners: config.listeners }, d.logger);
 
   // Get final options (null means "use default")
   const opts = {
     logIncoming: config.logIncoming ?? true,
     parseJson: config.parseJson ?? true,
-    jsonMimeTypes: config.jsonMimeTypes ?? ["application/json", "application/json-rpc"],
+    jsonMimeTypes: config.jsonMimeTypes ?? ['application/json', 'application/json-rpc'],
     handleErrors: config.handleErrors ?? true,
     handleFallthrough: config.handleFallthrough ?? true,
     listenOnReady: config.listenOnReady ?? true,
@@ -60,18 +56,16 @@ export function httpHandler(d: {
   if (opts.errOnBlankPost) {
     http.use((req, res, next) => {
       if (
-        ["post", "patch", "put"].includes(req.method.toLowerCase()) &&
+        ['post', 'patch', 'put'].includes(req.method.toLowerCase()) &&
         (!req.body || Object.keys(req.body).length === 0)
       ) {
-        const contentType = req.get("content-type");
+        const contentType = req.get('content-type');
         next(
           new E.BadRequest(
-            "The body of your request is blank or does not appear to have been parsed correctly. " +
-              "Please be sure to pass a content-type header specifying the content type of your body. " +
-              (contentType
-                ? `You passed 'Content-Type: ${contentType}'.`
-                : `You did not pass a content-type header.`)
-          )
+            'The body of your request is blank or does not appear to have been parsed correctly. ' +
+              'Please be sure to pass a content-type header specifying the content type of your body. ' +
+              (contentType ? `You passed 'Content-Type: ${contentType}'.` : `You did not pass a content-type header.`),
+          ),
         );
       } else {
         next();
@@ -81,25 +75,20 @@ export function httpHandler(d: {
 
   // If we've explicitly requested the next features and we can't offer them, we need to throw an
   // error
-  if (
-    !d.svc &&
-    (config.handleErrors === true ||
-      config.handleFallthrough === true ||
-      config.listenOnReady === true)
-  ) {
+  if (!d.svc && (config.handleErrors === true || config.handleFallthrough === true || config.listenOnReady === true)) {
     throw new E.InternalServerError(
       `You've requested error handling, fallthrough handling, or 'listen-on-ready', but you ` +
         `haven't provided a service manager that would enable this functionality. Please either ` +
         `change your config or add 'Weenie.serviceManager' to your dependencies to facilitate ` +
         `this. If you add 'Weenie.serviceManager', please note that you must call ` +
-        `'svc.initialized(true)' when your service is fully connected.`
+        `'svc.initialized(true)' when your service is fully connected.`,
     );
   }
 
   // If svc manager available, add auto-listening on initialization
-  let httpServers: ReturnType<SimpleHttpServerExpress["listen"]> | null = null;
+  let httpServers: ReturnType<SimpleHttpServerExpress['listen']> | null = null;
   if (d.svc && (opts.handleErrors || opts.handleFallthrough || opts.listenOnReady)) {
-    const ready = getWithFallback<Promise<void>>(d.svc, "ready", "initTimeout");
+    const ready = getWithFallback<Promise<void>>(d.svc, 'ready', 'initTimeout');
     ready.then(() => {
       // Add fallthrough handling, if requested
       // Note that we support a "response" object. This allows us to foster the habit of passing
@@ -123,8 +112,8 @@ export function httpHandler(d: {
               new E.BadRequest(
                 `Endpoint '${req.method} ${req.path}' does not exist on this server. Please read the ` +
                   `docs and try again.`,
-                `ENDPOINT-NOT-FOUND.${req.method}:${req.path}`
-              )
+                `ENDPOINT-NOT-FOUND.${req.method}:${req.path}`,
+              ),
             );
           }
         });
@@ -158,9 +147,8 @@ const getWithFallback = <T>(d: any, k1: string, k2: string): T => d[k1] || d[k2]
 
 export const StandardErrorHandler = (
   _log: SimpleLoggerInterface,
-  opts: { mask500Errors: boolean | string }
+  opts: { mask500Errors: boolean | string },
 ): SimpleHttpServerErrorHandler => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (e, req, res, next) => {
     const log = logger(_log, req, res);
 
@@ -176,31 +164,31 @@ export const StandardErrorHandler = (
     // Mask 500 errors, if requested
     const msg =
       opts.mask500Errors && e.status >= 500
-        ? typeof opts.mask500Errors === "string"
+        ? typeof opts.mask500Errors === 'string'
           ? opts.mask500Errors
           : `Sorry, something went wrong on our end :(. Please try again.`
         : e.message;
 
-    const level = <keyof SimpleLogLevels>(e.loglevel ? e.loglevel : "error");
+    const level = <keyof SimpleLogLevels>(e.loglevel ? e.loglevel : 'error');
     log[level](
       `Exception thrown: ${e.name} (${e.status}: ` +
         `'${e.subcode! || e.code!}') ${e.message}` +
-        (e.obstructions?.length ? ` Obstructions:\n${JSON.stringify(e.obstructions, null, 2)}` : "")
+        (e.obstructions?.length ? ` Obstructions:\n${JSON.stringify(e.obstructions, null, 2)}` : ''),
     );
-    log[level]("Stack trace: " + e.stack);
+    log[level]('Stack trace: ' + e.stack);
 
     // Prepare error envelope
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let errorResponse: any = {};
-    const accept = res.locals.accept || req.get("accept") || null;
+    const accept = res.locals.accept || req.get('accept') || null;
     if (accept && accept.match(/application\/json-rpc/)) {
-      res.set("Content-Type", "application/json-rpc");
+      res.set('Content-Type', 'application/json-rpc');
 
       // If using JSON-RPC, pack the error into a JSON-RPC error container
-      if (typeof originalError.serialize === "function") {
+      if (typeof originalError.serialize === 'function') {
         // If we have a serialize method, then use it (from jsonrpc-lite package)
         errorResponse = originalError.serialize();
-        if (typeof errorResponse !== "string") {
+        if (typeof errorResponse !== 'string') {
           errorResponse = JSON.stringify(errorResponse);
         }
       } else {
@@ -209,16 +197,16 @@ export const StandardErrorHandler = (
           log.warning(
             `Handling a JSON-RPC error, but no request id found. Please be sure to set the ` +
               `res.locals.jsonrpcRequestId variable to the request id at the beginning of the ` +
-              `request.`
+              `request.`,
           );
         }
 
         // Otherwise, create a new error response
         errorResponse = JSON.stringify({
-          jsonrpc: "2.0" as const,
+          jsonrpc: '2.0' as const,
           id: res.locals.jsonrpcRequestId || null,
           error: {
-            code: e.status ? e.status : e.code && typeof e.code === "number" ? e.code! : 500,
+            code: e.status ? e.status : e.code && typeof e.code === 'number' ? e.code! : 500,
             message: msg,
             data: {
               obstructions: e.obstructions,
@@ -228,11 +216,11 @@ export const StandardErrorHandler = (
       }
     } else {
       // Only using json for now
-      res.set("Content-Type", "application/json");
+      res.set('Content-Type', 'application/json');
 
       // If not JSON-RPC, pack the error response into a standard error object
       errorResponse = {
-        t: "error",
+        t: 'error',
         error: {
           status: e.status,
           code: e.subcode! || e.code!,
@@ -249,7 +237,7 @@ export const StandardErrorHandler = (
     // Add any headers that might have been specified with the error
     for (const k in e.headers) {
       // Skip certain headers
-      if (k.toLowerCase() === "content-type") {
+      if (k.toLowerCase() === 'content-type') {
         continue;
       }
       res.set(k, e.headers[k]);

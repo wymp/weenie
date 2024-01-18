@@ -1,5 +1,4 @@
-/* eslint-disable spaced-comment */
-import { Weenie } from "./Weenie";
+import { Weenie } from './Weenie';
 
 // Don't want to add unnecessary dependencies just for the example, so we're just ts-ignoring this
 // for now.
@@ -48,8 +47,8 @@ type Config = {
  * dep1 - A contrived dependency that doesn't require anything to initialize
  */
 const dep1 = () => ({
-  a: "one",
-  b: "two",
+  a: 'one',
+  b: 'two',
 });
 
 /**
@@ -70,7 +69,7 @@ const internalDep = (d: { a: string; b: string }) => ({
  * Notice that we're using a very narrow config type here. Always a good idea to keep interfaces
  * narrow when possible to keep the cognitive load of components down.
  */
-const dep2 = (d: { config: Pick<Config, "valueOfC">; a: string; b: string; internal: string }) => ({
+const dep2 = (d: { config: Pick<Config, 'valueOfC'>; a: string; b: string; internal: string }) => ({
   b: `three (previously ${d.b})`,
   c: `${d.config.valueOfC}`,
   reveal: `Internal dependency: ${d.internal}`,
@@ -82,7 +81,7 @@ const dep2 = (d: { config: Pick<Config, "valueOfC">; a: string; b: string; inter
  * This is quite common in real apps (e.g., when establishing connections to databases, MQs, etc.),
  * so I thought it would be nice to demo it here.
  */
-const promiseDep = (d: { config: Pick<Config, "promiseWaitMs"> }) => ({
+const promiseDep = (d: { config: Pick<Config, 'promiseWaitMs'> }) => ({
   asyncValue: new Promise<string>((res) => {
     let awaited = 0;
     const awaitNextBit = () => {
@@ -122,10 +121,10 @@ const init = async () => {
   // Start Weenie off with your config
   const deps = await Weenie({
     config: {
-      appName: "Example App",
-      envName: "example",
+      appName: 'Example App',
+      envName: 'example',
       promiseWaitMs: 5000,
-      valueOfC: "This is C!",
+      valueOfC: 'This is C!',
     },
   })
     // Now add dependencies, one by one. Each one changes the type of the current dependency
@@ -171,7 +170,7 @@ type Deps = Awaited<ReturnType<typeof init>>;
 const app = {
   go: (deps: Deps) => {
     console.log(`Done initializing dependencies for app ${deps.config.appName}:`);
-    console.log("");
+    console.log('');
     console.log(`Environment: ${deps.config.envName}`);
     console.log(`A: ${deps.a}`);
     console.log(`B: ${deps.b}`);
@@ -185,8 +184,8 @@ const app = {
     // This wouldn't work either, because the input to the dep2 function is insufficient
     // const doesntWork = Weenie({ appName: 'My App' }).and(dep2);
 
-    console.log("");
-    console.log("Thank you for viewing");
+    console.log('');
+    console.log('Thank you for viewing');
     p.exit();
   },
 };

@@ -1,6 +1,6 @@
-import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
-import { JobManagerConfig } from "../Types";
-import * as uuid from "uuid";
+import { SimpleLoggerInterface } from '@wymp/ts-simple-interfaces';
+import { JobManagerConfig } from '../Types';
+import * as uuid from 'uuid';
 
 /**
  *
@@ -14,10 +14,10 @@ import * as uuid from "uuid";
  *
  */
 
-export const backoff = (type: "exponential" = "exponential") => {
+export const backoff = (type: 'exponential' = 'exponential') => {
   return (r: { config: JobManagerConfig }): { backoff: Backoff } => {
     switch (type) {
-      case "exponential":
+      case 'exponential':
         return { backoff: new SimpleExponentialBackoff(r.config) };
       default:
         throw new Error(`Unknown backoff type ${type}`);
@@ -45,25 +45,22 @@ export abstract class BaseBackoff {
   protected jobs: {
     [id: string]: number;
   } = {};
-  protected abstract config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null };
+  protected abstract config: {
+    maxJobWaitMs?: number | null;
+    initialJobWaitMs?: number | null;
+  };
 
-  public async run(
-    job: () => Promise<boolean>,
-    log: SimpleLoggerInterface,
-    _jobId?: string
-  ): Promise<boolean> {
+  public async run(job: () => Promise<boolean>, log: SimpleLoggerInterface, _jobId?: string): Promise<boolean> {
     const jobId = _jobId || uuid.v4();
     return new Promise((res) => {
       log.info(`Beginning run sequence for job ${jobId}`);
       const runWithBackoff = () => {
         const maxJobWaitMs =
-          typeof this.config.maxJobWaitMs !== "undefined"
-            ? Number(this.config.maxJobWaitMs)
-            : 259200000; // default to 3 days
+          typeof this.config.maxJobWaitMs !== 'undefined' ? Number(this.config.maxJobWaitMs) : 259200000; // default to 3 days
 
         // If we've already waited enough, give up
         if (this.jobs[jobId] === maxJobWaitMs) {
-          log.warning("Giving up waiting for job " + jobId + ". Requeuing.");
+          log.warning('Giving up waiting for job ' + jobId + '. Requeuing.');
           if (this.jobs[jobId]) {
             delete this.jobs[jobId];
           }
@@ -77,9 +74,7 @@ export abstract class BaseBackoff {
         }
 
         // Now set a timer for the next round
-        log.warning(
-          "Handler for job " + jobId + " failed. Retrying in " + nextWait / 1000 + " seconds."
-        );
+        log.warning('Handler for job ' + jobId + ' failed. Retrying in ' + nextWait / 1000 + ' seconds.');
         this.jobs[jobId] = nextWait;
         setTimeout(run, nextWait);
       };
@@ -113,14 +108,14 @@ export abstract class BaseBackoff {
   /**
    * Calculate the next wait time for backoffs
    */
-  protected abstract calculateNextWait(
-    currentWait: number | null,
-    log: SimpleLoggerInterface
-  ): number;
+  protected abstract calculateNextWait(currentWait: number | null, log: SimpleLoggerInterface): number;
 }
 
 export class SimpleExponentialBackoff extends BaseBackoff {
-  protected config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null };
+  protected config: {
+    maxJobWaitMs?: number | null;
+    initialJobWaitMs?: number | null;
+  };
   public constructor(config: { maxJobWaitMs?: number | null; initialJobWaitMs?: number | null }) {
     super();
     this.config = config;
@@ -129,9 +124,7 @@ export class SimpleExponentialBackoff extends BaseBackoff {
   protected calculateNextWait(currentWait: number | null, log: SimpleLoggerInterface): number {
     let nextWait: number = currentWait ? currentWait * 2 : this.config.initialJobWaitMs || 10;
     if (nextWait < 0) {
-      log.warning(
-        `Next wait was set to a negative number (${nextWait}). ` + `Resetting to default 10ms.`
-      );
+      log.warning(`Next wait was set to a negative number (${nextWait}). ` + `Resetting to default 10ms.`);
       nextWait = 10;
     }
     return nextWait;

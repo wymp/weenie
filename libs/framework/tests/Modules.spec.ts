@@ -1,8 +1,8 @@
-import * as M from "../src/Modules";
-import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
-import { MockSimpleLogger } from "@wymp/ts-simple-interfaces-testing";
+import * as M from '../src/Modules';
+import { SimpleLoggerInterface } from '@wymp/ts-simple-interfaces';
+import { MockSimpleLogger } from '@wymp/ts-simple-interfaces-testing';
 
-describe("Logger", () => {
+describe('Logger', () => {
   let mockConsole: any;
 
   beforeEach(() => {
@@ -15,47 +15,41 @@ describe("Logger", () => {
     };
   });
 
-  it("should log messages", async () => {
-    const { logger: log } = M.logger({ logLevel: "debug" }, mockConsole);
+  it('should log messages', async () => {
+    const { logger: log } = M.logger({ logLevel: 'debug' }, mockConsole);
 
-    log.debug("DEBUG");
-    log.info("INFO");
-    log.notice("NOTICE");
-    log.warning("WARNING");
-    log.error("ERROR");
-    log.alert("ALERT");
-    log.critical("CRITICAL");
-    log.emergency("EMERGENCY");
+    log.debug('DEBUG');
+    log.info('INFO');
+    log.notice('NOTICE');
+    log.warning('WARNING');
+    log.error('ERROR');
+    log.alert('ALERT');
+    log.critical('CRITICAL');
+    log.emergency('EMERGENCY');
 
-    const ts = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+Z";
+    const ts = '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+Z';
     expect(mockConsole.debug.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[debug\\]:     DEBUG`));
     expect(mockConsole.info.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[info\\]:      INFO`));
     expect(mockConsole.log.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[notice\\]:    NOTICE`));
-    expect(mockConsole.warn.mock.calls[0][0]).toMatch(
-      new RegExp(`^${ts} \\[warning\\]:   WARNING`)
-    );
+    expect(mockConsole.warn.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[warning\\]:   WARNING`));
     expect(mockConsole.error.mock.calls[0][0]).toMatch(new RegExp(`^${ts} \\[error\\]:     ERROR`));
     expect(mockConsole.error.mock.calls[1][0]).toMatch(new RegExp(`^${ts} \\[alert\\]:     ALERT`));
-    expect(mockConsole.error.mock.calls[2][0]).toMatch(
-      new RegExp(`^${ts} \\[critical\\]:  CRITICAL`)
-    );
-    expect(mockConsole.error.mock.calls[3][0]).toMatch(
-      new RegExp(`^${ts} \\[emergency\\]: EMERGENCY`)
-    );
+    expect(mockConsole.error.mock.calls[2][0]).toMatch(new RegExp(`^${ts} \\[critical\\]:  CRITICAL`));
+    expect(mockConsole.error.mock.calls[3][0]).toMatch(new RegExp(`^${ts} \\[emergency\\]: EMERGENCY`));
   });
 
-  it("should not log below the given log level", async () => {
-    const d = M.logger({ logLevel: "warning" }, mockConsole);
+  it('should not log below the given log level', async () => {
+    const d = M.logger({ logLevel: 'warning' }, mockConsole);
     const log = d.logger;
 
-    log.debug("DEBUG");
-    log.info("INFO");
-    log.notice("NOTICE");
-    log.warning("WARNING");
-    log.error("ERROR");
-    log.alert("ALERT");
-    log.critical("CRITICAL");
-    log.emergency("EMERGENCY");
+    log.debug('DEBUG');
+    log.info('INFO');
+    log.notice('NOTICE');
+    log.warning('WARNING');
+    log.error('ERROR');
+    log.alert('ALERT');
+    log.critical('CRITICAL');
+    log.emergency('EMERGENCY');
 
     expect(mockConsole.debug.mock.calls).toHaveLength(0);
     expect(mockConsole.info.mock.calls).toHaveLength(0);
@@ -65,11 +59,14 @@ describe("Logger", () => {
   });
 });
 
-describe("Cron Module", () => {
-  describe("Cron Class", () => {
+describe('Cron Module', () => {
+  describe('Cron Class', () => {
     let r: {
       logger: MockSimpleLogger;
-      svc?: { initTimeout: Promise<unknown>; initialized: (i?: true) => boolean };
+      svc?: {
+        initTimeout: Promise<unknown>;
+        initialized: (i?: true) => boolean;
+      };
     };
     let c: M.Cron;
 
@@ -84,9 +81,7 @@ describe("Cron Module", () => {
     // meaning that occasionally it will fire more than the expected number of times because of the extra space we have
     // to build into the test.
     [false, true].map((svc) => {
-      test(`should successfully run clock cronjobs ${
-        svc ? `with` : `without`
-      } svc dependency`, async () => {
+      test(`should successfully run clock cronjobs ${svc ? `with` : `without`} svc dependency`, async () => {
         const wait: number = 3025;
         let actual: number = 0;
         let expected: number = 3;
@@ -104,8 +99,8 @@ describe("Cron Module", () => {
         c = cron;
 
         c.register({
-          name: "Test Job",
-          spec: "* * * * * *",
+          name: 'Test Job',
+          spec: '* * * * * *',
           handler: (log: SimpleLoggerInterface) => {
             actual++;
             return Promise.resolve(true);
@@ -118,12 +113,12 @@ describe("Cron Module", () => {
     });
   });
 
-  describe("MockCron Class", () => {
-    test("should keep records on registered cronjobs without executing them", () => {
+  describe('MockCron Class', () => {
+    test('should keep records on registered cronjobs without executing them', () => {
       let called: boolean = false;
       const job = {
-        name: "testcron",
-        spec: "* * * * * *",
+        name: 'testcron',
+        spec: '* * * * * *',
         handler: (log: SimpleLoggerInterface) => {
           called = true;
           return Promise.resolve(true);
@@ -141,7 +136,7 @@ describe("Cron Module", () => {
       //c.jobs[0]!.killed = true;
 
       // Make sure we can target our killing
-      c.kill("not-a-job");
+      c.kill('not-a-job');
       expect(c.jobs[0]!.killed).toBe(false);
 
       // Kill all jobs and make sure they get marked as killed
@@ -151,11 +146,11 @@ describe("Cron Module", () => {
   });
 });
 
-describe("Backoff", () => {
-  describe("SimpleExponentialBackoff", () => {
+describe('Backoff', () => {
+  describe('SimpleExponentialBackoff', () => {
     const log = new MockSimpleLogger({ outputMessages: false });
 
-    it("should execute with exponential backoff on fail", async function () {
+    it('should execute with exponential backoff on fail', async function () {
       const backoff = new M.SimpleExponentialBackoff({ initialJobWaitMs: 20 });
       let n = 0;
       const results: Array<[number, number]> = [];
@@ -173,7 +168,10 @@ describe("Backoff", () => {
       for (let i = 0; i < results.length; i++) {
         const [val, targ] = results[i];
         const msg = `Failed at round ${i + 1}. Actual is ${val}, target is ${targ}, +/-${radius}`;
-        expect({ msg, val: val >= targ - radius && val <= targ + radius }).toEqual({
+        expect({
+          msg,
+          val: val >= targ - radius && val <= targ + radius,
+        }).toEqual({
           msg,
           val: true,
         });

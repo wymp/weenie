@@ -10,7 +10,7 @@
  */
 
 // Config module
-import { config } from "@wymp/config-node";
+import { config } from '@wymp/config-node';
 
 import {
   // Base framework function
@@ -35,19 +35,15 @@ import {
   BaseApiDeps,
   ApiClient,
   ApiConfig,
-} from "./";
+} from './';
 
 // Runtypes for creating a final config validator
-import * as rt from "runtypes";
+import * as rt from 'runtypes';
 
 // Some simple interfaces, used for creating our api clients (you might normally put these and the
 // api client instantiation logic somewhere else, but it's all here to make the example more
 // contained)
-import {
-  SimpleLoggerInterface,
-  SimpleHttpClientInterface,
-  SimpleSqlDbInterface,
-} from "@wymp/ts-simple-interfaces";
+import { SimpleLoggerInterface, SimpleHttpClientInterface, SimpleSqlDbInterface } from '@wymp/ts-simple-interfaces';
 
 /**
  * Create final config definition
@@ -68,7 +64,7 @@ const exampleConfigValidator = rt.Intersect(
     firstApi: apiConfigValidator,
     secondApi: apiConfigValidator,
     amqp: mqConnectionConfigValidator,
-  })
+  }),
 );
 // declare type ExampleConfig = rt.Static<typeof exampleConfigValidator>;
 
@@ -103,14 +99,14 @@ const exampleConfigValidator = rt.Intersect(
     // than environment variables for config. You can use the `configFromEnv` function if you'd like
     // to draw config from environment variables.
     config(
-      "APP_",
+      'APP_',
       {
         env: process.env,
-        defaultsFile: "./config.example.json",
-        localsFile: "./config.local.json",
+        defaultsFile: './config.example.json',
+        localsFile: './config.local.json',
       },
-      exampleConfigValidator
-    )
+      exampleConfigValidator,
+    ),
   )
     /**
      * This is optional, but I always like to have a mechanism for alerting when my service has not
@@ -124,7 +120,7 @@ const exampleConfigValidator = rt.Intersect(
      */
     .and(() => {
       return {
-        myPromise: new Promise<string>((res) => setTimeout(() => res("resolved!"), 2000)),
+        myPromise: new Promise<string>((res) => setTimeout(() => res('resolved!'), 2000)),
       };
     })
 
@@ -152,12 +148,18 @@ const exampleConfigValidator = rt.Intersect(
      * To make it a little bit cleaner, Weenie provides the `BaseApiDeps` type, which defines an
      * environment-aware config and a logger. Then we just have to add our specific new config keys.
      */
-    .and((d: BaseApiDeps & { config: { firstApi: ApiConfig; secondApi: ApiConfig } }) => {
-      return {
-        firstApi: new ApiClient({ envType: d.config.envType, ...d.config.firstApi }, d.logger),
-        secondApi: new ApiClient({ envType: d.config.envType, ...d.config.secondApi }, d.logger),
-      };
-    })
+    .and(
+      (
+        d: BaseApiDeps & {
+          config: { firstApi: ApiConfig; secondApi: ApiConfig };
+        },
+      ) => {
+        return {
+          firstApi: new ApiClient({ envType: d.config.envType, ...d.config.firstApi }, d.logger),
+          secondApi: new ApiClient({ envType: d.config.envType, ...d.config.secondApi }, d.logger),
+        };
+      },
+    )
 
     /**
      * For our IO abstraction, normally we would build this in a separate file and pull it in as a
@@ -179,31 +181,31 @@ const exampleConfigValidator = rt.Intersect(
         return {
           io: {
             getAllDatabases: () => {
-              return d.sql.query<{ Database: string }>("SHOW DATABASES");
+              return d.sql.query<{ Database: string }>('SHOW DATABASES');
             },
 
             getTodo: async (todoId: number): Promise<Todo> => {
-              const res = await d.firstApi.request<Todo>({ url: `/todos/${todoId}` });
+              const res = await d.firstApi.request<Todo>({
+                url: `/todos/${todoId}`,
+              });
               if (res.status >= 300) {
-                throw new Error(
-                  `Received non 2xx status code from api call: ${JSON.stringify(res.data)}`
-                );
+                throw new Error(`Received non 2xx status code from api call: ${JSON.stringify(res.data)}`);
               }
               return res.data;
             },
 
             getUser: async (userId: number): Promise<User> => {
-              const res = await d.secondApi.request<User>({ url: `/users/${userId}` });
+              const res = await d.secondApi.request<User>({
+                url: `/users/${userId}`,
+              });
               if (res.status >= 300) {
-                throw new Error(
-                  `Received non 2xx status code from api call: ${JSON.stringify(res.data)}`
-                );
+                throw new Error(`Received non 2xx status code from api call: ${JSON.stringify(res.data)}`);
               }
               return res.data;
             },
           },
         };
-      }
+      },
     )
 
     /**
@@ -263,7 +265,7 @@ const exampleConfigValidator = rt.Intersect(
 
   // Now, subscribe to all events on the 'data-events' channel
   deps.pubsub.subscribe(
-    { "data-events": ["*.*.*"] },
+    { 'data-events': ['*.*.*'] },
     (msg, log) => {
       // The message content has already been converted to object format for us, but remains type
       // unknown. The first thing we always need to do is validate the type, since this is a runtime
@@ -271,7 +273,7 @@ const exampleConfigValidator = rt.Intersect(
       log.notice(`Got message with id ${msg.id}: ` + JSON.stringify(msg));
       return Promise.resolve(true);
     },
-    { queue: { name: deps.config.serviceName } }
+    { queue: { name: deps.config.serviceName } },
   );
 
   // Set up our webservice to handle incoming requests, and add middleware to log request info
@@ -279,7 +281,7 @@ const exampleConfigValidator = rt.Intersect(
     deps.log.info(`Received request: ${req.path}`);
     next();
   });
-  deps.http.get("/info", async (req, res) => {
+  deps.http.get('/info', async (req, res) => {
     try {
       // Pick a random to-do and get info about it.
       const todoId = Math.round(Math.random() * 100);
@@ -306,7 +308,7 @@ const exampleConfigValidator = rt.Intersect(
       res.status(500).send({
         errors: [
           {
-            title: "Sorry, we screwed up",
+            title: 'Sorry, we screwed up',
             detail: e.message,
           },
         ],

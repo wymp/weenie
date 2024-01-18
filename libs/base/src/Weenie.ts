@@ -1,4 +1,4 @@
-import { deepmerge } from "./Utils";
+import { deepmerge } from './Utils';
 
 /** Convenience type defining a POJO */
 type Obj = Record<string | number | symbol, unknown>;

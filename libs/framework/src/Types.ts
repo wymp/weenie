@@ -1,4 +1,4 @@
-import * as rt from "runtypes";
+import * as rt from 'runtypes';
 
 /**
  * CONFIG STRUCTURE DEFINITIONS
@@ -43,7 +43,7 @@ export type ApiConfig = rt.Static<typeof apiConfigValidator>;
  * This is mostly just a runtime validation of AMQP configs
  */
 export const mqConnectionConfigValidator = rt.Record({
-  protocol: rt.Optional(rt.Literal("amqp")),
+  protocol: rt.Optional(rt.Literal('amqp')),
   hostname: rt.Optional(rt.String),
   port: rt.Optional(rt.Number),
   username: rt.Optional(rt.String),
@@ -73,7 +73,7 @@ export const databaseConfigValidator = rt.Union(
     user: rt.String,
     password: rt.String,
     database: rt.String,
-  })
+  }),
 );
 export type DatabaseConfig = rt.Static<typeof databaseConfigValidator>;
 
@@ -82,14 +82,14 @@ export type DatabaseConfig = rt.Static<typeof databaseConfigValidator>;
  */
 export const loggerConfigValidator = rt.Record({
   logLevel: rt
-    .Literal("debug")
-    .Or(rt.Literal("info"))
-    .Or(rt.Literal("notice"))
-    .Or(rt.Literal("warning"))
-    .Or(rt.Literal("error"))
-    .Or(rt.Literal("alert"))
-    .Or(rt.Literal("critical"))
-    .Or(rt.Literal("emergency")),
+    .Literal('debug')
+    .Or(rt.Literal('info'))
+    .Or(rt.Literal('notice'))
+    .Or(rt.Literal('warning'))
+    .Or(rt.Literal('error'))
+    .Or(rt.Literal('alert'))
+    .Or(rt.Literal('critical'))
+    .Or(rt.Literal('emergency')),
 });
 export type LoggerConfig = rt.Static<typeof loggerConfigValidator>;
 
@@ -148,6 +148,6 @@ export const baseConfigValidator = rt.Intersect(
 
     /** Logger configuration */
     logger: loggerConfigValidator,
-  })
+  }),
 );
 export type BaseConfig = rt.Static<typeof baseConfigValidator>;

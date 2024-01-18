@@ -1,4 +1,4 @@
-import { SimpleLoggerInterface } from "@wymp/ts-simple-interfaces";
+import { SimpleLoggerInterface } from '@wymp/ts-simple-interfaces';
 
 /**
  * Adds some service management functionality to the application. See return specification for
@@ -24,11 +24,10 @@ export const serviceManagement = (d: {
   // t is our timeout, extRes is an externalization of the "resolve" function for the timeout promise
   let t: NodeJS.Timeout | null = null;
   let extRes: () => void;
-  const initTimeoutMs =
-    d.config.initializationTimeoutMs !== undefined ? d.config.initializationTimeoutMs : 5000;
+  const initTimeoutMs = d.config.initializationTimeoutMs !== undefined ? d.config.initializationTimeoutMs : 5000;
 
   // Make sure that uncaught errors kill the process
-  process.on("uncaughtException", (e: Error) => {
+  process.on('uncaughtException', (e: Error) => {
     const log = d.logger || console;
     log.error(`Uncaught exception: ${e.stack}`);
     log.error(`Shutting down`);
@@ -68,7 +67,7 @@ export const serviceManagement = (d: {
       // If called with no arguments, returns the current initialization state. If called with
       // 'true', clears the init timeout and resolves the initialization timeout promise
       initialized: (isInitialized?: true) => {
-        if (typeof isInitialized === "undefined") {
+        if (typeof isInitialized === 'undefined') {
           return t === null;
         } else {
           if (t) {

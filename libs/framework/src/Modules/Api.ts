@@ -1,10 +1,10 @@
-import { SimpleHttpClientRpn, SimpleRpnRequestConfig } from "@wymp/simple-http-client-rpn";
+import { SimpleHttpClientRpn, SimpleRpnRequestConfig } from '@wymp/simple-http-client-rpn';
 import {
   SimpleHttpClientInterface,
   SimpleHttpClientResponseInterface,
   SimpleLoggerInterface,
-} from "@wymp/ts-simple-interfaces";
-import { ApiConfig } from "../Types";
+} from '@wymp/ts-simple-interfaces';
+import { ApiConfig } from '../Types';
 
 /**
  * **NOTE:** Because it's possible to have more than one simple-conformant API client in an app,
@@ -27,7 +27,10 @@ import { ApiConfig } from "../Types";
  * keys to create two distinct instances of the simple-conformant ApiClient class, one for each
  * api.
  */
-export type BaseApiDeps = { config: { envType: string }; logger: SimpleLoggerInterface };
+export type BaseApiDeps = {
+  config: { envType: string };
+  logger: SimpleLoggerInterface;
+};
 
 export class ApiClient implements SimpleHttpClientInterface {
   protected rpn: SimpleHttpClientInterface;
@@ -35,25 +38,24 @@ export class ApiClient implements SimpleHttpClientInterface {
 
   public constructor(
     protected config: { envType: string } & ApiConfig,
-    protected log: SimpleLoggerInterface
+    protected log: SimpleLoggerInterface,
   ) {
     this.rpn = new SimpleHttpClientRpn({});
-    this.authString =
-      `Basic ` + Buffer.from(`${this.config.key}:${this.config.secret}`).toString("base64");
+    this.authString = `Basic ` + Buffer.from(`${this.config.key}:${this.config.secret}`).toString('base64');
   }
 
   public request<D>(
     req: SimpleRpnRequestConfig,
-    _log?: SimpleLoggerInterface
+    _log?: SimpleLoggerInterface,
   ): Promise<SimpleHttpClientResponseInterface<D>> {
     const log = _log || this.log;
-    if (this.config.envType === "dev") {
+    if (this.config.envType === 'dev') {
       req.rejectUnauthorized = false;
     }
     req.baseURL = this.config.baseUrl;
 
     if (!req.method) {
-      req.method = "GET";
+      req.method = 'GET';
     }
 
     function has(header: string) {
@@ -63,16 +65,16 @@ export class ApiClient implements SimpleHttpClientInterface {
     if (!req.headers) {
       req.headers = {};
     }
-    if (!has("authorization")) {
-      req.headers["Authorization"] = this.authString;
+    if (!has('authorization')) {
+      req.headers['Authorization'] = this.authString;
     } else {
-      req.headers["Authorization"] += `, ${this.authString}`;
+      req.headers['Authorization'] += `, ${this.authString}`;
     }
-    if (!has("accept")) {
-      req.headers["Accept"] = "application/json";
+    if (!has('accept')) {
+      req.headers['Accept'] = 'application/json';
     }
-    if (req.method !== "GET" && !has("content-type")) {
-      req.headers["Content-Type"] = "application/json";
+    if (req.method !== 'GET' && !has('content-type')) {
+      req.headers['Content-Type'] = 'application/json';
     }
 
     log.info(`Making API call to ${req.method} ${req.baseURL}${req.url}`);

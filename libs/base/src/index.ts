@@ -1,2 +1,2 @@
-export { deepmerge } from "./Utils";
-export { Extensible, Weenie } from "./Weenie";
+export { deepmerge } from './Utils';
+export { Extensible, Weenie } from './Weenie';
