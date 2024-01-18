@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+set -e
+
+if [ -z "$SKIP_TESTS" ]; then
+  echo
+  echo "Running tests and formatting checks... (set SKIP_TESTS to skip)"
+  pnpm t
+fi

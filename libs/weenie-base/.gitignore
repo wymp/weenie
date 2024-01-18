@@ -1,0 +1,8 @@
+*.sw[op]
+build/*
+node_modules
+config.json
+config.local.json
+logs/*
+dist
+dist-tests/
