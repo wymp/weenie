@@ -10,7 +10,6 @@ module.exports = [
     // For all code
     ESLintJS.configs.recommended,
     ...compat.extends("plugin:@typescript-eslint/recommended"),
-    ...compat.extends('plugin:react-hooks/recommended'),
     {
         "linterOptions": {
             "reportUnusedDisableDirectives": "error"
