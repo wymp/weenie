@@ -27,6 +27,11 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout
 
+      - name: Replace node version with ${{ matrix.node-version }}
+        run: |
+          OUTPUT="$(jq --arg nodeVersion "${{ matrix.node-version }}" '.engines.node = $nodeVersion' package.json)"
+          echo "$OUTPUT" > package.json
+
       - uses: wymp/devops/actions/setup-node-pnpm@v1
 
       - run: pnpm i && pnpm check
