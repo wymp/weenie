@@ -2,7 +2,6 @@
 const { FlatCompat } = require("@eslint/eslintrc");
 const ESLintJS = require("@eslint/js");
 const ESLintTSParser = require("@typescript-eslint/parser");
-const reactRefresh = require("eslint-plugin-react-refresh");
 const prettier = require("eslint-config-prettier");
 
 const compat = new FlatCompat({ resolvePluginsRelativeTo: __dirname });
@@ -26,8 +25,8 @@ module.exports = [
 
     // For all back-end code
     {
-        "files": ["apps/*/{src,tests}/**","libs/*/{src,tests}/**"],
-        "ignores": ["apps/my-react-app/**", "libs/shared-fe/**"],
+        "files": ["libs/*/{src,tests}/**"],
+        "ignores": ["libs/shared-fe/**"],
         "env": {
             "browser": false,
             "node": true,
@@ -40,21 +39,6 @@ module.exports = [
         "plugins": [
             "@typescript-eslint"
         ],
-    },
-
-    // For all front-end code
-    {
-        "files": ["apps/my-react-app/{src,tests}/**", "libs/shared-fe/{src,tests}/**"],
-        "env": { "browser": true, "es2020": true },
-        "plugins": {
-            "react-refresh": reactRefresh,
-        },
-        "rules": {
-            "react-refresh/only-export-components": [
-                "warn",
-                { "allowConstantExport": true },
-            ],
-        },
     },
 
     // For testing

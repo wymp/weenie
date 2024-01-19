@@ -22,9 +22,10 @@ typescript keeps track of these changes. This allows you to build both very simp
 dependency containers, whose static type you can then depend on in your application and your tests.
 
 Additionally, this final type allows you (at your option) to create a very robust set of mock
-dependencies to make testing at all levels easier and cleaner.
+dependencies to make testing at all levels easier and cleaner, and to separate the instantiation
+logic from the app assembly logic.
 
-The example in [`src/example.ts`](src/example.ts) is a decent look at what _I_ usually do with it
+The example [here](src/example.ts) is a decent look at what _I_ usually do with it
 and how. That is, it demonstrates the deliberate building of a dependency injection container with
 the dependencies and configuration that I like, which I then use in event handlers and API request
 handlers to execute my core logic.
@@ -37,10 +38,10 @@ And why go through all the trouble of doing it this way?
 
 Frankly, this makes sense to me, and it makes each individual component much more narrowly scoped
 and easier to test. Using this structure, I can mock out the entire tree for my test cases, and
-I can easily encapsulate my application logic in functions that themselves have a very narrow set
-of dependencies. And that allows me to focus my development and treat every component as it should
-be treated - as a small, isolated unit that does one thing well and uses very few other things to
-do it. This makes my code, neat, clean, easy to maintain and easy to evolve.
+I can easily encapsulate my application logic in functions that themselves have a very narrow and
+clear set of dependencies. And that allows me to focus my development and treat every component as
+it should be treated - as a small, isolated unit that does one thing well and uses very few other
+things to do it. This makes my code neat, clean, easy to maintain and easy to evolve.
 
 
 ## Weenie Components
@@ -61,14 +62,14 @@ These core components form the central philosophy of Weenie - that is, they are 
 that is narrowly scoped, but that does express an opinion about how Weenie likes to do things.
 
 You are free to use them as a complete set to quickly and easily build microservices in Typescript.
-([`src/example.ts`](./src/example.ts) should serve as a useful guide for doing that.)
-However, you are also free to use some of them, or none of them, instead building your own set of
-dependencies in a Weenie-compatible way. Doing so allows you to contribute to the library of
-Weenie-compatible functionality that other developers can easily pull into their own code.
+([`src/example.ts`](src/example.ts) should serve as a useful guide for
+doing that.) However, you are also free to use some of them, or none of them, instead building your
+own set of dependencies in a Weenie-compatible way. Doing so allows you to contribute to the library
+of Weenie-compatible functionality that other developers can easily pull into their own code.
 
 (Note that if you prefer to build your own Weenie-compatible framework from the ground up, you can
-use the [`@wymp/weenie-base`](https://github.com/wymp/weenie-base) package instead of this one,
-which contains SOLELY the `Weenie` function.)
+use the [`@wymp/weenie-base`](../base) package instead of this one, which contains SOLELY the
+`Weenie` function.)
 
 
 ### How to Build a Weenie Component

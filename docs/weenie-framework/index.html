@@ -12,8 +12,9 @@ behind it is that as you <code>and</code> things into the container, the shape o
 typescript keeps track of these changes. This allows you to build both very simple and very complex
 dependency containers, whose static type you can then depend on in your application and your tests.</p>
 <p>Additionally, this final type allows you (at your option) to create a very robust set of mock
-dependencies to make testing at all levels easier and cleaner.</p>
-<p>The example in <a href="src/example.ts"><code>src/example.ts</code></a> is a decent look at what <em>I</em> usually do with it
+dependencies to make testing at all levels easier and cleaner, and to separate the instantiation
+logic from the app assembly logic.</p>
+<p>The example <a href="src/example.ts">here</a> is a decent look at what <em>I</em> usually do with it
 and how. That is, it demonstrates the deliberate building of a dependency injection container with
 the dependencies and configuration that I like, which I then use in event handlers and API request
 handlers to execute my core logic.</p>
@@ -23,10 +24,10 @@ represents <em>your own</em> framework, customized to your own personality and/o
 <p>And why go through all the trouble of doing it this way?</p>
 <p>Frankly, this makes sense to me, and it makes each individual component much more narrowly scoped
 and easier to test. Using this structure, I can mock out the entire tree for my test cases, and
-I can easily encapsulate my application logic in functions that themselves have a very narrow set
-of dependencies. And that allows me to focus my development and treat every component as it should
-be treated - as a small, isolated unit that does one thing well and uses very few other things to
-do it. This makes my code, neat, clean, easy to maintain and easy to evolve.</p>
+I can easily encapsulate my application logic in functions that themselves have a very narrow and
+clear set of dependencies. And that allows me to focus my development and treat every component as
+it should be treated - as a small, isolated unit that does one thing well and uses very few other
+things to do it. This makes my code neat, clean, easy to maintain and easy to evolve.</p>
 <a id="md:weenie-components" class="tsd-anchor"></a><h2><a href="#md:weenie-components">Weenie Components</a></h2><p>While Weenie was a response to opinionated frameworks, it does recognize that frameworks <em>must</em> be
 opinionated to be useful. Therefore, Weenie&#39;s approach is to encourage the creation of small,
 relatively unopinionated framework components that can be easily composed into a larger, more
@@ -40,13 +41,13 @@ and a cron system. (Most of these components are conformant with
 <p>These core components form the central philosophy of Weenie - that is, they are implemented in a way
 that is narrowly scoped, but that does express an opinion about how Weenie likes to do things.</p>
 <p>You are free to use them as a complete set to quickly and easily build microservices in Typescript.
-(<a href="./src/example.ts"><code>src/example.ts</code></a> should serve as a useful guide for doing that.)
-However, you are also free to use some of them, or none of them, instead building your own set of
-dependencies in a Weenie-compatible way. Doing so allows you to contribute to the library of
-Weenie-compatible functionality that other developers can easily pull into their own code.</p>
+(<a href="src/example.ts"><code>src/example.ts</code></a> should serve as a useful guide for
+doing that.) However, you are also free to use some of them, or none of them, instead building your
+own set of dependencies in a Weenie-compatible way. Doing so allows you to contribute to the library
+of Weenie-compatible functionality that other developers can easily pull into their own code.</p>
 <p>(Note that if you prefer to build your own Weenie-compatible framework from the ground up, you can
-use the <a href="https://github.com/wymp/weenie-base"><code>@wymp/weenie-base</code></a> package instead of this one,
-which contains SOLELY the <code>Weenie</code> function.)</p>
+use the <a href="../base"><code>@wymp/weenie-base</code></a> package instead of this one, which contains SOLELY the
+<code>Weenie</code> function.)</p>
 <a id="md:how-to-build-a-weenie-component" class="tsd-anchor"></a><h3><a href="#md:how-to-build-a-weenie-component">How to Build a Weenie Component</a></h3><p>A Weenie component can be just about anything. To create a Weenie component, all you have to do is
 create a function with the following signature:</p>
 <pre><code class="language-ts"><span class="hl-0">type</span><span class="hl-1"> </span><span class="hl-2">Component</span><span class="hl-1"> = &lt;</span><span class="hl-2">ExistingDeps</span><span class="hl-1">, </span><span class="hl-2">NewDeps</span><span class="hl-1">&gt;(</span><span class="hl-3">d</span><span class="hl-1">: </span><span class="hl-2">ExistingDeps</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> </span><span class="hl-2">NewDeps</span><span class="hl-1">;</span>

@@ -29,7 +29,7 @@ if [ -z "$NO_BUMP" ]; then
 fi
 VERSION="$(jq -r '.version' "$ROOT"/package.json)"
 
-for pkg in apps/*/package.json libs/*/package.json; do
+for pkg in libs/*/package.json; do
   OUTPUT="$(jq --arg version "$VERSION" '.version|=$version' "$pkg")"
   echo "$OUTPUT" > "$pkg"
 done
