@@ -35,7 +35,7 @@ import {
   BaseApiDeps,
   ApiClient,
   ApiConfig,
-} from './';
+} from './framework';
 
 // Runtypes for creating a final config validator
 import * as rt from 'runtypes';
