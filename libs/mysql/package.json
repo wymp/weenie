@@ -36,12 +36,12 @@
     "database"
   ],
   "dependencies": {
-    "@wymp/simple-db-mysql": "^0.5.2 || ^0.6.0 || ^0.7.2 || ^0.8.0"
+    "@wymp/simple-db-mysql": "^0.8.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "@types/jest": "^29.5.11",
-    "@wymp/ts-simple-interfaces-testing": "^0.8.0"
+    "@types/jest": "29.5.11",
+    "@types/node": "20.11.5",
+    "@wymp/ts-simple-interfaces-testing": "^0.8.1"
   },
   "publishConfig": {
     "access": "public",

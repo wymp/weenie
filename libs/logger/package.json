@@ -34,12 +34,12 @@
     "logger"
   ],
   "dependencies": {
-    "@wymp/simple-logger-console": "^0.5.1 || ^0.6.0 || ^0.8.0",
-    "@wymp/ts-simple-interfaces": "^0.5.3 || ^0.6.0 || ^0.7.2 || ^0.8.0"
+    "@wymp/simple-logger-console": "^0.8.1",
+    "@wymp/ts-simple-interfaces": "^0.8.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "@types/jest": "^29.5.11"
+    "@types/jest": "29.5.11",
+    "@types/node": "20.11.5"
   },
   "publishConfig": {
     "access": "public",

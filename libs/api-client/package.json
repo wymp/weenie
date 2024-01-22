@@ -1,8 +1,8 @@
 {
-  "name": "@wymp/weenie-service-manager",
+  "name": "@wymp/weenie-api-client",
   "version": "1.2.0",
-  "description": "This is the service manager package for Weenie, an unopinionated Typescript microservice framework.",
-  "main": "src/serviceManager.ts",
+  "description": "This is the api client package for Weenie, an unopinionated Typescript microservice framework.",
+  "main": "src/apiClient.ts",
   "files": [
     "dist",
     "README.md",
@@ -31,9 +31,11 @@
     "framework",
     "dependency injection",
     "dependency injector",
-    "service manager"
+    "api client",
+    "fetch"
   ],
   "dependencies": {
+    "@wymp/simple-http-client-fetch": "^0.8.1",
     "@wymp/ts-simple-interfaces": "^0.8.1"
   },
   "devDependencies": {
@@ -43,7 +45,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/serviceManager.js",
-    "types": "dist/serviceManager.d.ts"
+    "main": "dist/apiClient.js",
+    "types": "dist/apiClient.d.ts"
   }
 }
