@@ -37,6 +37,7 @@
     "@wymp/weenie-base": "workspace:^0.5.4 || ^0.6.0 || ^0.7.0 || ^1.0.0",
     "@wymp/weenie-cron": "workspace:^1.2.0",
     "@wymp/weenie-logger": "workspace:^1.2.0",
+    "@wymp/weenie-mysql": "workspace:^1.2.0",
     "@wymp/weenie-retry": "workspace:^1.2.0",
     "@wymp/weenie-service-manager": "workspace:^1.2.0"
   },

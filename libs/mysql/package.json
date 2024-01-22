@@ -1,0 +1,51 @@
+{
+  "name": "@wymp/weenie-mysql",
+  "version": "1.2.0",
+  "description": "This is the mysql package for Weenie, an unopinionated Typescript microservice framework.",
+  "main": "src/mysql.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "src"
+  ],
+  "scripts": {
+    "build": "../../scripts/build.sh",
+    "check": "../../scripts/check.sh",
+    "clean": "../../scripts/clean.sh",
+    "docs:gen": "../../scripts/docs-gen.sh",
+    "format": "../../scripts/format.sh",
+    "lint": "../../scripts/lint.sh",
+    "lint:fix": "../../scripts/lint-fix.sh",
+    "prepack": "../../scripts/prepack.sh",
+    "prettier": "../../scripts/prettier.sh",
+    "prettier:fix": "../../scripts/prettier-fix.sh",
+    "test": "../../scripts/test.sh",
+    "typecheck": "../../scripts/typecheck.sh"
+  },
+  "author": "Kael Shipman<kael.shipman@gmail.com>",
+  "license": "ISC",
+  "repository": "https://github.com/wymp/weenie.git",
+  "keywords": [
+    "typescript",
+    "microservice",
+    "framework",
+    "dependency injection",
+    "dependency injector",
+    "sql",
+    "mysql",
+    "database"
+  ],
+  "dependencies": {
+    "@wymp/simple-db-mysql": "^0.5.2 || ^0.6.0 || ^0.7.2 || ^0.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/jest": "^29.5.11",
+    "@wymp/ts-simple-interfaces-testing": "^0.8.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/mysql.js",
+    "types": "dist/mysql.d.ts"
+  }
+}

@@ -43,18 +43,18 @@ type FakeProcess = {
  * WARNING: THIS MODULE MAY PRODUCE SIDE-EFFECTS. If `config.svc.handleShutdown` is true, it will add a signal
  * handler to the process that will run all registered shutdown tasks and call `process.exit(0)` when the process
  * receives a SIGINT or SIGTERM signal.
- * 
+ *
  * **Available Config Options**
- * 
+ *
  * * `config.svc.initializationTimeoutMs` - A number in milliseconds indicating how long to wait before killing the
  *   service. You application should call `deps.svc.declareReady()` when everything has been initialized. If this
  *   function is not called before `config.svc.initializationTimeoutMs`, the service is killed.
  * * `config.svc.handleShutdown` - Whether or not to handle shutdown on SIGINT and SIGTERM. Default: false. If true,
  *   registers a signal handler that will run all registered shutdown tasks and call `process.exit(0)` when the
  *   process receives a SIGINT or SIGTERM signal.
- * 
+ *
  * **Provided Dependencies**
- * 
+ *
  * * `svc.whenReady` - A promise that can be awaited by various dependents. When this promise resolves, it means all
  *   dependencies have loaded successfully and the servie is ready to work.
  * * `svc.declareReady` - A function used to declare that the service is ready. This should be called when all

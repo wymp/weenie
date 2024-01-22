@@ -37,18 +37,21 @@ describe('Retry', () => {
     test('should throw RetryTimeoutError if maxWaitMs is exceeded', async () => {
       const retry = new ExponentialBackoffRetry({ initialWaitMs: 20, maxRetryMs: 80 });
       const jobId = 'abcde12345';
-      return retry.run(async () => false, log, jobId)
-        .then(() => { throw new Error('Expected timeout error but resolved successfully instead') })
+      return retry
+        .run(async () => false, log, jobId)
+        .then(() => {
+          throw new Error('Expected timeout error but resolved successfully instead');
+        })
         .catch((e) => {
           expect(e).toBeInstanceOf(RetryTimeoutError);
           expect(e.obstructions[0]).toMatchObject({
-            code: "Job Failed",
+            code: 'Job Failed',
             text: expect.any(String),
             data: {
               jobId,
               elapsedMs: expect.any(Number),
               numRetries: expect.any(Number),
-            }
+            },
           });
         });
     });

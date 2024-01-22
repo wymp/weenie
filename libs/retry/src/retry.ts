@@ -32,20 +32,20 @@ export type RetryConfig = {
      */
     maxRetryMs: number;
   };
-}
+};
 
 /** Internal data stored about each job */
 export type InternalJobData = {
   startTimeMs: number;
   numRetries: number;
   lastWaitMs: number | null;
-}
+};
 
 /**
  * An obstruction that indicating that a job failed and providing some additional details
  */
 export type RetryJobFailed = ObstructionInterface<
-  "Job Failed",
+  'Job Failed',
   {
     jobId: string;
     elapsedMs: number;
@@ -65,12 +65,12 @@ export class RetryTimeoutError extends HttpError {
 
 /**
  * A Weenie function providing several options for job retry logic.
- * 
+ *
  * These retry functions are intended to be used to retry failed jobs using a certain algorithm (e.g., exponential
  * backoff).
- * 
+ *
  * **Available Config Options**
- * 
+ *
  * * `config.retry.exponential.initialRetryMs` - This is the intitial time in ms that we should wait before retrying.
  *   once inside the retry loop, this quantity is doubled on each failed attempt, creating an exponential retry.
  * * `config.retry.exponential.maxRetryMs` - Maximum time to wait in ms before the application should stop retrying
@@ -85,13 +85,13 @@ export class RetryTimeoutError extends HttpError {
  *   job and throw a {@link RetryTimeoutError}. Note that this is an absolute value which _includes_ time spent
  *   actually running the job. For example, if you set this to 1 hour and your job takes 30 minutes to run, you will
  *   only get 2 retries.
- * 
+ *
  * **Provided Dependencies**
- * 
+ *
  * * `deps.retry.exponential` - A function that takes a job and a logger and runs the job with exponential backoff retry
  *   on failure.
  * * `deps.retry.periodic` - A function that takes a job and a logger and runs the job with periodic retries on failure.
- * 
+ *
  * **NOTE:** Jobs should return `true` on success and `false` on failure. While returning `false` is functionally
  * equivalent to throwing an error, there is a subtle difference in meaning. `false` indicates that the job maintained
  * control of the process but could not complete its task. Throwing an error indicates that the job lost control of the
@@ -114,8 +114,8 @@ export const retry = (deps: { config: { retry: RecursiveOptional<RetryConfig> } 
        * {@link RetryTimeoutError}. See {@link retry} for more detailed information.
        */
       periodic: periodic.run.bind(periodic),
-    }
-  }
+    },
+  };
 };
 
 /**
@@ -137,7 +137,11 @@ export abstract class BaseRetry {
       log.info(`Beginning run sequence for job ${jobId}`);
       const runWithRetry = () => {
         const { maxRetryMs } = this.config;
-        const jobData: InternalJobData = this.jobs[jobId] ?? { startTimeMs: Date.now(), numRetries: 0, lastWaitMs: null };
+        const jobData: InternalJobData = this.jobs[jobId] ?? {
+          startTimeMs: Date.now(),
+          numRetries: 0,
+          lastWaitMs: null,
+        };
 
         // If we've already waited enough, give up
         const elapsedMs = Date.now() - jobData.startTimeMs;
@@ -147,19 +151,20 @@ export abstract class BaseRetry {
             delete this.jobs[jobId];
           }
           const text = 'Job ' + jobId + ' timed out after ' + elapsedMs / 1000 + ' seconds';
-          rej(new RetryTimeoutError(
-            text,
-            [{
-              code: 'Job Failed',
-              text,
-              data: {
-                jobId,
-                elapsedMs,
-                numRetries: jobData.numRetries,
-              }
-            }],
-          ));
-          return
+          rej(
+            new RetryTimeoutError(text, [
+              {
+                code: 'Job Failed',
+                text,
+                data: {
+                  jobId,
+                  elapsedMs,
+                  numRetries: jobData.numRetries,
+                },
+              },
+            ]),
+          );
+          return;
         }
 
         // Otherwise, calculate the next wait time, capping at maxJobWaitMs
@@ -217,7 +222,7 @@ export class ExponentialBackoffRetry extends BaseRetry {
     this.config = {
       initialWaitMs: config?.initialWaitMs ?? 10,
       maxRetryMs: config?.maxRetryMs ?? 3600000, // default to 1 hour
-    }
+    };
   }
 
   protected calculateNextWait(jobData: InternalJobData, log: SimpleLoggerInterface): number {
@@ -240,15 +245,16 @@ export class PeriodicRetry extends BaseRetry {
       initialWaitMs: config?.initialWaitMs ?? intervalMs,
       intervalMs,
       maxRetryMs: config?.maxRetryMs ?? 300_000, // default to 5 minutes
-    }
+    };
   }
 
   protected calculateNextWait(jobData: InternalJobData, log: SimpleLoggerInterface): number {
-    let nextWait = jobData.lastWaitMs === null
-      ? this.config.initialWaitMs
-      : jobData.lastWaitMs === this.config.initialWaitMs
-        ? this.config.intervalMs
-        : jobData.lastWaitMs;
+    let nextWait =
+      jobData.lastWaitMs === null
+        ? this.config.initialWaitMs
+        : jobData.lastWaitMs === this.config.initialWaitMs
+          ? this.config.intervalMs
+          : jobData.lastWaitMs;
     if (nextWait < 0) {
       log.warning(`Next wait was set to a negative number (${nextWait}). ` + `Resetting to default 10ms.`);
       nextWait = 10;
@@ -256,4 +262,3 @@ export class PeriodicRetry extends BaseRetry {
     return nextWait;
   }
 }
-
