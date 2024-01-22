@@ -77,6 +77,25 @@ importers:
         specifier: 20.10.8
         version: 20.10.8
 
+  libs/cron:
+    dependencies:
+      '@wymp/ts-simple-interfaces':
+        specifier: ^0.5.3 || ^0.6.0 || ^0.7.2 || ^0.8.0
+        version: 0.8.0
+      cron:
+        specifier: ^3.1.6
+        version: 3.1.6
+    devDependencies:
+      '@types/jest':
+        specifier: 29.5.11
+        version: 29.5.11
+      '@types/node':
+        specifier: 20.10.8
+        version: 20.10.8
+      '@wymp/ts-simple-interfaces-testing':
+        specifier: ^0.8.0
+        version: 0.8.0
+
   libs/framework:
     dependencies:
       '@wymp/config-simple':
@@ -85,6 +104,9 @@ importers:
       '@wymp/weenie-base':
         specifier: workspace:^0.5.4 || ^0.6.0 || ^0.7.0 || ^1.0.0
         version: link:../base
+      '@wymp/weenie-cron':
+        specifier: workspace:^1.2.0
+        version: link:../cron
       '@wymp/weenie-logger':
         specifier: workspace:^1.2.0
         version: link:../logger
@@ -1308,6 +1330,10 @@ packages:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: false
 
+  /@types/luxon@3.3.8:
+    resolution: {integrity: sha512-jYvz8UMLDgy3a5SkGJne8H7VA7zPV2Lwohjx0V8V31+SqAjNmurWMkk9cQhfvlcnXWudBpK9xPM1n4rljOcHYQ==}
+    dev: false
+
   /@types/mime@1.3.5:
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
     dev: false
@@ -1503,11 +1529,6 @@ packages:
     resolution: {integrity: sha512-+Ap5KjS21AuDdXhM4h5tpJPWf1bqfq9DaxYThTK7ZvcLUoP09aK22xASYFFlc1DM2B/FLdNill9k15MD8i4iGA==}
     dev: false
 
-  /@wymp/http-errors@3.0.0:
-    resolution: {integrity: sha512-2ceCxy1IHfROUYBvnT/Zb0koWi3KNsLpQPHJ9FzTLnJZT1r/wDYR4vO4jT54ItkeJpgn9X3vQTmixxvajN6XQw==}
-    requiresBuild: true
-    dev: false
-
   /@wymp/http-errors@4.0.0:
     resolution: {integrity: sha512-rOnwDOl9JKAaQLnwLw6Owr1GS4O2YEHIqEfSNGTQ7e+iXo0pomX5jUbZgdJ9BsZXgFnMnDa7G3UCkADDtIGT1w==}
     engines: {node: '>=14.0.0', pnpm: ^8}
@@ -1516,7 +1537,7 @@ packages:
   /@wymp/simple-logger-console@0.8.0:
     resolution: {integrity: sha512-0G6ONwKHEL5Sercwk9ugP2iCUgb/3zqLpstVlFa/9wevfzSeLJRlZ+nhIeIf92U6nEcG9DOuIfNCZlA6p5g40g==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.7.4
+      '@wymp/ts-simple-interfaces': 0.8.0
     dev: false
 
   /@wymp/ts-simple-interfaces-testing@0.8.0:
@@ -1525,12 +1546,6 @@ packages:
       '@wymp/ts-simple-interfaces': 0.8.0
       ts-md5: 1.3.1
     dev: true
-
-  /@wymp/ts-simple-interfaces@0.7.4:
-    resolution: {integrity: sha512-JNzmuOAafVuXfxtN60kEwzHo2nCQnPFRL2FhrT22CeBkqpiwpVwaW9ZdjFlD4BPpr1o3rvWmuceBEcs3zr2OYw==}
-    dependencies:
-      '@wymp/http-errors': 3.0.0
-    dev: false
 
   /@wymp/ts-simple-interfaces@0.8.0:
     resolution: {integrity: sha512-V8AYSDwNYGBnxAqwFXg7snWUyqV43AyBwct6HgoE1YuLJ7X1PfstmTTakNx6ht5XM0DG9wT86a3fIRiKRB8YQg==}
@@ -1948,6 +1963,13 @@ packages:
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+    dev: false
+
+  /cron@3.1.6:
+    resolution: {integrity: sha512-cvFiQCeVzsA+QPM6fhjBtlKGij7tLLISnTSvFxVdnFGLdz+ZdXN37kNe0i2gefmdD17XuZA6n2uPVwzl4FxW/w==}
+    dependencies:
+      '@types/luxon': 3.3.8
+      luxon: 3.4.4
     dev: false
 
   /cross-spawn@7.0.3:
@@ -3262,6 +3284,11 @@ packages:
 
   /lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
+    dev: false
+
+  /luxon@3.4.4:
+    resolution: {integrity: sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==}
+    engines: {node: '>=12'}
     dev: false
 
   /make-dir@4.0.0:

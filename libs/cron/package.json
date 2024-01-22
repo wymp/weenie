@@ -1,12 +1,11 @@
 {
-  "name": "@wymp/weenie-framework",
+  "name": "@wymp/weenie-cron",
   "version": "1.2.0",
-  "description": "This is the main package for Weenie, an unopinionated Typescript microservice framework.",
-  "main": "src/framework.ts",
+  "description": "This is the cron package for Weenie, an unopinionated Typescript microservice framework.",
+  "main": "src/cron.ts",
   "files": [
     "dist",
     "README.md",
-    "config.example.json",
     "src"
   ],
   "scripts": {
@@ -20,6 +19,7 @@
     "prepack": "../../scripts/prepack.sh",
     "prettier": "../../scripts/prettier.sh",
     "prettier:fix": "../../scripts/prettier-fix.sh",
+    "test": "../../scripts/test.sh",
     "typecheck": "../../scripts/typecheck.sh"
   },
   "author": "Kael Shipman<kael.shipman@gmail.com>",
@@ -30,24 +30,21 @@
     "microservice",
     "framework",
     "dependency injection",
-    "dependency injector"
+    "dependency injector",
+    "cron"
   ],
   "dependencies": {
-    "@wymp/config-simple": "^1.0.0",
-    "@wymp/weenie-base": "workspace:^0.5.4 || ^0.6.0 || ^0.7.0 || ^1.0.0",
-    "@wymp/weenie-cron": "workspace:^1.2.0",
-    "@wymp/weenie-logger": "workspace:^1.2.0",
-    "@wymp/weenie-retry": "workspace:^1.2.0",
-    "@wymp/weenie-service-manager": "workspace:^1.2.0"
+    "@wymp/ts-simple-interfaces": "^0.5.3 || ^0.6.0 || ^0.7.2 || ^0.8.0",
+    "cron": "^3.1.6"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "@types/jest": "^29.5.11",
+    "@types/jest": "29.5.11",
+    "@types/node": "20.11.5",
     "@wymp/ts-simple-interfaces-testing": "^0.8.0"
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/framework.js",
-    "types": "dist/framework.d.ts"
+    "main": "dist/cron.js",
+    "types": "dist/cron.d.ts"
   }
 }
