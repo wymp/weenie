@@ -8,6 +8,13 @@ overrides:
   '@types/express': 4.17.21
   '@types/jest': 29.5.11
   '@types/node': 20.11.5
+  '@wymp/simple-db-mysql': ^0.8.1 || ^0.9.0
+  '@wymp/simple-http-client-fetch': ^0.8.1 || ^0.9.0
+  '@wymp/simple-http-server-express': ^0.8.1 || ^0.9.0
+  '@wymp/simple-logger-console': ^0.8.1 || ^0.9.0
+  '@wymp/simple-pubsub-amqp': ^0.9.0
+  '@wymp/ts-simple-interfaces': ^0.8.0 || ^0.9.0
+  '@wymp/ts-simple-interfaces-testing': ^0.9.0
 
 importers:
 
@@ -34,6 +41,27 @@ importers:
       '@typescript-eslint/parser':
         specifier: 6.19.0
         version: 6.19.0(eslint@8.56.0)(typescript@5.3.3)
+      '@wymp/simple-db-mysql':
+        specifier: ^0.8.1 || ^0.9.0
+        version: 0.8.1
+      '@wymp/simple-http-client-fetch':
+        specifier: ^0.8.1 || ^0.9.0
+        version: 0.8.1
+      '@wymp/simple-http-server-express':
+        specifier: ^0.8.1 || ^0.9.0
+        version: 0.9.0
+      '@wymp/simple-logger-console':
+        specifier: ^0.8.1 || ^0.9.0
+        version: 0.8.1
+      '@wymp/simple-pubsub-amqp':
+        specifier: ^0.9.0
+        version: 0.9.0
+      '@wymp/ts-simple-interfaces':
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
+      '@wymp/ts-simple-interfaces-testing':
+        specifier: ^0.9.0
+        version: 0.9.0
       eslint:
         specifier: 8.56.0
         version: 8.56.0
@@ -71,11 +99,11 @@ importers:
   libs/api-client:
     dependencies:
       '@wymp/simple-http-client-fetch':
-        specifier: ^0.8.1
+        specifier: ^0.8.1 || ^0.9.0
         version: 0.8.1
       '@wymp/ts-simple-interfaces':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
     devDependencies:
       '@types/jest':
         specifier: 29.5.11
@@ -84,8 +112,8 @@ importers:
         specifier: 20.11.5
         version: 20.11.5
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
 
   libs/base:
     devDependencies:
@@ -99,8 +127,8 @@ importers:
   libs/cron:
     dependencies:
       '@wymp/ts-simple-interfaces':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
       cron:
         specifier: ^3.1.6
         version: 3.1.6
@@ -112,8 +140,8 @@ importers:
         specifier: 20.11.5
         version: 20.11.5
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
 
   libs/framework:
     dependencies:
@@ -135,6 +163,9 @@ importers:
       '@wymp/weenie-mysql':
         specifier: workspace:^1.2.0
         version: link:../mysql
+      '@wymp/weenie-rabbitmq':
+        specifier: workspace:^1.2.0
+        version: link:../rabbitmq
       '@wymp/weenie-retry':
         specifier: workspace:^1.2.0
         version: link:../retry
@@ -149,17 +180,17 @@ importers:
         specifier: 20.11.5
         version: 20.11.5
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
 
   libs/logger:
     dependencies:
       '@wymp/simple-logger-console':
-        specifier: ^0.8.1
+        specifier: ^0.8.1 || ^0.9.0
         version: 0.8.1
       '@wymp/ts-simple-interfaces':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
     devDependencies:
       '@types/jest':
         specifier: 29.5.11
@@ -171,7 +202,7 @@ importers:
   libs/mysql:
     dependencies:
       '@wymp/simple-db-mysql':
-        specifier: ^0.8.1
+        specifier: ^0.8.1 || ^0.9.0
         version: 0.8.1
     devDependencies:
       '@types/jest':
@@ -181,8 +212,27 @@ importers:
         specifier: 20.11.5
         version: 20.11.5
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
+
+  libs/rabbitmq:
+    dependencies:
+      '@wymp/simple-pubsub-amqp':
+        specifier: ^0.9.0
+        version: 0.9.0
+      '@wymp/ts-simple-interfaces':
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
+    devDependencies:
+      '@types/jest':
+        specifier: 29.5.11
+        version: 29.5.11
+      '@types/node':
+        specifier: 20.11.5
+        version: 20.11.5
+      '@wymp/ts-simple-interfaces-testing':
+        specifier: ^0.9.0
+        version: 0.9.0
 
   libs/retry:
     dependencies:
@@ -190,8 +240,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       '@wymp/ts-simple-interfaces':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -206,14 +256,14 @@ importers:
         specifier: ^9.0.7
         version: 9.0.7
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
 
   libs/service-manager:
     dependencies:
       '@wymp/ts-simple-interfaces':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.8.0 || ^0.9.0
+        version: 0.9.0
     devDependencies:
       '@types/jest':
         specifier: 29.5.11
@@ -222,14 +272,25 @@ importers:
         specifier: 20.11.5
         version: 20.11.5
       '@wymp/ts-simple-interfaces-testing':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
 
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /@acuminous/bitsyntax@0.1.2:
+    resolution: {integrity: sha512-29lUK80d1muEQqiUsSo+3A0yP6CdspgC95EnKBMi22Xlwt79i/En4Vr67+cXhU+cZjbti3TgGGC5wy1stIywVQ==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      buffer-more-ints: 1.0.0
+      debug: 4.3.4(supports-color@5.5.0)
+      safe-buffer: 5.1.2
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@ampproject/remapping@2.2.1:
@@ -1274,6 +1335,12 @@ packages:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: false
 
+  /@types/amqplib@0.10.4:
+    resolution: {integrity: sha512-Y5Sqquh/LqDxSgxYaAAFNM0M7GyONtSDCcFMJk+DQwYEjibPyW6y+Yu9H9omdkKc3epyXULmFN3GTaeBHhn2Hg==}
+    dependencies:
+      '@types/node': 20.11.5
+    dev: false
+
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
     dependencies:
@@ -1420,7 +1487,6 @@ packages:
 
   /@types/uuid@9.0.7:
     resolution: {integrity: sha512-WUtIVRUZ9i5dYXefDEAI7sh9/O7jGvHg7Df/5O/gtH3Yabe5odI3UWopVR1qbPXQtvOxWu3mM4XxlYeZtMWF4g==}
-    dev: true
 
   /@types/yargs-parser@21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -1578,31 +1644,54 @@ packages:
   /@wymp/simple-db-mysql@0.8.1:
     resolution: {integrity: sha512-b2p0pjk4yVdAm2H/mj81jeAytIhXibCQ3FBVy4EQPYEWCgWXgrM3AkqGTpDvoKN8isChRc9ltcxmE8vg9glL+Q==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.8.1
+      '@wymp/ts-simple-interfaces': 0.9.0
       mysql2: 3.7.1
     dev: false
 
   /@wymp/simple-http-client-fetch@0.8.1:
     resolution: {integrity: sha512-vY6Re+ThVnwV2GxfrcRyfrvmLY8IcxSGumXkn4pei3EJWoA/0MrFOSiY8WNbsYtq4JF4G9chDpV87prmytQCkg==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.8.1
+      '@wymp/ts-simple-interfaces': 0.9.0
+    dev: false
+
+  /@wymp/simple-http-server-express@0.9.0:
+    resolution: {integrity: sha512-85Sd97DyxvGtTC5CGPrXFvVrn8vfZkigA7lAxZACUCV91LVM/nDRT0VURMQ2SZAES3LCBBpU6b6DbHIQLWatSw==}
+    dependencies:
+      '@types/body-parser': 1.19.5
+      '@types/express': 4.17.21
+      '@wymp/ts-simple-interfaces': 0.9.0
+      body-parser: 1.20.1
+      express: 4.18.2
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@wymp/simple-logger-console@0.8.1:
     resolution: {integrity: sha512-Z5+inBkwwHEpvBRqzf+OYihoIUTqlwTc+GCZek/gGHQ4ty6iFr1vakaTJS/dKl8RbT8ANGJ4F2CnjJW1CfdMsA==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.8.1
+      '@wymp/ts-simple-interfaces': 0.9.0
     dev: false
 
-  /@wymp/ts-simple-interfaces-testing@0.8.1:
-    resolution: {integrity: sha512-dxUz18eUShd0AtNDEOcYTOC44cY3p+ta8dwH7Qq+GAOhk1ySi/HQwTv7tFH9Gy3wGKWsGgiQCdYATYl4kPHaEQ==}
+  /@wymp/simple-pubsub-amqp@0.9.0:
+    resolution: {integrity: sha512-xj3R1CVlv54JTM+PTnr+iSRnm+zsiEE8dN9iWG+i66kprKJelrCUYXM8uiWgJH1qw8WnbISCAw0jH25yZ5a7KA==}
     dependencies:
-      '@wymp/ts-simple-interfaces': 0.8.1
-      ts-md5: 1.3.1
-    dev: true
+      '@types/amqplib': 0.10.4
+      '@types/uuid': 9.0.7
+      '@wymp/ts-simple-interfaces': 0.9.0
+      amqplib: 0.10.3
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
-  /@wymp/ts-simple-interfaces@0.8.1:
-    resolution: {integrity: sha512-dOQWPScpEuuPfb8IulvkaUoNSQRVOYDggCIls1IyjSVHDttKRKBNnRh7sWkknzZwQF80TAEznn0+3/GDI1BGEw==}
+  /@wymp/ts-simple-interfaces-testing@0.9.0:
+    resolution: {integrity: sha512-KiivMZa0mPQlAoTVCNaL/ZLo03dwyKHUEuvPtnDE5QoY3vDiZ/wrCRHAjoU1PHFadfAyv5rUbBP+wZqZbIMQIA==}
+    dependencies:
+      '@wymp/ts-simple-interfaces': 0.9.0
+      ts-md5: 1.3.1
+
+  /@wymp/ts-simple-interfaces@0.9.0:
+    resolution: {integrity: sha512-pe3jrYy1LP5b6SM63r8mJ8kmpgWPsRXjcTOsyUocnoV+DL648J22mrWyDZqgKdWD/GM+GL39LTMQwlE7mEwm6w==}
     dependencies:
       '@wymp/http-errors': 4.0.0
 
@@ -1644,6 +1733,18 @@ packages:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
+    dev: false
+
+  /amqplib@0.10.3:
+    resolution: {integrity: sha512-UHmuSa7n8vVW/a5HGh2nFPqAEr8+cD4dEZ6u9GjP91nHfr1a54RyAKyra7Sb5NH7NBKOUlyQSMXIp0qAixKexw==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@acuminous/bitsyntax': 0.1.2
+      buffer-more-ints: 1.0.0
+      readable-stream: 1.1.14
+      url-parse: 1.5.10
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /ansi-escapes@4.3.2:
@@ -1857,6 +1958,10 @@ packages:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
     dev: false
 
+  /buffer-more-ints@1.0.0:
+    resolution: {integrity: sha512-EMetuGFz5SLsT0QTnXzINh4Ksr+oo4i+UGTXEshiGCQWnsgSs7ZhJ8fzlwQ+OzEMs0MpDAMr1hxnblp5a4vcHg==}
+    dev: false
+
   /bytes@3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
@@ -1994,6 +2099,10 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
   /create-jest@29.7.0(@types/node@20.11.5)(ts-node@10.9.2):
@@ -2774,6 +2883,10 @@ packages:
   /is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
+    dev: false
+
+  /isarray@0.0.1:
+    resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
     dev: false
 
   /isexe@2.0.0:
@@ -3765,6 +3878,10 @@ packages:
       side-channel: 1.0.4
     dev: false
 
+  /querystringify@2.2.0:
+    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+    dev: false
+
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: false
@@ -3787,6 +3904,15 @@ packages:
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
 
+  /readable-stream@1.1.14:
+    resolution: {integrity: sha512-+MeVjFf4L44XUkhM1eYbD8fyEsxcV81pqMSR5gblfcLCHfZvbrqy4/qYHE+/R5HoBUT11WV5O08Cr1n3YXkWVQ==}
+    dependencies:
+      core-util-is: 1.0.3
+      inherits: 2.0.4
+      isarray: 0.0.1
+      string_decoder: 0.10.31
+    dev: false
+
   /readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
@@ -3797,6 +3923,10 @@ packages:
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /requires-port@1.0.0:
+    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
     dev: false
 
   /resolve-cwd@3.0.0:
@@ -3869,6 +3999,10 @@ packages:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
     dependencies:
       queue-microtask: 1.2.3
+    dev: false
+
+  /safe-buffer@5.1.2:
+    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
     dev: false
 
   /safe-buffer@5.2.1:
@@ -4046,6 +4180,10 @@ packages:
       strip-ansi: 6.0.1
     dev: false
 
+  /string_decoder@0.10.31:
+    resolution: {integrity: sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==}
+    dev: false
+
   /strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
     engines: {node: '>=8'}
@@ -4178,7 +4316,6 @@ packages:
   /ts-md5@1.3.1:
     resolution: {integrity: sha512-DiwiXfwvcTeZ5wCE0z+2A9EseZsztaiZtGrtSaY5JOD7ekPnR/GoIVD5gXZAlK9Na9Kvpo9Waz5rW64WKAWApg==}
     engines: {node: '>=12'}
-    dev: true
 
   /ts-node@10.9.2(@types/node@20.11.5)(typescript@5.3.3):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
@@ -4288,6 +4425,13 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.3.1
+    dev: false
+
+  /url-parse@1.5.10:
+    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
+    dependencies:
+      querystringify: 2.2.0
+      requires-port: 1.0.0
     dev: false
 
   /utils-merge@1.0.1:

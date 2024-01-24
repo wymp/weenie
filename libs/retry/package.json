@@ -35,14 +35,14 @@
   ],
   "dependencies": {
     "@wymp/http-errors": "^4.0.0",
-    "@wymp/ts-simple-interfaces": "^0.8.1",
+    "@wymp/ts-simple-interfaces": "^0.8.1 || ^0.9.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/jest": "29.5.11",
     "@types/node": "20.11.5",
     "@types/uuid": "^9.0.7",
-    "@wymp/ts-simple-interfaces-testing": "^0.8.1"
+    "@wymp/ts-simple-interfaces-testing": "^0.9.0"
   },
   "publishConfig": {
     "access": "public",

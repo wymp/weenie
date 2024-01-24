@@ -34,8 +34,8 @@
     "logger"
   ],
   "dependencies": {
-    "@wymp/simple-logger-console": "^0.8.1",
-    "@wymp/ts-simple-interfaces": "^0.8.1"
+    "@wymp/simple-logger-console": "^0.8.1 || ^0.9.0",
+    "@wymp/ts-simple-interfaces": "^0.8.1 || ^0.9.0"
   },
   "devDependencies": {
     "@types/jest": "29.5.11",
