@@ -175,3 +175,21 @@ const config = {
   await deps.amqp.publish(msg.key, msg);
 })();
 ```
+
+
+### MQ Philosophy
+
+There are two things that I typically end up doing with an MQ.
+
+First, generalized data events. I might use these to audit data changes in the system or to execute non-mission-critical
+functionality based on observed system events (e.g., cleaning up certain files if a given resource is deleted). For
+these events, I often end up creating a general message structure like the one demonstrated above (although I might
+addtionally prefix the events with `data.` so that my consumers can easily filter out those messages as a category).
+
+Second, tasks. These should be thought of as mission-critical asynchronous jobs, and the events should be highly
+specific and well documented. Tasks are a first-class part of your API and should be treated as such.
+
+**It is a mistake to queue mission-critical tasks off of system "events".** This is because events are non-specific
+from the emitter's perspective and may easily be eliminated or changed without thought and without noticing the
+downstream consequences. (What happens, for example, if an important email is never sent because the message that cued
+it was changed upstream? How long do you go before noticing that it's not sent, since there are no errors being thrown?)

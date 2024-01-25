@@ -1,7 +1,7 @@
 import { SimpleLoggerInterface } from '@wymp/ts-simple-interfaces';
 
 /** The dependencies attached by this module */
-export type ServiceManager = {
+export type WeenieServiceManager = {
   svc: {
     /**
      * A promise that can be awaited by various dependents. When this promise resolves, it means all dependencies have
@@ -14,11 +14,14 @@ export type ServiceManager = {
 
     /** Register a shutdown task, such as disconnecting from a database or terminating outstanding HTTP requests */
     onShutdown: (task: () => Promise<void>) => void;
+
+    /** Runs the shutdown routines and ends the process. */
+    shutdown: () => Promise<void>;
   };
 };
 
 /** The dependencies necessary for the service manager to function */
-export type ServiceManagerDeps = {
+export type WeenieServiceManagerInputDeps = {
   config: {
     svc?: {
       /** A number in milliseconds indicating how long to wait before killing the service if `ready` is not called */
@@ -67,7 +70,7 @@ type FakeProcess = {
  * @returns A small collection of tools for managing the process, including a startup timeout and
  * some basic signal handling.
  */
-export const serviceManager = (d: ServiceManagerDeps, fakeProcess: FakeProcess): ServiceManager => {
+export const serviceManager = (d: WeenieServiceManagerInputDeps, fakeProcess?: FakeProcess): WeenieServiceManager => {
   // A timeout that we'll use to kill the process if it doesn't initialize in time
   let startupTimeout: NodeJS.Timeout | null = null;
   // extRes is an externalization of the "resolve" function for the timeout promise
@@ -79,11 +82,15 @@ export const serviceManager = (d: ServiceManagerDeps, fakeProcess: FakeProcess):
   const _process = fakeProcess ?? process;
   const shutdownTasks: (() => Promise<void>)[] = [];
   let shuttingDown = false;
-  const shutdown = async (signal: string) => {
+  const shutdown = async (signal?: string) => {
     if (!shuttingDown) {
       shuttingDown = true;
       const log = d.log ? d.log.notice.bind(d.log) : console.error;
-      log(`Received ${signal} signal, shutting down gracefully`);
+      if (signal) {
+        log(`Received ${signal} signal, shutting down gracefully`);
+      } else {
+        log(`Received shutdown request; shutting down gracefully`);
+      }
       await Promise.all(shutdownTasks.map((t) => t()));
       _process.exit(0);
     }
@@ -128,6 +135,8 @@ export const serviceManager = (d: ServiceManagerDeps, fakeProcess: FakeProcess):
       onShutdown: (task) => {
         shutdownTasks.push(task);
       },
+
+      shutdown,
     },
   };
 };

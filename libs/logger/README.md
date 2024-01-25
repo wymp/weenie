@@ -5,13 +5,19 @@ This package is meant to be used with [Weenie](https://npmjs.com/@wymp/weenie-ba
 are interested in this logger, try [`@wymp/simple-logger-console`](https://npmjs.com/package/@wymp/simple-logger-console),
 as all this package does is wrap that package in a weenie-compatible function.
 
-Usage example:
+### Example
 
 ```ts
 import { Weenie } from "@wymp/weenie-base";
 import { logger } from "@wymp/weenie-logger";
 
-const deps = Weenie({ config: { logger: { logLevel: "error" } } })
+const config = {
+  logger: {
+    logLevel: 'error',
+  }
+}
+
+const deps = Weenie({ config })
   .and(logger);
 
 deps.log.debug(`This won't output anything because it's at debug level.`);

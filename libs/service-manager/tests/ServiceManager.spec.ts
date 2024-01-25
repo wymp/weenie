@@ -1,8 +1,8 @@
-import { ServiceManagerDeps, serviceManager } from '../src/serviceManager';
+import { WeenieServiceManagerInputDeps, serviceManager } from '../src/serviceManager';
 import { MockSimpleLogger } from '@wymp/ts-simple-interfaces-testing';
 
 describe('ServiceManager', () => {
-  let deps: ServiceManagerDeps & { log: MockSimpleLogger };
+  let deps: WeenieServiceManagerInputDeps & { log: MockSimpleLogger };
   let _process: {
     on: ReturnType<typeof jest.fn>;
     exit: ReturnType<typeof jest.fn>;

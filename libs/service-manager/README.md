@@ -18,9 +18,38 @@ documentation.*
 * **Shutdown management** - If configured to do so (with `config.svc.handleShutdown`), registers event listeners on
   `SIGINT` and `SIGTERM` signals and runs any shutdown tasks prior to exiting the process. Shutdown tasks may be
   registered by passing a function returning a promise to the `svc.onShutdown()` function. For example, you may want to
-  close your database cleanly on shutdown, so you might pass `svc.onShutdown(() => db.close())`.
+  close your database cleanly on shutdown, so you might pass `svc.onShutdown(() => db.close())`. (Note: this
+  shutdown functionality is also accessible to the running application via the `svc.shutdown()` function.)
 
 ### Config
 
 See [src/serviceManager.ts](src/serviceManager.ts) for config options. (If you use a modern editor like vscode, the
 documentation should pop up on mouse-over.)
+
+### Example
+
+```ts
+import { Weenie, logger, serviceManager } from '@wymp/weenie-framework';
+
+const config = {
+  logger: {
+    logLevel: 'notice',
+  },
+  svc: {
+    initializationTimeoutMs: 10_000,
+    handleShutdown: true,
+  },
+}
+
+const deps = Weenie({ config })
+  .and(logger)
+  .and(serviceManager)
+  .done((d) => d);
+
+// Do other setup ....
+deps.svc.whenReady.then(() => deps.log.notice(`Service started!`));
+deps.svc.onShutdown(async () => { deps.log.notice(`Service shutting down`) });
+
+// Now let everything know the service is ready to start
+deps.svc.declareReady();
+```
