@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "composite": true,
-
     "target": "es2022",
     "lib": ["es2023"],
     "module": "nodenext",
@@ -22,9 +19,7 @@
     "noUnusedParameters": false,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    "esModuleInterop": false,
-
-    "paths": {}
+    "esModuleInterop": false
   },
   "files": [],
   "include": []

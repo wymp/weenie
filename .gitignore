@@ -7,3 +7,5 @@
 node_modules
 dist
 .docker-compose-env
+.docker-compose.override.yml
+**/deploy/.data

@@ -6,7 +6,6 @@
   "files": [
     "dist",
     "README.md",
-    "config.example.json",
     "src"
   ],
   "scripts": {
@@ -30,7 +29,12 @@
     "microservice",
     "framework",
     "dependency injection",
-    "dependency injector"
+    "dependency injector",
+    "express",
+    "amqp",
+    "mysql",
+    "cron",
+    "logger"
   ],
   "dependencies": {
     "@wymp/config-simple": "^1.0.0",
@@ -44,11 +48,7 @@
     "@wymp/weenie-retry": "workspace:^1.2.0",
     "@wymp/weenie-service-manager": "workspace:^1.2.0"
   },
-  "devDependencies": {
-    "@types/jest": "29.5.11",
-    "@types/node": "20.11.5",
-    "@wymp/ts-simple-interfaces-testing": "^0.9.0"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public",
     "main": "dist/framework.js",

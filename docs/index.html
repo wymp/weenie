@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Weenie Framework, a Typescript Microframework by Wymp</title>
+    <style>
+        /* Funky gradient background */
+        html {
+          background: linear-gradient(0.325turn, #f093fb, #f5576c, #f56565);
+          background-attachment: fixed;
+          color: #fff;
+          font-family: sans-serif;
+          text-align: center;
+          margin: 0;
+          padding: 1px;
+          height: calc(100vh - 2px);
+        }
+
+        .body {
+          margin: 0 auto;
+          max-width: 1024px;
+        }
+
+        /* Header styling */
+        h1 {
+            font-size: 4rem;
+            font-weight: 100;
+            letter-spacing: 0.1em;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            overflow-x: auto;
+        }
+
+        code {
+            color: #fff;
+        }
+
+        /* Button styling */
+        .get-started-btn {
+            background: #fff;
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        .get-started-btn:hover {
+            background: #f56565;
+        }
+    </style>
+</head>
+<body>
+  <div class="body">
+    <h1>Weenie</h1>
+    <h2>A Typescript Microframework by Wymp</h2>
+
+    <p>Tired of frameworks that get in your way? Embrace the minimalist approach with FunkyTypeScript.</p>
+
+    <pre><code>// Example component in FunkyTypeScript
+import { render } from 'funky-ts';
+
+const MyComponent = () => {
+    return <h1>Hello, Funky World!</h1>;
+};
+
+render(<MyComponent />, document.getElementById('root'));
+</code></pre>
+
+    <p>FunkyTypeScript offers:</p>
+    <ul>
+        <li>Minimal boilerplate</li>
+        <li>Focus on core functionality</li>
+        <li>TypeScript for safety and scalability</li>
+        <li>Performance-optimized</li>
+        <li>Developer-friendly API</li>
+    </ul>
+
+    <button class="get-started-btn">Get Started with FunkyTypeScript</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "@wymp/weenie-example",
+  "version": "1.2.0",
+  "private": true,
+  "description": "This is an example app to demonstrate the capabilities of the Weenie Framework.",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "../../scripts/build.sh",
+    "check": "../../scripts/check.sh",
+    "clean": "../../scripts/clean.sh",
+    "docker:build": "docker image build -t weenie-example -f ./deploy/Dockerfile ../../",
+    "docker:compose": "docker compose -f ./deploy/docker-compose.yml",
+    "format": "../../scripts/format.sh",
+    "knex:exec": "../../scripts/.internal/knex-exec.sh",
+    "lint": "../../scripts/lint.sh",
+    "lint:fix": "../../scripts/lint-fix.sh",
+    "prettier": "../../scripts/prettier.sh",
+    "prettier:fix": "../../scripts/prettier-fix.sh",
+    "pre-release": "pnpm knex:exec migrate:latest",
+    "typecheck": "../../scripts/typecheck.sh"
+  },
+  "author": "Kael Shipman<kael.shipman@gmail.com>",
+  "license": "ISC",
+  "repository": "https://github.com/wymp/weenie.git",
+  "keywords": [
+    "typescript",
+    "microservice",
+    "framework",
+    "dependency injection",
+    "dependency injector",
+    "example"
+  ],
+  "dependencies": {
+    "@wymp/http-errors": "^4.0.0",
+    "@wymp/http-utils": "^4.0.0",
+    "@wymp/weenie-framework": "workspace:^",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.1",
+    "knex": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "20.11.5"
+  }
+}

@@ -1,3 +1,31 @@
+import { connect } from './connect';
+import { getProdDeps } from './deps/prod';
+
+// Main function
+(async () => {
+  const { deps, declareReady, shutdown } = await getProdDeps();
+  try {
+    // Hook everything up
+    await connect(deps);
+
+    // After we've hooked everything up, declare that we're ready to go
+    declareReady();
+  } catch (e) {
+    deps.log.error(e);
+    await shutdown();
+    process.exit(1);
+  }
+})();
+
+
+
+
+
+
+
+
+
+
 // /**
 //  * Weenie Framework Example
 //  *
@@ -10,7 +38,6 @@
 //  */
 
 // // Config module
-// import { config } from '@wymp/config-node';
 
 // import {
 //   // Base framework function
@@ -35,7 +62,7 @@
 //   BaseApiDeps,
 //   ApiClient,
 //   ApiConfig,
-// } from './framework';
+// } from '../framework';
 
 // // Runtypes for creating a final config validator
 // import * as rt from 'runtypes';
