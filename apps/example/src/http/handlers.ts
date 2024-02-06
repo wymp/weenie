@@ -67,6 +67,7 @@ const logout = (deps: Pick<Deps, 'db'>): Handler => async (req) => {
   return {
     status: 200,
     authd: true,
+    body: { data: null },
   }
 }
 
