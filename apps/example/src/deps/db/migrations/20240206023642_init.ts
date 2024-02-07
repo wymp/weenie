@@ -1,8 +1,7 @@
-import type { Knex } from "knex";
-
+import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  if (!await knex.schema.hasTable('users')) {
+  if (!(await knex.schema.hasTable('users'))) {
     await knex.schema.createTable('users', (table) => {
       table.uuid('id').primary();
       table.string('name').notNullable();
@@ -12,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     });
   }
 
-  if (!await knex.schema.hasTable('request-stats')) {
+  if (!(await knex.schema.hasTable('request-stats'))) {
     await knex.schema.createTable('request-stats', (table) => {
       table.uuid('id').primary();
       table.string('method', 10).notNullable();
@@ -23,7 +22,7 @@ export async function up(knex: Knex): Promise<void> {
     });
   }
 
-  if (!await knex.schema.hasTable('sessions')) {
+  if (!(await knex.schema.hasTable('sessions'))) {
     await knex.schema.createTable('sessions', (table) => {
       table.uuid('id').primary();
       table.string('token').unique().notNullable();
@@ -35,10 +34,8 @@ export async function up(knex: Knex): Promise<void> {
   }
 }
 
-
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists('sessions');
   await knex.schema.dropTableIfExists('request-stats');
   await knex.schema.dropTableIfExists('users');
 }
-

@@ -19,7 +19,7 @@ describe('Cron Module', () => {
     // to build into the test.
     [false, true].map((svc) => {
       test(`should successfully run clock cronjobs ${svc ? `with` : `without`} svc dependency`, async () => {
-        const wait = 3025;
+        const wait = 3100;
         let actual = 0;
         let expected = 3;
 

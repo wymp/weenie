@@ -1,4 +1,4 @@
-import { Deps } from "../deps/prod";
+import { Deps } from '../deps/prod';
 
 type ModuleDeps = Pick<Deps, 'config' | 'cron'>;
 
@@ -11,5 +11,5 @@ export const registerCron = async (deps: ModuleDeps) => {
       log.info('Running example cronjob');
       return true;
     },
-  })
-}
+  });
+};

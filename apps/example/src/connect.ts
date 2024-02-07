@@ -20,4 +20,4 @@ export const connect = async (deps: Deps) => {
   if (deps.config.cron.enabled) {
     registerCron(deps);
   }
-}
+};

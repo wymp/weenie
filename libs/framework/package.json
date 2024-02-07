@@ -1,6 +1,6 @@
 {
   "name": "@wymp/weenie-framework",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "This is the main package for Weenie, an unopinionated Typescript microservice framework.",
   "main": "src/framework.ts",
   "files": [

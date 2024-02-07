@@ -1,6 +1,6 @@
-import { Deps } from "../deps/prod";
-import { MSG_KEYS } from "../types";
-import { Subscribers } from "./subscribers";
+import { Deps } from '../deps/prod';
+import { MSG_KEYS } from '../types';
+import { Subscribers } from './subscribers';
 
 type SubscriberDeps = Parameters<Subscribers[keyof Subscribers]>[0];
 
@@ -8,7 +8,7 @@ type ModuleDeps = SubscriberDeps & Pick<Deps, 'config' | 'amqp' | 'db'>;
 
 /**
  * Subscribes all of our message handlers to the message queue.
- * 
+ *
  * @sideEffects
  */
 export const subscribe = async (deps: ModuleDeps) => {
@@ -25,10 +25,6 @@ export const subscribe = async (deps: ModuleDeps) => {
       Subscribers.logCreatedUsers(),
     ),
 
-    deps.amqp.subscribeAny(
-      ['#'],
-      `${deps.config.app.domain}-log-all-msgs`,
-      Subscribers.logAllMessages(),
-    ),
+    deps.amqp.subscribeAny(['#'], `${deps.config.app.domain}-log-all-msgs`, Subscribers.logAllMessages()),
   ]);
-}
+};

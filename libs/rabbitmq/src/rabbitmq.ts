@@ -45,8 +45,8 @@ export type WeenieAmqpInputDeps = {
 export type MessageHandler<SubMsgType> = (
   msg: SubMsgType,
   attrs: AmqpExtra,
-  log: SimpleLoggerInterface
-) => Promise<boolean>
+  log: SimpleLoggerInterface,
+) => Promise<boolean>;
 
 /** The publisher side of a weenie pubsub handler */
 export interface WeeniePublisherInterface<PubMsgType extends { key: string }> {
@@ -63,7 +63,7 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
    * A subscription method used to subscribe a general handler that must accept ALL messages that the system can
    * receive. This method allows you to provide routing keys with wildcards, but it can't offer the same type-safety
    * as the {@link subscribe} method. Handlers passed to this method must be ready to receive ANY message.
-   * 
+   *
    * @param routingKeys is an array of routing keys indicating which messages should arrive in this queue. (This
    * enforces that the messages be on the same exchange that was indicated on initialization.) For example, if you
    * initialized the class with the `foo` exchange and you want to subscribe to all messages published to that exchange,
@@ -73,17 +73,17 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
    * @param handler is the function that will be called when the message is received. It will be passed the message
    * itself, the message's attributes, and a logger tagged with the messages id.
    * @param queueOpts are the options for the subscription. This allows you to set a few queue properties if you'd like
-   * 
+   *
    * @example
-   * 
+   *
    * ```ts
    * type Thing1Msg = { key: 'my-domain.did.thing1'; data: { foo: string } };
    * type Thing2Msg = { key: 'my-domain.did.thing2'; data: { bar: number } };
    * type Thing3Msg = { key: 'my-domain.did.thing3'; data: { baz: boolean } };
-   * 
+   *
    * // All the messages that we might receive
    * type AllMessages = Thing1Msg | Thing2Msg | Thing3Msg;
-   * 
+   *
    * // A handler that handles two of these messages
    * const handlerForAnyMessage: MessageHandler<AllMessages> = async (msg, attrs, log) => {
    *   // Do something...
@@ -95,7 +95,7 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
    *   }
    *   return true;
    * }
-   * 
+   *
    * export const subscribe = (deps: { amqp: WeenieSubscriberInterface<AllMessages> }) => {
    *   // This subscription will receive all messages that start with 'my-domain.'
    *   await deps.amqp.subscribeAny(['my-domain.*'], 'my-queue', handlerForAnyMessage);
@@ -112,12 +112,12 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
   /**
    * A subscription method used to subscribe a handler for one or more specfic messages with a key or array of keys
    * derived directly from that type.
-   * 
+   *
    * This is used to enforce type-safety in the (common) case in which you are subscribing a specific handler to a
    * specific routing key.
-   * 
+   *
    * See also {@link subscribeAny}
-   * 
+   *
    * @param routingKeys is an array of routing keys indicating which messages should arrive in this queue. For this
    * method (in contrast to {@link subscribeAny}), the value must be a string or an array of strings exactly matching
    * the `key` parameter of all messages supported by the handler. (If you want to use wildcard subscriptions, use
@@ -126,14 +126,14 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
    * @param handler is the function that will be called when the message is received. It will be passed the message
    * itself, the message's attributes, and a logger tagged with the messages id.
    * @param queueOpts are the options for the subscription. This allows you to set a few queue properties if you'd like
-   * 
+   *
    * @example
-   * 
+   *
    * ```ts
    * type Thing1Msg = { key: 'my-domain.did.thing1'; data: { foo: string } };
    * type Thing2Msg = { key: 'my-domain.did.thing2'; data: { bar: number } };
    * type Thing3Msg = { key: 'my-domain.did.thing3'; data: { baz: boolean } };
-   * 
+   *
    * // A handler that handles two of these messages
    * const handlerForSomeMessages: MessageHandler<Thing1Msg | Thing2Msg> = async (msg, attrs, log) => {
    *   // Do something...
@@ -145,7 +145,7 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
    *   }
    *   return true;
    * }
-   * 
+   *
    * export const subscribe = (deps: { amqp: WeenieSubscriberInterface<AllMessages> }) => {
    *   await deps.amqp.subscribe(
    *     ['my-domain.did.thing1', 'my-domain.did.thing2'],
@@ -164,7 +164,8 @@ export interface WeenieSubscriberInterface<SubMsgType extends { key: string }> {
 }
 
 export interface WeeniePubSubInterface<SubMsgType extends { key: string }, PubMsgType extends { key: string }>
-  extends WeeniePublisherInterface<PubMsgType>, WeenieSubscriberInterface<SubMsgType> {}
+  extends WeeniePublisherInterface<PubMsgType>,
+    WeenieSubscriberInterface<SubMsgType> {}
 
 /**
  * A weenie function for attaching the Weenie-standard pubsub (RabbitMQ) to a Weenie app.
@@ -185,7 +186,9 @@ export interface WeeniePubSubInterface<SubMsgType extends { key: string }, PubMs
  * See https://npmjs.com/package/@wymp/simple-pubsub-amqp for a full example usage of this.
  */
 export const amqp =
-  <SubMsgType extends { key: string } , PubMsgType extends { key: string }>(retryAlgorithm: 'exponential' | 'periodic' | null) =>
+  <SubMsgType extends { key: string }, PubMsgType extends { key: string }>(
+    retryAlgorithm: 'exponential' | 'periodic' | null,
+  ) =>
   (deps: WeenieAmqpInputDeps) => {
     const amqp = new WeeniePubSubAmqp<SubMsgType, PubMsgType>(
       deps.config.amqp.publishing,
@@ -212,8 +215,8 @@ export const amqp =
  */
 export class WeeniePubSubAmqp<SubMsgType extends { key: string }, PubMsgType extends { key: string }>
   extends AbstractPubSubAmqp<PubMsgType>
-  implements WeeniePubSubInterface<SubMsgType, PubMsgType>{
-
+  implements WeeniePubSubInterface<SubMsgType, PubMsgType>
+{
   public constructor(
     protected publishingConfig: WeeniePublishingConfig,
     config: SimpleAmqpConfig,
@@ -269,8 +272,8 @@ export class WeeniePubSubAmqp<SubMsgType extends { key: string }, PubMsgType ext
         },
         queue: {
           ...queueOpts,
-          name: queueName
-        }
+          name: queueName,
+        },
       },
     );
   }
@@ -279,9 +282,14 @@ export class WeeniePubSubAmqp<SubMsgType extends { key: string }, PubMsgType ext
     key: MsgTypes['key'] | Array<MsgTypes['key']>,
     queueName: string,
     handler: MessageHandler<MsgTypes>,
-    queueOpts: Omit<SimpleSubscriptionOptions['queue'], 'name'> = {}
+    queueOpts: Omit<SimpleSubscriptionOptions['queue'], 'name'> = {},
   ): Promise<void> {
-    return this.subscribeAny(Array.isArray(key) ? key : [key], queueName, handler as MessageHandler<SubMsgType>, queueOpts);
+    return this.subscribeAny(
+      Array.isArray(key) ? key : [key],
+      queueName,
+      handler as MessageHandler<SubMsgType>,
+      queueOpts,
+    );
   }
 
   public async publish(msg: PubMsgType): Promise<void> {

@@ -1,7 +1,7 @@
-import { SimpleSqlDbInterface } from "@wymp/ts-simple-interfaces";
-import { PartialSelect, RequestStat, Session, User } from "../../types";
-import { HttpError } from "@wymp/http-errors";
-import { randomUUID } from "crypto";
+import { SimpleSqlDbInterface } from '@wymp/ts-simple-interfaces';
+import { PartialSelect, RequestStat, Session, User } from '../../types';
+import { HttpError } from '@wymp/http-errors';
+import { randomUUID } from 'crypto';
 
 /** Weenie function for attaching the db dependency */
 export const db = (deps: { mysql: SimpleSqlDbInterface }) => ({ db: new Db(deps) });
@@ -9,7 +9,7 @@ export const db = (deps: { mysql: SimpleSqlDbInterface }) => ({ db: new Db(deps)
 /** Db abstraction class */
 class Db {
   protected mysql: SimpleSqlDbInterface;
-  public constructor(deps: { mysql: SimpleSqlDbInterface}) {
+  public constructor(deps: { mysql: SimpleSqlDbInterface }) {
     this.mysql = deps.mysql;
   }
 
@@ -40,7 +40,13 @@ class Db {
     if (!user.id) {
       user.id = randomUUID();
     }
-    await this.mysql.query('INSERT INTO users (id, name, email, passwordBcrypt, isAdmin) VALUES (?, ?, ?, ?, ?)', [user.id, user.name, user.email, user.passwordBcrypt, user.isAdmin]);
+    await this.mysql.query('INSERT INTO users (id, name, email, passwordBcrypt, isAdmin) VALUES (?, ?, ?, ?, ?)', [
+      user.id,
+      user.name,
+      user.email,
+      user.passwordBcrypt,
+      user.isAdmin,
+    ]);
     const { rows } = await this.mysql.query<User>('SELECT * FROM users WHERE id = ?', [user.id]);
     return rows[0]!;
   }
@@ -50,7 +56,7 @@ class Db {
     if (!stat.timestampMs) stat.timestampMs = Date.now();
     await this.mysql.query(
       'INSERT INTO `request-stats` (id, method, path, authd, responseStatus, timestampMs) VALUES (?, ?, ?, ?, ?, ?)',
-      [stat.id, stat.method, stat.path, stat.authd, stat.responseStatus, stat.timestampMs]
+      [stat.id, stat.method, stat.path, stat.authd, stat.responseStatus, stat.timestampMs],
     );
     const { rows } = await this.mysql.query<RequestStat>('SELECT * FROM `request-stats` WHERE id = ?', [stat.id]);
     return rows[0]!;
@@ -70,10 +76,10 @@ class Db {
       createdAtMs: Date.now(),
       expiresAtMs: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
       invalidatedAtMs: null,
-    }
+    };
     await this.mysql.query(
       'INSERT INTO sessions (id, token, userId, createdAtMs, expiresAtMs, invalidatedAtMs) VALUES (?, ?, ?, ?, ?, ?)',
-      [session.id, session.token, session.userId, session.createdAtMs, session.expiresAtMs, session.invalidatedAtMs]
+      [session.id, session.token, session.userId, session.createdAtMs, session.expiresAtMs, session.invalidatedAtMs],
     );
     return session;
   }

@@ -7,7 +7,7 @@ import { ENVS } from './types';
 /**
  * Here we have a function that returns our config. Defining this as a function allows us to control our side-effects.
  * We're managing our config in exactly the way that is recommended by the @wymp/config-simple package.
- * 
+ *
  * Per the recommendations in that library, all default config values are prod-safe. Anything that's not prod-safe but
  * required is set to REQUIRED and (optionally) pre-filled by a `.env/[ENV]` file.
  */
@@ -16,7 +16,7 @@ export const getConfig = () => {
   const env = configValue('APP_ENV', REQUIRED, Validators.oneOf(Object.values(ENVS))) as ENVS | ConfigError;
 
   // Pre-fill values from `.env` files if they exist
-  [`${__dirname}/../.env/local`, `${__dirname}/../.env/${env}`].forEach(f => {
+  [`${__dirname}/../.env/local`, `${__dirname}/../.env/${env}`].forEach((f) => {
     if (existsSync(f)) {
       dotenv.config({ path: f });
     }
@@ -68,14 +68,14 @@ export const getConfig = () => {
           name: configValue('AMQP_EXCHANGE', REQUIRED),
           durable: true,
           autoDelete: false,
-        }
-      }
+        },
+      },
     },
     cron: {
       enabled: configValue('CRON_ENABLED', 'bool', true),
       specs: {
         heartbeat: configValue('CRONSPEC_HEARTBEAT', '0 */5 * * * *', validateCronSpec),
-      }
+      },
     },
     svc: {
       handleShutdown: true,
@@ -97,4 +97,4 @@ const validateCronSpec: ValidatorFunc<string> = (v) => {
   if (v && !v.match(cronRegex)) {
     return `Invalid cron spec: ${v}. See https://www.npmjs.com/package/cron for valid cron specs`;
   }
-}
+};

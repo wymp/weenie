@@ -38,7 +38,7 @@ export const getProdDeps = async () => {
         db: d.db,
         amqp,
         http: d.http,
-      }
+      };
     });
 
   return {
@@ -48,7 +48,7 @@ export const getProdDeps = async () => {
     declareReady: declareReady!,
     // A function to call to shut down the service (on error)
     shutdown: shutdown!,
-  }
-}
+  };
+};
 
 export type Deps = Awaited<ReturnType<typeof getProdDeps>>['deps'];

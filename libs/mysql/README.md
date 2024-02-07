@@ -1,7 +1,7 @@
 Weenie MySql
 ========================================================================================================================
 
-This package is meant to be used with [Weenie](https://npmjs.com/@wymp/weenie-base). However, if you are not using
+This package is meant to be used with [Weenie](https://wymp.github.io/weenie). However, if you are not using
 Weenie but are interested in this functionality, there's nothing wrong with using it directly. That said, in this case,
 it is nothing more than a wrapper around [`@wymp/simple-db-mysql`](https://npmjs.com/package/@wymp/simple-db-mysql)
 (which itself is a wrapper around [`mysql2](https://npmjs.com/package/mysql2).)

@@ -1,0 +1,140 @@
+/** General Styles **/
+
+html {
+  font-family: sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 18px;
+  margin: 0;
+  padding: 8px;
+  min-height: calc(100vh - 16px);
+  text-align: center;
+  color: #333;
+}
+
+.octicon {
+  fill: #333;
+}
+
+a {
+  color: #444;
+}
+
+a.transparent {
+  text-decoration: none;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+body.homepage {
+  background: linear-gradient(0.325turn, #f093fb, #f5576c, #f56565);
+  background-attachment: fixed;
+  color: #fff;
+}
+
+body.homepage a {
+  color: #fff;
+}
+
+body.homepage .octicon {
+  fill: #fff;
+}
+
+#body pre {
+  border-radius: 20px;
+  margin: 4rem 0;
+}
+
+#body {
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+#body > section {
+  margin: 8rem 0 4rem;
+  text-align: left;
+}
+
+/** Main header **/
+
+header.main {
+  padding: 10px 0 0;
+}
+
+/** Right Links **/
+
+header.main .buttons {
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 20px;
+}
+
+/** Branding **/
+
+header.main .brand {
+  margin-top: 5rem;
+}
+
+header.main .brand h1 {
+  font-family: 'Amatic SC', sans-serif;
+  font-size: 7rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+header.main .brand h2 {
+  font-weight: normal;
+  letter-spacing: 0.1em;
+}
+
+/** Main header collapsed **/
+
+header.main.collapsed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 1024px;
+  background-color: #fff;
+}
+
+body.homepage header.main.collapsed {
+  background-color: transparent;
+}
+
+header.main.collapsed .brand {
+  margin-top: 0;
+  text-align: left;
+}
+
+header.main.collapsed .brand h1 {
+  font-size: 3rem;
+  line-height: .8;
+}
+
+header.main.collapsed .brand h2 {
+  font-size: 0.8rem;
+}
+
+
+
+
+
+/* PrismJS 1.29.0 https://prismjs.com/download.html#themes=prism-tomorrow&languages=clike+javascript+typescript */
+code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}
+/* End PrismJS 1.29.0 */
+
+
+@media (max-width: 768px) {
+  header.main.collapsed .brand h2 {
+    display: none;
+  }
+}

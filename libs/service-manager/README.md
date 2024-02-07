@@ -1,7 +1,7 @@
 Weenie Service Manager
 ========================================================================================================================
 
-This package is meant to be used with [Weenie](https://npmjs.com/@wymp/weenie-base). However, if you are not using
+This package is meant to be used with [Weenie](https://wymp.github.io/weenie). However, if you are not using
 Weenie but are interested in this functionality, there's nothing wrong with using it directly.
 
 ### Functionality

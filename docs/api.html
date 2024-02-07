@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Weenie Framework, a Typescript Microframework by Wymp</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Gaegu:wght@300&family=Quicksand&display=swap" rel="stylesheet"> 
+
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js" async></script>
+</head>
+
+<body>
+  <div id="body">
+    <header class="main collapsed">
+      <div class="buttons">
+        <a href="api.html" class="api-docs-link">API Docs</a>
+        <a href="https://github.com/wymp/weenie" target="_blank">
+          View on Github
+         <svg viewBox="0 0 18 18" width="22" height="22" class="octicon octicon-mark-github" aria-hidden="true" style="margin: 0 0 -5px 5px;">
+            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="brand">
+        <a href="./" class="transparent">
+          <h1>Weenie</h1>
+          <h2>A Typescript Microframework by Wymp</h2>
+        </a>
+      </div>
+    </header>
+
+    <section class="api-index">
+      <h3>Index of API Documentation</h3>
+      <p style="font-style: italic">
+        Following is the full list of independent packages associated with Weenie. Each package has its own
+        documentation and may be used independently of the others. This means that if you really like the Weenie
+        Express setup but nothing else, you can simply install <code class="lang-ts">@wymp/weenie-base</code> and
+        <code class="lang-ts">@wymp/weenie-express</code> and go from there.
+      </p>
+
+      <h4>Primary Packages</h4>
+
+      <ul>
+        <li>
+          <strong><a href="pkgs/weenie-base">weenie-base</a></strong> - This is the core Weenie package, providing the
+          Weenie funciton and very little else. This is a package you can use if you want to create your own Weenie-like
+          framework.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-framework">weenie-framework</a></strong> - This is the whole Weenie framework,
+          which exports everything from all of the other weenie packages. This is the easiest way to get at a bunch of
+          Weenie functionality all at once.
+        </li>
+      </ul>
+
+      <h4>Common Service Packages</h4>
+
+      <ul>
+        <li>
+          <strong><a href="pkgs/weenie-logger">weenie-logger</a></strong> - This package provides a simple console
+          logger adhering to the
+          <a href="https://github.com/wymp/ts-simple-interfaces/blob/current/libs/ts-simple-interfaces/src/logging.ts#L23" target="_blank">
+            <code class="lang-ts">SimpleLoggerInterface</code>
+          </a>. It has several configuration options including the log level and the output format.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-express">weenie-express</a></strong> - This package provides an Express server
+          with a number of convenient configurations available, such as automatic error catching/formatting, automatic
+          fallthrough error handling, and more. This dependency is capable of using the weenie service manager (linked
+          below) to provide additional functionality, although the weenie service manager is not mandatory.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-mysql">weenie-mysql</a></strong> - This package provides the
+          <code class="lang-ts">mysql2</code> client wrapped in 
+          <a href="https://github.com/wymp/ts-simple-interfaces/blob/current/libs/ts-simple-interfaces/src/datasource.ts#L61" target="_blank">
+            <code class="lang-ts">SimpleSqlDbInterface</code>
+          </a>. It simply takes a config object with a mysql key containing a mysql connection config object.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-rabbitmq">weenie-rabbitmq</a></strong> - This package is somewhat more experimental.
+          It seems messaging is an area that's a bit more prone to very specific opinions, so this may or may not work
+          for you.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-cron">weenie-cron</a></strong> - A simple Weenie wrapper around the
+          <a href="https://www.npmjs.com/package/cron" target="_blank">cron</a> package. Provides a simple way to
+          manage cronjobs. Note that this package wants a "retry" dependency (see "retry" in the list of peripherals
+          below), although it is optional. If you don't supply a retry dependency, a simple 1-second retry will be used
+          by default.
+        </li>
+      </ul>
+
+      <h4>Weenie Peripherals</h4>
+
+      <ul>
+        <li>
+          <strong><a href="pkgs/weenie-api-client">weenie-api-client</a></strong> - This is a simple Weenie wrapper that
+          attempts to make it a little easier to fire up a generic http client. It's tuned for a specific authentication
+          system, but you could also easily use it without authn. This package may or may not be useful....
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-retry">weenie-retry</a></strong> - Occasionally you may want certain things to
+          be retried with a specific algorithm. This package provides an exponential retry algorithm and a simple periodic
+          retry algorithm. If provided, it's used by weenie-cron and weenie-rabbitmq to retry failed jobs.
+        </li>
+        <li>
+          <strong><a href="pkgs/weenie-service-manager">weenie-service-manager</a></strong> - Perhaps the most useful
+          Weenie peripheral, this provides some facilities for coordinating initialization and shutdown of an app. In
+          particular, it provides a <code class="lang-ts">declareReady()</code> function that resolves a promise that
+          other services can await to do initialization logic. (If this function is not called within the configured
+          timeframe, the service is killed with an initialization error.) It also provides an `onShutdown` function that
+          other dependencies can use to register shutdown logic (e.g., closing a database connection or http server).
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+</html>

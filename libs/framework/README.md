@@ -1,8 +1,7 @@
 Weenie Framework
 =================================================================================
 
-**NOTE: For complete docs, clone this repo and run `pnpm i && pnpm docs:gen && pnpm docs:view`.**
-If you don't have pnpm, first run `npm i -g pnpm`.
+**NOTE: These docs may be out of date. For complete, updated docs, see the [Weenie Website](https://wymp.github.io/weenie)**.
 
 
 ## Overview

@@ -1,16 +1,31 @@
 import * as bcrypt from 'bcryptjs';
-import { Deps } from "../deps/prod";
-import { PartialSelect, Session, User } from "../types";
+import { Deps } from '../deps/prod';
+import { PartialSelect, Session, User } from '../types';
 import { HttpError } from '@wymp/http-errors';
 
 /**
  * Library function to create a user and (optionally) a session
- * 
+ *
  * WARNING: PRODUCTION APPS SHOULD HAVE MORE COMPLEX REGISTRATION AND SESSION MANAGEMENT THAN THIS
  */
-export function createUser(deps: Pick<Deps, 'db'>, userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>, password: string, createSession?: false): Promise<User>;
-export function createUser(deps: Pick<Deps, 'db'>, userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>, password: string, createSession: true): Promise<{ user: User; session: Session }>;
-export async function createUser(deps: Pick<Deps, 'db'>, userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>, password: string, createSession?: boolean): Promise<User | { user: User; session: Session }> {
+export function createUser(
+  deps: Pick<Deps, 'db'>,
+  userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>,
+  password: string,
+  createSession?: false,
+): Promise<User>;
+export function createUser(
+  deps: Pick<Deps, 'db'>,
+  userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>,
+  password: string,
+  createSession: true,
+): Promise<{ user: User; session: Session }>;
+export async function createUser(
+  deps: Pick<Deps, 'db'>,
+  userData: Omit<PartialSelect<User, 'id'>, 'passwordBcrypt'>,
+  password: string,
+  createSession?: boolean,
+): Promise<User | { user: User; session: Session }> {
   // Hash the password
   const passwordBcrypt = await new Promise<string>((res, rej) => {
     bcrypt.genSalt(10, (err, salt) => {
@@ -25,7 +40,7 @@ export async function createUser(deps: Pick<Deps, 'db'>, userData: Omit<PartialS
           }
         });
       }
-    })
+    });
   });
 
   // Create the user
@@ -41,11 +56,15 @@ export async function createUser(deps: Pick<Deps, 'db'>, userData: Omit<PartialS
   return {
     user,
     session,
-  }
+  };
 }
 
 /** Log a user in with an email and password, returning the user and a session */
-export const login = async (deps: Pick<Deps, 'db'>, email: string, password: string): Promise<{ user: User; session: Session }> => {
+export const login = async (
+  deps: Pick<Deps, 'db'>,
+  email: string,
+  password: string,
+): Promise<{ user: User; session: Session }> => {
   let user: User;
   try {
     user = await deps.db.getUserByEmail(email);
@@ -75,9 +94,9 @@ export const login = async (deps: Pick<Deps, 'db'>, email: string, password: str
     user,
     session,
   };
-}
+};
 
 /** Log a user out */
 export const logout = async (deps: Pick<Deps, 'db'>, by: { type: 'id' | 'token'; value: string }) => {
   return await deps.db.invalidateSession(by);
-}
+};

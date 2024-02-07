@@ -27,7 +27,7 @@ export type User = {
   email: string;
   passwordBcrypt: string;
   isAdmin: boolean;
-}
+};
 
 /** A RequestStat object */
 export type RequestStat = {
@@ -37,7 +37,7 @@ export type RequestStat = {
   authd: boolean | null;
   responseStatus: number;
   timestampMs: number;
-}
+};
 
 /** A user login session */
 export type Session = {
@@ -47,7 +47,7 @@ export type Session = {
   createdAtMs: number;
   expiresAtMs: number;
   invalidatedAtMs: number | null;
-}
+};
 
 //
 // MQ Types
@@ -68,7 +68,7 @@ export type MSGS = {
     key: MSG_KEYS.EXAMPLE_USERS_CREATED;
     data: User;
   };
-}
+};
 
 /** All types of messages that the `example` domain might emit */
 export type ExampleDomainMessages = MSGS[keyof MSGS];
