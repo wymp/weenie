@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Weenie Framework, a Typescript Microframework by Wymp</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Gaegu:wght@300&family=Quicksand&display=swap" rel="stylesheet"> 
+
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js" async></script>
+</head>
+
+<body class="homepage">
+  <div id="body">
+    <header class="main">
+      <div class="buttons">
+        <a href="api.html" class="api-docs-link">API Docs</a>
+        <a href="https://github.com/wymp/weenie" target="_blank">
+          View on Github
+         <svg viewBox="0 0 18 18" width="22" height="22" class="octicon octicon-mark-github" aria-hidden="true" style="margin: 0 0 -5px 5px;">
+            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="brand">
+        <h1>Weenie</h1>
+        <h2>A Typescript Microframework by Wymp</h2>
+      </div>
+    </header>
+
+    <section class="intro">
+      <h3>Quickstart</h3>
+      <p style="font-style: italic; font-weight: bold;">
+        (For a really quick start,
+        <a href="https://github.com/wymp/weenie/tree/current/apps/example" target="_blank">Explore the example app</a>
+        to see a full, working Weenie app built in the Weenie way.)
+      </p>
+      <p>
+        Install the Weenie framework from npm: <code class="lang-sh">npm install @wymp/weenie-framework</code>.
+      </p>
+      <p>
+        Most frameworks (such as NestJs) ship with a fully-baked "way" of doing things. This is fine... until it's not.
+        And then it can be <em>maddening.</em>
+      </p>
+      <p>
+        Weenie is a framework that ships with a way of doing things, but helps you capture and re-use <em>your own</em>
+        way of doing things and use that when you prefer it.</p>
+      <p>
+        Don't like how Weenie does logging? Swap in your own logger. Don't like how Weenie does pubsub? Swap in someone
+        else's.
+      </p>
+      <p>
+        The point is that opinions are powerful and necessary, <strong>but your code should reflect <em>your</em>
+        opinions,</strong> and most frameworks make that difficult.
+      </p>
+
+      <p>Here's a quick look at what Weenie looks like:</p>
+
+      <pre><code class="lang-ts">// src/deps.ts
+import { Weenie, logger, cron, mysql, express } from '@wymp/weenie-framework';
+import { getConfig } from './myConfig';
+
+// Note that you can define your config however you'd like - this is not an important
+// detail of the example. However, Weenie ships with the `@wymp/config-simple` package,
+// which is a simple and recommended way of managing configuration.
+//
+// Whatever you choose, it's important to note that your config will usually be used by
+// subsequent dependencies, and you may need to define a config adapter or something if
+// you want to use a standard Weenie function with a different config system.
+export const getDeps = () => Weenie({ config: getConfig() })
+  .and(logger)
+  .and(cron)
+  .and(mysql)
+  .and(express)
+  .done((d) =&gt; d);
+
+export type Deps = ReturnType&lt;typeof getDeps&gt;;
+
+
+
+// src/main.ts
+// This is the entrypoint to your app
+import { getDeps } from './deps';
+import { Handlers } from './http/handlers';
+import { CronJobs } from './cron/jobs';
+
+// Get your deps
+const deps = getDeps();
+
+// Log some stuff
+deps.log.debug(`Registering cronjobs and HTTP endpoints...`);
+
+// Set up some HTTP endpoints
+deps.http.get('/', Handlers.root(deps));
+deps.http.get('/users', Handlers.users(deps));
+
+// Set up some cronjobs
+deps.cron.register(CronJobs.doSomething(deps));
+
+// Start the server listening
+deps.http.listen((listener) => {
+  deps.log.notice(`Server listening on ${listener[1] ?? 'localhost'}:${listener[0]}`);
+});
+      </code></pre>
+    </section>
+
+    <section class="deeper-dive">
+      <h3>Deeper Dive</h3>
+
+      <p>
+        Strictly speaking, Weenie is just a
+        <a href="https://github.com/wymp/weenie/blob/current/libs/base/src/Weenie.ts" target="_blank">function</a>
+        with a few little type tricks that presents a <em>way</em> of creating a dependency injection container. And DI
+        is simply a way of building clean, portable code. Take a simple "create user" example function:
+      </p>
+
+      <pre><code class="lang-ts">// src/lib/users.ts
+// TRADITIONAL WAY - Dependencies imported and used directly, side effects all over the place
+import { UserModel, type User } from './models/user';
+
+export const createUser = async (input: User) => {
+  const newUser = UserModel.create(input);
+  await newUser.save();
+  console.log(`New user created: ${newUser.id}`);
+  return newUser;
+}
+      </code></pre>
+
+      <p>
+        Simple, but there are several issues with this. First, you can't import this code unless you have an active
+        configured database connection, since the <code class="lang-ts">UserModel</code> is a direct import from an
+        ORM. And second, whenever you run this code, it will call <code class="lang-ts">console.log</code> and there's
+        nothing you can do about it.
+      </p>
+
+      <p>These don't seem like big issues on face value, but they're a <em>style</em> that often leads to tech debt.</p>
+
+      <p>With Weenie, you would simply rewrite your function like this:</p>
+
+      <pre><code class="lang-ts">// src/lib/users.ts
+// WEENIE WAY - Dependencies are passed in, no side effects
+import type { Deps } from '../deps';
+import type { User } from './models/user';
+
+export const createUser = async (input: User, deps: Pick&lt;Deps, 'db' | 'log'&gt;) => {
+  const newUser = await deps.db.users.create(input);
+  deps.log.info(`New user created: ${newUser.id}`);
+  return newUser;
+}
+      </code></pre>
+
+      <p>
+        This is basically the same code, but now we're injecting our dependencies, which means we can very easily test
+        and debug the code. For example, we can import this file in a node REPL and pass in mock dependencies and
+        custom input to probe its functionality interactively. Or we can create a mock data layer and pass that in via
+        unit tests to easily test the function's behavior.
+      </p>
+
+      <p>
+        Also important to note is that we're now depending on the _type_ of our dependencies, rather than a concrete
+        implementation. This makes it easier to swap things out later and/or use this code in different contexts.
+      </p>
+    </section>
+
+    <section class="conclusion">
+      <h3>Give it a Try</h3>
+      <p>
+        Weenie is a framework that helps you build your own framework. It's a way of doing things that helps you capture
+        and re-use your own way of doing things. It's a way of writing clean, portable code that's easy to test and
+        debug, and that reflects the true personalities of the people who write it.
+      </p>
+      <p>
+        <strong><a href="https://github.com/wymp/weenie/tree/current/apps/example" target="_blank">Explore the Example App</a></strong>
+        or
+        <strong><a href="api.html">check out the API docs</a></strong> to learn more about Weenie and how to code your
+        own way.
+      </p>
+    </section>
+  </div>
+</body>
+
+</html>

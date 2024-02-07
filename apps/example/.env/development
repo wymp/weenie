@@ -1,0 +1,8 @@
+LOG_LEVEL=debug
+MYSQL_HOST=mysql
+MYSQL_USER=root
+MYSQL_PASSWORD=dev
+AMQP_HOST=rabbitmq
+AMQP_USER=guest
+AMQP_PASSWORD=guest
+AMQP_EXCHANGE=weenie

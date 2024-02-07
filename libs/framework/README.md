@@ -1,8 +1,7 @@
 Weenie Framework
 =================================================================================
 
-**NOTE: For complete docs, clone this repo and run `pnpm i && pnpm docs:gen && pnpm docs:view`.**
-If you don't have pnpm, first run `npm i -g pnpm`.
+**NOTE: These docs may be out of date. For complete, updated docs, see the [Weenie Website](https://wymp.github.io/weenie)**.
 
 
 ## Overview
@@ -53,8 +52,8 @@ opinionated framework.
 
 Because of that, Weenie does express opinions of its own. However, it does so via components, which
 are the primary export of this library. The primary Weenie components include a config system (from
-`@wymp/config-node`), a logger, a sql database (`mysql2`), a pubsub abstraction (`amqp`), an HTTP
-Client (`request-promise-native`), an HTTP Server (`express` with a lot of Weenie-specific overlays),
+`@wymp/config-simple`), a logger, a sql database (`mysql2`), a pubsub abstraction (`amqp`), an HTTP
+Client (`fetch`), an HTTP Server (`express` with a lot of Weenie-specific overlays),
 and a cron system. (Most of these components are conformant with
 [Simple Interfaces](https://github.com/wymp/ts-simple-interfaces).)
 
@@ -68,8 +67,8 @@ own set of dependencies in a Weenie-compatible way. Doing so allows you to contr
 of Weenie-compatible functionality that other developers can easily pull into their own code.
 
 (Note that if you prefer to build your own Weenie-compatible framework from the ground up, you can
-use the [`@wymp/weenie-base`](../base) package instead of this one, which contains SOLELY the
-`Weenie` function.)
+use the [`@wymp/weenie-base`](https://npmjs.com/package/@wymp/weenie-base) package instead of this one, which contains
+SOLELY the `Weenie` function.)
 
 
 ### How to Build a Weenie Component

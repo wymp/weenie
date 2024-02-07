@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-rm -Rf ./dist || true
+rm -Rf ./dist

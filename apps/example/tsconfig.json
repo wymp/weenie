@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+
+    // These two options are (unfortunately) necessary to fix a bug in typescript that causes a TS2742 error. See
+    // [here](https://github.com/microsoft/TypeScript/issues/42873#issuecomment-1766987305) for more information
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["./src/**/*.ts"]
+}
