@@ -3,8 +3,8 @@ The Weenie Framework
 
 **This is a monorepo based on [@wymp/ts-monorepo-poc](https://github.com/wymp/ts-monorepo-poc).**
 
-**The Weenie Framework is a simple Typescript microservices framework for NodeJS.** For a complete summary, see
-[`./libs/framework`](./libs/framework).
+**The Weenie Framework is a simple Typescript microservices micro-framework for NodeJS.** For complete docs, check out
+https://wymp.github.io/weenie .
 
 
 ## Quickstart
